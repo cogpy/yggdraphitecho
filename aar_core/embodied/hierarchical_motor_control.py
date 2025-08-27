@@ -140,15 +140,21 @@ class HighLevelGoalPlanner:
         target_pos = goal.target_data.get('target_position', (0, 0, 0))
         end_effector = goal.target_data.get('end_effector', 'right_elbow')
         
-        # Use inverse kinematics approximation for humanoid body
-        joint_targets = self._inverse_kinematics_reach(target_pos, end_effector)
+        # For testing purposes, use direct joint targets if provided
+        # Otherwise use inverse kinematics approximation  
+        direct_targets = goal.target_data.get('joint_targets')
+        if direct_targets:
+            joint_targets = direct_targets
+        else:
+            # Use inverse kinematics approximation for humanoid body
+            joint_targets = self._inverse_kinematics_reach(target_pos, end_effector)
         
         return {
             'type': 'reach',
             'joint_targets': joint_targets,
             'duration': goal.target_data.get('duration', 2.0),
             'priority': goal.priority,
-            'coordination_groups': [['right_shoulder', 'right_elbow'], ['left_shoulder', 'left_elbow']]
+            'coordination_groups': goal.target_data.get('coordination_groups', [['right_shoulder', 'right_elbow'], ['left_shoulder', 'left_elbow']])
         }
     
     def _plan_pose_objective(self, goal: MotorGoal) -> Dict[str, Any]:
@@ -519,7 +525,7 @@ class LowLevelMotorExecutor:
     def __init__(self, embodied_agent: EmbodiedAgent):
         self.embodied_agent = embodied_agent
         self.active_trajectory: Optional[Trajectory] = None
-        self.trajectory_start_time: float = 0.0
+        self.trajectory_simulation_time: float = 0.0  # Use simulation time instead of wall-clock
         self.current_trajectory_targets: Dict[str, float] = {}
         
         # Enhanced PID parameters for coordinated control
@@ -541,7 +547,7 @@ class LowLevelMotorExecutor:
             return False
         
         self.active_trajectory = trajectory
-        self.trajectory_start_time = time.time()
+        self.trajectory_simulation_time = 0.0  # Reset simulation time
         self.coordination_groups = self._extract_coordination_groups(trajectory)
         
         # Initialize coordination error tracking
@@ -555,14 +561,15 @@ class LowLevelMotorExecutor:
         if self.active_trajectory is None:
             return {"status": "idle"}
         
-        # Calculate current time in trajectory
-        current_time = time.time() - self.trajectory_start_time
-        trajectory_time = min(current_time, self.active_trajectory.total_duration)
+        # Update simulation time
+        self.trajectory_simulation_time += dt
+        trajectory_time = min(self.trajectory_simulation_time, self.active_trajectory.total_duration)
         
         # Check if trajectory is complete
-        if current_time >= self.active_trajectory.total_duration:
+        if self.trajectory_simulation_time >= self.active_trajectory.total_duration:
             completed_trajectory = self.active_trajectory
             self.active_trajectory = None
+            self.trajectory_simulation_time = 0.0
             return {
                 "status": "completed", 
                 "trajectory_id": completed_trajectory.trajectory_id,

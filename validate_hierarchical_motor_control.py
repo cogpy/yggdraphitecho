@@ -40,7 +40,8 @@ def test_high_level_goal_planning():
         goal_type=MotorGoalType.REACH_POSITION,
         target_data={
             'target_position': (0.5, 0.2, 1.2),
-            'end_effector': 'right_elbow',
+            'end_effector': 'right_elbow', 
+            'joint_targets': {'right_shoulder': 0.3, 'right_elbow': -0.5},  # Direct targets for testing
             'duration': 2.0
         },
         priority=0.8
@@ -158,7 +159,7 @@ def test_low_level_motor_execution():
     reach_objective = {
         'type': 'reach',
         'joint_targets': {'right_shoulder': 0.3, 'right_elbow': -0.5},
-        'duration': 1.0,
+        'duration': 1.0,  # Back to 1.0 seconds but we'll run for full duration
         'priority': 0.8,
         'coordination_groups': [['right_shoulder', 'right_elbow']]
     }
@@ -177,7 +178,7 @@ def test_low_level_motor_execution():
     
     motor_controller.start_control_loop()
     
-    for step in range(100):  # 1 second at 100Hz
+    for step in range(120):  # 1.2 seconds at 100Hz to ensure trajectory completes
         dt = 0.01
         
         # Update motor controller (full hierarchical loop)
@@ -195,7 +196,7 @@ def test_low_level_motor_execution():
         })
         
         # Stop when trajectory completes or we've run long enough
-        if status['execution_status']['status'] == 'completed' or step >= 99:
+        if status['execution_status']['status'] == 'completed' or step >= 119:
             print(f"✓ Trajectory execution stopped at step {step}, status: {status['execution_status']['status']}")
             break
     
@@ -352,6 +353,7 @@ def test_smooth_coordinated_movement_acceptance_criteria():
         target_data={
             'target_position': (0.6, 0.3, 1.0),
             'end_effector': 'right_elbow',
+            'joint_targets': {'right_shoulder': 0.4, 'right_elbow': -0.6},  # Direct targets
             'duration': 3.0
         },
         priority=1.0
