@@ -6,16 +6,16 @@ argc command definitions into function registry entries for unified tool access.
 """
 
 import asyncio
-import json
 import logging
 import subprocess
 import tempfile
-from typing import Dict, List, Any, Optional, Union
+from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
 from pathlib import Path
-import re
 
-from ..function_registry import FunctionRegistry, FunctionSpec, ParameterSpec, SafetyClass
+from ..function_registry import (
+    FunctionRegistry, FunctionSpec, ParameterSpec, SafetyClass
+)
 
 logger = logging.getLogger(__name__)
 
@@ -125,7 +125,9 @@ class ArgcAdapter:
             if result.returncode == 0:
                 self.available = True
                 self._load_example_schemas()
-                logger.info(f"Argc adapter initialized with binary: {self.argc_binary}")
+                logger.info(
+                    f"Argc adapter initialized with binary: {self.argc_binary}"
+                )
             else:
                 logger.error(f"Argc binary test failed: {result.stderr}")
                 self._setup_compatibility_mode()
@@ -136,27 +138,35 @@ class ArgcAdapter:
 
     def _load_example_schemas(self):
         """Load example argc schemas from the source directory."""
-        argc_examples = Path(__file__).parent.parent.parent / "2do" / "argc" / "examples"
+        argc_examples = (
+            Path(__file__).parent.parent.parent / "2do" / "argc" / "examples"
+        )
         if argc_examples.exists():
             for script_file in argc_examples.glob("*.sh"):
                 try:
                     self.parse_argc_script(script_file)
                 except Exception as e:
-                    logger.warning(f"Failed to parse example {script_file}: {e}")
+                    logger.warning(
+                        f"Failed to parse example {script_file}: {e}"
+                    )
 
     def _setup_compatibility_mode(self):
         """Setup production mode with robust argc binary management."""
         self.available = False
         
-        logger.error("Argc binary not found. Attempting automatic installation...")
+        logger.error(
+            "Argc binary not found. Attempting automatic installation..."
+        )
         
         if self._install_argc_binary():
             self._initialize_argc()
         else:
             raise RuntimeError(
                 "Argc binary is required for production operation. "
-                "Please install argc manually or ensure it's available in PATH. "
-                "See installation instructions at: https://github.com/sigoden/argc"
+                "Please install argc manually or ensure it's available in "
+                "PATH. "
+                "See installation instructions at: "
+                "https://github.com/sigoden/argc"
             )
 
     def _install_argc_binary(self) -> bool:
@@ -180,7 +190,9 @@ class ArgcAdapter:
                     cargo_bin = os.path.expanduser("~/.cargo/bin/argc")
                     if os.path.exists(cargo_bin):
                         self.argc_binary = cargo_bin
-                        logger.info(f"Successfully installed argc at {cargo_bin}")
+                        logger.info(
+                            f"Successfully installed argc at {cargo_bin}"
+                        )
                         return True
             
             argc_src = Path(__file__).parent.parent.parent / "2do" / "argc"
@@ -227,14 +239,19 @@ class ArgcAdapter:
                     self.commands[command_name] = command
                     self._register_command_as_function(command_name, command)
                 
-                logger.info(f"Parsed argc script {script_path.name} with {len(schema.commands)} commands")
+                logger.info(
+                    f"Parsed argc script {script_path.name} with "
+                    f"{len(schema.commands)} commands"
+                )
                 return schema
             
         except Exception as e:
             logger.error(f"Failed to parse argc script {script_path}: {e}")
             return None
 
-    def _parse_script_content(self, content: str, script_path: Path) -> Optional[ArgcSchema]:
+    def _parse_script_content(
+        self, content: str, script_path: Path
+    ) -> Optional[ArgcSchema]:
         """Parse script content to extract argc command definitions."""
         lines = content.split('\n')
         
@@ -336,7 +353,7 @@ class ArgcAdapter:
 
     def _parse_option_definition(self, line: str) -> Optional[Dict[str, Any]]:
         """Parse an option definition line."""
-        # Example: # @option   -t --tries <NUM>        Set number of retries to NUM
+        # Example: # @option   -t --tries <NUM>        Set number of retries
         parts = line.replace('# @option', '').strip().split(None, 3)
         
         if len(parts) >= 2:
@@ -397,7 +414,9 @@ class ArgcAdapter:
         
         return None
 
-    def _register_command_as_function(self, command_name: str, command: ArgcCommand):
+    def _register_command_as_function(
+        self, command_name: str, command: ArgcCommand
+    ):
         """Register an argc command as a function in the function registry."""
         try:
             # Build parameters from argc command definition
@@ -407,7 +426,9 @@ class ArgcAdapter:
             for arg in command.args:
                 parameters[arg["name"]] = ParameterSpec(
                     type="string",  # Default type for argc args
-                    description=arg.get("description", f"Argument: {arg['name']}"),
+                    description=arg.get(
+                        "description", f"Argument: {arg['name']}"
+                    ),
                     required=arg.get("required", False)
                 )
             
@@ -427,16 +448,19 @@ class ArgcAdapter:
                 param_type = option.get("value_type", "string")
                 parameters[param_name] = ParameterSpec(
                     type=param_type,
-                    description=option.get("description", f"Option: {param_name}"),
+                    description=option.get(
+                        "description", f"Option: {param_name}"
+                    ),
                     required=False
                 )
             
             # Create function specification
             func_spec = FunctionSpec(
                 name=f"argc_{command_name}",
-                description=command.description or f"Argc command: {command.name}",
+                description=command.description or 
+                f"Argc command: {command.name}",
                 parameters=parameters,
-                safety_class=SafetyClass.MEDIUM,  # Argc commands can execute system operations
+                safety_class=SafetyClass.MEDIUM,
                 cost_unit=0.5,
                 implementation_ref=f"argc.command.{command_name}",
                 tags=["argc", "cli", "command"],
@@ -452,15 +476,21 @@ class ArgcAdapter:
                 return await self.execute_command(command_name, kwargs)
             
             # Register with function registry
-            success = self.function_registry.register_function(func_spec, argc_command_impl)
+            success = self.function_registry.register_function(
+                func_spec, argc_command_impl
+            )
             if success:
                 self.function_registry.activate_function(func_spec.name)
-                logger.info(f"Registered argc command as function: {func_spec.name}")
+                logger.info(
+                    f"Registered argc command as function: {func_spec.name}"
+                )
             
         except Exception as e:
             logger.error(f"Failed to register command {command_name}: {e}")
 
-    async def execute_command(self, command_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    async def execute_command(
+        self, command_name: str, arguments: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Execute an argc command with the provided arguments."""
         command = self.commands.get(command_name)
         if not command:
@@ -468,7 +498,8 @@ class ArgcAdapter:
         
         if not self.available:
             raise RuntimeError(
-                f"Argc binary not available. Command {command_name} cannot be executed. "
+                f"Argc binary not available. Command {command_name} cannot be "
+                "executed. "
                 "Please ensure argc is properly installed and initialized."
             )
         
@@ -489,7 +520,8 @@ class ArgcAdapter:
             # Add options
             for option in command.options:
                 option_name = option.get("name", option.get("short"))
-                if option_name in arguments and arguments[option_name] is not None:
+                if (option_name in arguments and 
+                    arguments[option_name] is not None):
                     value = arguments[option_name]
                     if option.get("name"):
                         cmd_args.extend([f"--{option['name']}", str(value)])
@@ -564,7 +596,9 @@ class ArgcAdapter:
             for name, cmd in self.commands.items()
         ]
 
-    def parse_command_string(self, command_string: str) -> Optional[Dict[str, Any]]:
+    def parse_command_string(
+        self, command_string: str
+    ) -> Optional[Dict[str, Any]]:
         """Parse a command string and extract structured data."""
         if not self.available:
             raise RuntimeError(
@@ -574,14 +608,16 @@ class ArgcAdapter:
         
         try:
             # Use argc to parse command string
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.sh', delete=False) as f:
+            with tempfile.NamedTemporaryFile(
+                mode='w', suffix='.sh', delete=False
+            ) as f:
                 # Create a temporary argc script for parsing
-                f.write(f'''#!/bin/bash
+                f.write('''#!/bin/bash
 # @describe Parse command
 # @arg input! Input to parse
-parse_cmd() {{
+parse_cmd() {
     echo "$argc_input"
-}}
+}
 eval "$(argc --argc-eval "$0" "$@")"
 ''')
                 temp_script = f.name

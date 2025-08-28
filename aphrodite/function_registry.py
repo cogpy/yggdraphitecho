@@ -4,13 +4,11 @@ Integrates argc command schemas with llm-functions capabilities.
 """
 
 import asyncio
-import json
 import logging
-from typing import Dict, List, Any, Optional, Callable, Union
-from dataclasses import dataclass, asdict, field
+from typing import Dict, List, Any, Optional, Callable
+from dataclasses import dataclass, field
 from enum import Enum
 import inspect
-import importlib
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -102,7 +100,8 @@ class FunctionResult:
 
 class FunctionRegistry:
     """
-    Unified function registry integrating argc command schemas with llm-functions.
+    Unified function registry integrating argc command schemas with 
+    llm-functions.
     
     Provides:
     - Function registration and discovery
@@ -190,7 +189,9 @@ class FunctionRegistry:
         ]
         
         for func_spec in builtin_functions:
-            self.register_function(func_spec, self._get_builtin_implementation(func_spec.name))
+            self.register_function(
+                func_spec, self._get_builtin_implementation(func_spec.name)
+            )
 
     def _get_builtin_implementation(self, function_name: str) -> Callable:
         """Get built-in function implementation."""
@@ -200,7 +201,9 @@ class FunctionRegistry:
             "web_search": self._builtin_web_search,
             "file_read": self._builtin_file_read,
         }
-        return builtin_impls.get(function_name, lambda **kwargs: {"error": "not implemented"})
+        return builtin_impls.get(
+            function_name, lambda **kwargs: {"error": "not implemented"}
+        )
 
     def _builtin_calculate(self, expression: str) -> Dict[str, Any]:
         """Built-in calculator function."""
@@ -215,7 +218,9 @@ class FunctionRegistry:
         except Exception as e:
             return {"error": f"Calculation error: {str(e)}"}
 
-    def _builtin_web_search(self, query: str, max_results: int = 5) -> Dict[str, Any]:
+    def _builtin_web_search(
+        self, query: str, max_results: int = 5
+    ) -> Dict[str, Any]:
         """Built-in web search function (placeholder)."""
         # This would integrate with actual search APIs
         return {
@@ -240,7 +245,9 @@ class FunctionRegistry:
         except Exception as e:
             return {"error": f"File read error: {str(e)}"}
 
-    def register_function(self, spec: FunctionSpec, implementation: Callable) -> bool:
+    def register_function(
+        self, spec: FunctionSpec, implementation: Callable
+    ) -> bool:
         """Register a function with its specification and implementation."""
         try:
             # Validate the specification
@@ -285,19 +292,26 @@ class FunctionRegistry:
         # Validate each parameter
         for param_name, param_spec in spec.parameters.items():
             if not isinstance(param_spec, ParameterSpec):
-                raise ValueError(f"Parameter {param_name} must be a ParameterSpec")
+                raise ValueError(
+                    f"Parameter {param_name} must be a ParameterSpec"
+                )
 
     def get_function(self, name: str) -> Optional[FunctionSpec]:
         """Get function specification by name."""
         return self.functions.get(name)
 
-    def list_functions(self, tags: Optional[List[str]] = None, 
-                      safety_class: Optional[SafetyClass] = None) -> List[FunctionSpec]:
+    def list_functions(
+        self, 
+        tags: Optional[List[str]] = None, 
+        safety_class: Optional[SafetyClass] = None
+    ) -> List[FunctionSpec]:
         """List functions with optional filtering."""
         functions = list(self.functions.values())
         
         if tags:
-            functions = [f for f in functions if any(tag in f.tags for tag in tags)]
+            functions = [
+                f for f in functions if any(tag in f.tags for tag in tags)
+            ]
         
         if safety_class:
             functions = [f for f in functions if f.safety_class == safety_class]
@@ -316,7 +330,9 @@ class FunctionRegistry:
             for name, spec in self.functions.items()
         }
 
-    async def invoke_function(self, invocation: FunctionInvocation) -> FunctionResult:
+    async def invoke_function(
+        self, invocation: FunctionInvocation
+    ) -> FunctionResult:
         """Safely invoke a function with cost and permission tracking."""
         start_time = asyncio.get_event_loop().time()
         
@@ -337,11 +353,16 @@ class FunctionRegistry:
                 )
             
             # Validate arguments
-            validation_result = self._validate_arguments(func_spec, invocation.arguments)
+            validation_result = self._validate_arguments(
+                func_spec, invocation.arguments
+            )
             if not validation_result["valid"]:
                 return FunctionResult(
                     success=False,
-                    error=f"Argument validation failed: {validation_result['error']}"
+                    error=(
+                        f"Argument validation failed: "
+                        f"{validation_result['error']}"
+                    )
                 )
             
             # Get implementation
@@ -349,7 +370,10 @@ class FunctionRegistry:
             if not implementation:
                 return FunctionResult(
                     success=False,
-                    error=f"No implementation found for {invocation.function_name}"
+                    error=(
+                        f"No implementation found for "
+                        f"{invocation.function_name}"
+                    )
                 )
             
             # Execute function
@@ -359,11 +383,15 @@ class FunctionRegistry:
                 result = implementation(**invocation.arguments)
             
             # Calculate execution time and cost
-            execution_time = (asyncio.get_event_loop().time() - start_time) * 1000
+            execution_time = (
+                (asyncio.get_event_loop().time() - start_time) * 1000
+            )
             cost = func_spec.cost_unit
             
             # Update statistics
-            self._update_stats(invocation.function_name, True, cost, execution_time)
+            self._update_stats(
+                invocation.function_name, True, cost, execution_time
+            )
             
             return FunctionResult(
                 success=True,
@@ -374,17 +402,25 @@ class FunctionRegistry:
             )
             
         except Exception as e:
-            execution_time = (asyncio.get_event_loop().time() - start_time) * 1000
-            self._update_stats(invocation.function_name, False, 0, execution_time)
+            execution_time = (
+                (asyncio.get_event_loop().time() - start_time) * 1000
+            )
+            self._update_stats(
+                invocation.function_name, False, 0, execution_time
+            )
             
-            logger.error(f"Function invocation error for {invocation.function_name}: {e}")
+            logger.error(
+                f"Function invocation error for {invocation.function_name}: {e}"
+            )
             return FunctionResult(
                 success=False,
                 error=str(e),
                 execution_time_ms=execution_time
             )
 
-    def _validate_arguments(self, func_spec: FunctionSpec, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def _validate_arguments(
+        self, func_spec: FunctionSpec, arguments: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Validate function arguments against specification."""
         try:
             # Check required parameters
@@ -408,7 +444,13 @@ class FunctionRegistry:
         except Exception as e:
             return {"valid": False, "error": str(e)}
 
-    def _update_stats(self, function_name: str, success: bool, cost: float, execution_time: float):
+    def _update_stats(
+        self, 
+        function_name: str, 
+        success: bool, 
+        cost: float, 
+        execution_time: float
+    ):
         """Update function invocation statistics."""
         if function_name not in self.invocation_stats:
             return
@@ -423,7 +465,9 @@ class FunctionRegistry:
         else:
             stats["error_count"] += 1
 
-    def get_function_stats(self, function_name: str) -> Optional[Dict[str, Any]]:
+    def get_function_stats(
+        self, function_name: str
+    ) -> Optional[Dict[str, Any]]:
         """Get statistics for a specific function."""
         return self.invocation_stats.get(function_name)
 
@@ -467,15 +511,24 @@ class FunctionRegistry:
             for command_name in commands:
                 func_spec = self._parse_argc_command(content, command_name)
                 if func_spec:
-                    async def argc_impl(**kwargs):
-                        return await self._execute_argc_command(schema_path, command_name, kwargs)
+                    def make_argc_impl(cmd_name):
+                        async def argc_impl_func(**kwargs):
+                            return await self._execute_argc_command(
+                                schema_path, cmd_name, kwargs
+                            )
+                        return argc_impl_func
+                    
+                    argc_impl = make_argc_impl(command_name)
                     
                     if self.register_function(func_spec, argc_impl):
                         self.activate_function(func_spec.name)
                         imported_functions.append(func_spec.name)
                         logger.info(f"Imported argc function: {func_spec.name}")
             
-            logger.info(f"Successfully imported {len(imported_functions)} argc functions from {schema_path}")
+            logger.info(
+                f"Successfully imported {len(imported_functions)} argc "
+                f"functions from {schema_path}"
+            )
             return imported_functions
             
         except Exception as e:
@@ -490,7 +543,9 @@ class FunctionRegistry:
             import importlib.util
             import sys
             
-            spec = importlib.util.spec_from_file_location("llm_module", module_path)
+            spec = importlib.util.spec_from_file_location(
+                "llm_module", module_path
+            )
             if spec is None or spec.loader is None:
                 logger.error(f"Could not load module spec from {module_path}")
                 return imported_functions
@@ -502,23 +557,32 @@ class FunctionRegistry:
             for attr_name in dir(module):
                 attr = getattr(module, attr_name)
                 
-                if callable(attr) and not attr_name.startswith('_'):
-                    if hasattr(attr, '__llm_function__') or hasattr(attr, '__doc__'):
-                        func_spec = self._create_function_spec_from_callable(attr, attr_name)
-                        if func_spec:
-                            if self.register_function(func_spec, attr):
+                if (callable(attr) and not attr_name.startswith('_') and
+                    (hasattr(attr, '__llm_function__') or 
+                     hasattr(attr, '__doc__'))):
+                    func_spec = self._create_function_spec_from_callable(
+                        attr, attr_name
+                    )
+                    if func_spec and self.register_function(func_spec, attr):
                                 self.activate_function(func_spec.name)
                                 imported_functions.append(func_spec.name)
-                                logger.info(f"Imported llm function: {func_spec.name}")
+                                logger.info(
+                                    f"Imported llm function: {func_spec.name}"
+                                )
             
-            logger.info(f"Successfully imported {len(imported_functions)} llm functions from {module_path}")
+            logger.info(
+                f"Successfully imported {len(imported_functions)} llm "
+                f"functions from {module_path}"
+            )
             return imported_functions
             
         except Exception as e:
             logger.error(f"Failed to import llm-functions: {e}")
             return imported_functions
 
-    def _parse_argc_command(self, content: str, command_name: str) -> Optional[FunctionSpec]:
+    def _parse_argc_command(
+        self, content: str, command_name: str
+    ) -> Optional[FunctionSpec]:
         """Parse argc command definition to create function spec."""
         try:
             import re
@@ -543,7 +607,10 @@ class FunctionRegistry:
                     if parts:
                         arg_name = parts[0].rstrip('!')
                         required = parts[0].endswith('!')
-                        arg_desc = parts[1] if len(parts) > 1 else f"Argument: {arg_name}"
+                        arg_desc = (
+                            parts[1] if len(parts) > 1 
+                            else f"Argument: {arg_name}"
+                        )
                         
                         parameters[arg_name] = ParameterSpec(
                             type="string",
@@ -553,8 +620,13 @@ class FunctionRegistry:
                 elif line.startswith('# @flag'):
                     parts = line.replace('# @flag', '').strip().split(None, 2)
                     if len(parts) >= 2:
-                        flag_name = parts[1].lstrip('-') if parts[1].startswith('--') else parts[0].lstrip('-')
-                        flag_desc = parts[2] if len(parts) > 2 else f"Flag: {flag_name}"
+                        flag_name = (
+                            parts[1].lstrip('-') if parts[1].startswith('--') 
+                            else parts[0].lstrip('-')
+                        )
+                        flag_desc = (
+                            parts[2] if len(parts) > 2 else f"Flag: {flag_name}"
+                        )
                         
                         parameters[flag_name] = ParameterSpec(
                             type="boolean",
@@ -577,7 +649,9 @@ class FunctionRegistry:
             logger.error(f"Failed to parse argc command {command_name}: {e}")
             return None
 
-    def _create_function_spec_from_callable(self, func: Callable, name: str) -> Optional[FunctionSpec]:
+    def _create_function_spec_from_callable(
+        self, func: Callable, name: str
+    ) -> Optional[FunctionSpec]:
         """Create function spec from a callable with introspection."""
         try:
             sig = inspect.signature(func)
@@ -586,14 +660,14 @@ class FunctionRegistry:
             for param_name, param in sig.parameters.items():
                 param_type = "string"
                 if param.annotation != inspect.Parameter.empty:
-                    if param.annotation == int:
+                    if param.annotation is int:
                         param_type = "integer"
-                    elif param.annotation == float:
+                    elif param.annotation is float:
                         param_type = "number"
-                    elif param.annotation == bool:
+                    elif param.annotation is bool:
                         param_type = "boolean"
-                    elif hasattr(param.annotation, '__origin__'):
-                        if param.annotation.__origin__ == list:
+                    elif (hasattr(param.annotation, '__origin__') and
+                          param.annotation.__origin__ is list):
                             param_type = "array"
                 
                 required = param.default == inspect.Parameter.empty
@@ -622,10 +696,11 @@ class FunctionRegistry:
             logger.error(f"Failed to create function spec for {name}: {e}")
             return None
 
-    async def _execute_argc_command(self, schema_path: Path, command_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_argc_command(
+        self, schema_path: Path, command_name: str, arguments: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Execute argc command with provided arguments."""
         try:
-            import subprocess
             import asyncio
             
             cmd = ["bash", str(schema_path), command_name]
@@ -708,5 +783,8 @@ class FunctionRegistry:
                 stats["total_invocations"] 
                 for stats in self.invocation_stats.values()
             ),
-            "implementation_coverage": len(self.implementations) / total_functions if total_functions > 0 else 0
+            "implementation_coverage": (
+                len(self.implementations) / total_functions 
+                if total_functions > 0 else 0
+            )
         }
