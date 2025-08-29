@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 class BodyState:
     """Represents the current state of the embodied agent's body"""
     position: Tuple[float, float, float] = (0.0, 0.0, 0.0)  # x, y, z
-    orientation: Tuple[float, float, float] = (0.0, 0.0, 0.0)  # roll, pitch, yaw
+    orientation: Tuple[float, float, float] = (0.0, 0.0, 0.0)  # roll, pitch
     joint_angles: Dict[str, float] = field(default_factory=dict)
     joint_velocities: Dict[str, float] = field(default_factory=dict)
     muscle_activations: Dict[str, float] = field(default_factory=dict)

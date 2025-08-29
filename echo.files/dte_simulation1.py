@@ -1,4 +1,8 @@
-"""Implement missing abstract methods get_state and reset, add continuous reflection to step method, add identity coherence validation methods and integrate identity monitoring into step method"""
+"""
+Implement missing abstract methods get_state and reset, add continuous 
+reflection to step method, add identity coherence validation methods and 
+integrate identity monitoring into step method
+"""
 from abc import ABC, abstractmethod
 import networkx as nx
 import numpy as np
@@ -61,7 +65,11 @@ class DTESimulation(RecursionEngine):
 
         # Initialize components
         self.fractal_recursion = FractalRecursion()
-        self.pattern_matcher = PatternMatcher()
+        try:
+            from pattern_matcher import PatternMatcher
+            self.pattern_matcher = PatternMatcher()
+        except ImportError:
+            self.pattern_matcher = None
 
         # Initialize anthropic integration
         try:
@@ -208,7 +216,11 @@ class DTESimulation(RecursionEngine):
         self.reflection_system = None  # Initially no reflection system
         self.reflection_interval = 60 * 60 # Every 60 minutes
         self.last_reflection_time = time.time()
-        self.reflection_system = SystemReflection()
+        try:
+            from system_reflection import SystemReflection
+            self.reflection_system = SystemReflection()
+        except ImportError:
+            self.reflection_system = None
 
          # Identity anchors
         self.identity_anchors = {

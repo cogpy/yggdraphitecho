@@ -117,12 +117,18 @@ HEARTBEAT_THREAD = None
 def start_heartbeat_thread():
     """Start the adaptive heartbeat system in a separate daemon thread."""
     global HEARTBEAT_THREAD
-    if HEARTBEAT_SYSTEM and (HEARTBEAT_THREAD is None or not HEARTBEAT_THREAD.is_alive()):
-        HEARTBEAT_THREAD = threading.Thread(target=HEARTBEAT_SYSTEM.start, daemon=True)
+    if HEARTBEAT_SYSTEM and (
+        HEARTBEAT_THREAD is None or not HEARTBEAT_THREAD.is_alive()
+    ):
+        HEARTBEAT_THREAD = threading.Thread(
+            target=HEARTBEAT_SYSTEM.start, daemon=True
+        )
         HEARTBEAT_THREAD.start()
         logger.info("Started adaptive heartbeat thread")
     elif not ADAPTIVE_HEARTBEAT_AVAILABLE:
-        logger.warning("Adaptive heartbeat not available - missing dependencies")
+        logger.warning(
+            "Adaptive heartbeat not available - missing dependencies"
+        )
 
 # Memory for storing historical data
 SYSTEM_HISTORY = {
