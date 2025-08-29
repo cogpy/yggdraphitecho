@@ -11,10 +11,11 @@ LD_LIBRARY_PATH=${cuda_home}/lib64:$LD_LIBRARY_PATH
 $python_executable -m pip install wheel packaging
 $python_executable -m pip install -r requirements/cuda.txt
 
-# Limit the number of parallel jobs to avoid OOM
-export MAX_JOBS=2
+# Limit the number of parallel jobs to avoid OOM and disk space issues
+export MAX_JOBS=1
+export NVCC_THREADS=1
 
-export TORCH_CUDA_ARCH_LIST="6.0 6.1 7.0 7.5 8.0 8.6 8.9 9.0+PTX"
+export TORCH_CUDA_ARCH_LIST="7.5 8.0 8.6 9.0+PTX"
 
 # Build
 $python_executable setup.py bdist_wheel --dist-dir=dist --py-limited-api=cp38

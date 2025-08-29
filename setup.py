@@ -290,11 +290,11 @@ class cmake_build_ext(build_ext):
         # on subsequent calls to python.
         cmake_args += ['-DAPHRODITE_PYTHON_PATH={}'.format(":".join(sys.path))]
 
-        # Override the base directory for FetchContent downloads to $ROOT/.deps
+        # Override the base directory for FetchContent downloads to /tmp/.deps
         # This allows sharing dependencies between profiles,
         # and plays more nicely with sccache.
         # To override this, set the FETCHCONTENT_BASE_DIR environment variable.
-        fc_base_dir = os.path.join(ROOT_DIR, ".deps")
+        fc_base_dir = os.path.join("/tmp", ".deps")
         fc_base_dir = os.environ.get("FETCHCONTENT_BASE_DIR", fc_base_dir)
         cmake_args += ['-DFETCHCONTENT_BASE_DIR={}'.format(fc_base_dir)]
 
@@ -351,6 +351,22 @@ class cmake_build_ext(build_ext):
         ]
 
         subprocess.check_call(["cmake", *build_args], cwd=self.build_temp)
+
+        import glob
+        import shutil
+        
+        temp_patterns = [
+            os.path.join(self.build_temp, "**/*.fatbin.c"),
+            os.path.join(self.build_temp, "**/*cudafe*"),
+            os.path.join(self.build_temp, "**/tmpxft_*"),
+        ]
+        
+        for pattern in temp_patterns:
+            for temp_file in glob.glob(pattern, recursive=True):
+                try:
+                    os.remove(temp_file)
+                except OSError:
+                    pass
 
         # Install the libraries
         for ext in self.extensions:
