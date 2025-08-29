@@ -418,17 +418,26 @@ jobs:
           pip install --upgrade pip wheel setuptools
           echo "::endgroup::"
           
-          echo "::group::Build Process with Cleanup"
+          echo "::group::Pre-compilation Disk Space Verification"
+          AVAILABLE_GB=$(df / | awk 'NR==2 {print int($4/1024/1024)}')
+          echo "Available disk space: ${AVAILABLE_GB}GB"
+          if [ "$AVAILABLE_GB" -lt 10 ]; then
+            echo "ERROR: Insufficient disk space for CUDA compilation"
+            exit 1
+          fi
+          echo "::endgroup::"
+          
+          echo "::group::Build Process with Aggressive Cleanup"
           export TORCH_CUDA_ARCH_LIST="8.0"
           
-          # Monitor disk space during build with continuous cleanup
+          # Monitor disk space during build with aggressive cleanup
           (while true; do 
             df -h | grep -E "/$|/tmp"
-            # Clean up temp files every 2 minutes during build
-            find /tmp -name "tmpxft_*" -mmin +2 -delete 2>/dev/null || true
-            find /tmp -name "*cudafe*" -mmin +2 -delete 2>/dev/null || true
-            find /tmp -name "*.fatbin.c" -mmin +2 -delete 2>/dev/null || true
-            sleep 120
+            # Clean up temp files every 1 minute during build
+            find /tmp -name "tmpxft_*" -mmin +1 -delete 2>/dev/null || true
+            find /tmp -name "*cudafe*" -mmin +1 -delete 2>/dev/null || true
+            find /tmp -name "*.fatbin.c" -mmin +1 -delete 2>/dev/null || true
+            sleep 60
           done) &
           MONITOR_PID=$!
           
@@ -436,8 +445,19 @@ jobs:
           if [ -f ".github/workflows/scripts/build.sh" ]; then
             bash .github/workflows/scripts/build.sh ${{ matrix.python-version }} ${{ matrix.cuda-version || '12.4' }}
           else
-            # Fallback build process with cleanup
-            python setup.py bdist_wheel --dist-dir=dist
+            # Fallback build process with CUTLASS optimizations
+            mkdir -p build && cd build
+            cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE \
+                  -DAPHRODITE_PYTHON_EXECUTABLE=$(which python) \
+                  -DAPHRODITE_TARGET_DEVICE=cuda \
+                  -DENABLE_CUTLASS_MOE_SM90=OFF \
+                  -DENABLE_CUTLASS_MOE_SM100=OFF \
+                  -DENABLE_SCALED_MM_SM90=OFF \
+                  -DENABLE_SCALED_MM_C2X=OFF \
+                  -DENABLE_SPARSE_SCALED_MM_C3X=OFF \
+                  ..
+            cmake --build . --target _C -j1
+            cd ..
           fi
           
           # Stop monitoring and final cleanup

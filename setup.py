@@ -355,31 +355,41 @@ class cmake_build_ext(build_ext):
         import glob
         import shutil
         import time
+        import threading
         
-        temp_patterns = [
-            os.path.join(self.build_temp, "**/*.fatbin.c"),
-            os.path.join(self.build_temp, "**/*cudafe*"),
-            os.path.join(self.build_temp, "**/tmpxft_*"),
-            "/tmp/tmpxft_*",
-            "/tmp/*cudafe*",
-            "/tmp/*.fatbin.c",
-        ]
-        
-        for pattern in temp_patterns:
-            for temp_file in glob.glob(pattern, recursive=True):
-                try:
-                    os.remove(temp_file)
-                except OSError:
-                    pass
-        
-        if os.path.exists(self.build_temp):
-            for root, dirs, files in os.walk(self.build_temp):
-                for file in files:
-                    if file.endswith(('.o', '.obj', '.tmp')):
+        def aggressive_cleanup():
+            while True:
+                temp_patterns = [
+                    os.path.join(self.build_temp, "**/*.fatbin.c"),
+                    os.path.join(self.build_temp, "**/*cudafe*"),
+                    os.path.join(self.build_temp, "**/tmpxft_*"),
+                    "/tmp/tmpxft_*",
+                    "/tmp/*cudafe*",
+                    "/tmp/*.fatbin.c",
+                ]
+                
+                for pattern in temp_patterns:
+                    for temp_file in glob.glob(pattern, recursive=True):
                         try:
-                            os.remove(os.path.join(root, file))
+                            if os.path.getmtime(temp_file) < time.time() - 60:
+                                os.remove(temp_file)
                         except OSError:
                             pass
+                
+                if os.path.exists(self.build_temp):
+                    for root, dirs, files in os.walk(self.build_temp):
+                        for file in files:
+                            if file.endswith(('.o', '.obj', '.tmp')):
+                                try:
+                                    file_path = os.path.join(root, file)
+                                    if os.path.getmtime(file_path) < time.time() - 60:
+                                        os.remove(file_path)
+                                except OSError:
+                                    pass
+                time.sleep(30)
+        
+        cleanup_thread = threading.Thread(target=aggressive_cleanup, daemon=True)
+        cleanup_thread.start()
 
         # Install the libraries
         for ext in self.extensions:
