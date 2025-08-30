@@ -87,7 +87,7 @@ jobs:
           sub-packages: '["nvcc", "cudart", "cublas", "cublas-dev", "curand", "curand-dev"]'
 
       - name: 💾 Cache Build Directory (Large Cache)
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         continue-on-error: true
         with:
           path: |
@@ -149,7 +149,7 @@ jobs:
           echo "::endgroup::"
 
       - name: 📤 Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: single-cuda-build-artifacts-py311
