@@ -80,11 +80,16 @@ jobs:
           python-version: '3.11'
 
       - name: 🔧 Setup CUDA 12.4
-        uses: Jimver/cuda-toolkit@v0.2.11
-        with:
-          cuda: '12.4.1'
-          method: 'network'
-          sub-packages: '["nvcc", "cudart", "cublas", "cublas-dev", "curand", "curand-dev"]'
+        run: |
+          # Use same CUDA installation approach as main workflow
+          cuda_version="12.4"
+          cuda_version_dash=$(echo $cuda_version | tr "." "-")
+          wget -nv https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+          sudo dpkg -i cuda-keyring_1.1-1_all.deb
+          sudo apt-get update
+          sudo apt-get -y install cuda-${cuda_version_dash} cuda-nvcc-${cuda_version_dash} cuda-libraries-dev-${cuda_version_dash}
+          echo "PATH=/usr/local/cuda-${cuda_version}/bin:$PATH" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=/usr/local/cuda-${cuda_version}/lib64:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
       - name: 💾 Cache Build Directory (Large Cache)
         uses: actions/cache@v4
