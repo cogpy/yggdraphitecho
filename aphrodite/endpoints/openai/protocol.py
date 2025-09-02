@@ -3,7 +3,7 @@
 import json
 import time
 from http import HTTPStatus
-from typing import Annotated, Any, ClassVar, Literal, Optional, Union
+from typing import Annotated, Any, ClassVar, Dict, List, Literal, Optional, Union
 
 import regex as re
 import torch
@@ -2163,6 +2163,50 @@ class LoadLoRAAdapterRequest(BaseModel):
 class UnloadLoRAAdapterRequest(BaseModel):
     lora_name: str
     lora_int_id: Optional[int] = Field(default=None)
+
+
+# Dynamic Model Update Protocols
+class IncrementalUpdateRequest(BaseModel):
+    parameter_name: str
+    update_data: Any  # Will be converted to tensor
+    learning_rate: float = Field(default=0.01, ge=0.0, le=1.0)
+    update_type: Literal["additive", "multiplicative", "replace"] = "additive"
+    metadata: Optional[Dict[str, Any]] = None
+
+
+class ModelVersionRequest(BaseModel):
+    description: str = Field(min_length=1, max_length=500)
+
+
+class ModelRollbackRequest(BaseModel):
+    version_id: str
+
+
+class DynamicUpdateResponse(BaseModel):
+    success: bool
+    message: str
+    data: Optional[Dict[str, Any]] = None
+
+
+class ModelVersionInfo(BaseModel):
+    version_id: str
+    timestamp: float
+    description: str
+    is_active: bool
+    performance_metrics: Dict[str, float]
+
+
+class ModelVersionListResponse(BaseModel):
+    versions: List[ModelVersionInfo]
+    total_count: int
+
+
+class ModelStatusResponse(BaseModel):
+    current_version: Optional[str]
+    total_versions: int
+    total_updates: int
+    config: Dict[str, Any]
+    recent_performance: List[Dict[str, float]]
 
 
 ## Protocols for Audio
