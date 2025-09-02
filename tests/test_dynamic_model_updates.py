@@ -299,6 +299,7 @@ class TestOpenAIServingDynamicUpdates:
         """Test API endpoint for incremental updates."""
         # Mock the dynamic manager
         serving_dynamic_updates.dynamic_manager = MagicMock()
+        serving_dynamic_updates.dynamic_manager.create_initial_version = AsyncMock(return_value="v0_1000")
         serving_dynamic_updates.dynamic_manager.apply_incremental_update = AsyncMock(
             return_value={
                 "success": True,
@@ -326,6 +327,7 @@ class TestOpenAIServingDynamicUpdates:
     async def test_create_version(self, serving_dynamic_updates):
         """Test API endpoint for creating versions."""
         serving_dynamic_updates.dynamic_manager = MagicMock()
+        serving_dynamic_updates.dynamic_manager.create_initial_version = AsyncMock(return_value="v0_1000")
         serving_dynamic_updates.dynamic_manager.create_version = AsyncMock(
             return_value="v1_1000"
         )
@@ -342,6 +344,7 @@ class TestOpenAIServingDynamicUpdates:
     async def test_rollback_to_version(self, serving_dynamic_updates):
         """Test API endpoint for rollback."""
         serving_dynamic_updates.dynamic_manager = MagicMock()
+        serving_dynamic_updates.dynamic_manager.create_initial_version = AsyncMock(return_value="v0_1000")
         serving_dynamic_updates.dynamic_manager.rollback_to_version = AsyncMock(
             return_value={
                 "success": True,
@@ -363,6 +366,7 @@ class TestOpenAIServingDynamicUpdates:
     async def test_list_versions(self, serving_dynamic_updates):
         """Test API endpoint for listing versions."""
         serving_dynamic_updates.dynamic_manager = MagicMock()
+        serving_dynamic_updates.dynamic_manager.create_initial_version = AsyncMock(return_value="v0_1000")
         serving_dynamic_updates.dynamic_manager.list_versions = MagicMock(
             return_value=[
                 {
@@ -393,6 +397,7 @@ class TestOpenAIServingDynamicUpdates:
     async def test_get_status(self, serving_dynamic_updates):
         """Test API endpoint for getting status."""
         serving_dynamic_updates.dynamic_manager = MagicMock()
+        serving_dynamic_updates.dynamic_manager.create_initial_version = AsyncMock(return_value="v0_1000")
         serving_dynamic_updates.dynamic_manager.get_status = MagicMock(
             return_value={
                 "current_version": "v1_1000",
