@@ -15,18 +15,23 @@ import weakref
 
 # Handle both absolute and relative imports
 try:
-    from core.adaptive_architecture import (
+    from ..core.adaptive_architecture import (
         AdaptiveArchitectureFramework, PerformanceMetrics, 
         ArchitectureMutation
     )
-    from core.interfaces import Individual
-    from integration.aphrodite_bridge import AphroditeBridge
+    from ..core.interfaces import Individual
+    from .aphrodite_bridge import AphroditeBridge
 except ImportError:
-    from .adaptive_architecture import (
-        AdaptiveArchitectureFramework, PerformanceMetrics, 
-        ArchitectureMutation
-    )
-    from ..integration.aphrodite_bridge import AphroditeBridge
+    try:
+        from core.adaptive_architecture import (
+            AdaptiveArchitectureFramework, PerformanceMetrics, 
+            ArchitectureMutation
+        )
+        from core.interfaces import Individual
+        from integration.aphrodite_bridge import AphroditeBridge
+    except ImportError:
+        # Fallback for standalone execution
+        pass
 
 if TYPE_CHECKING:
     # Type hints for Aphrodite components (avoid import errors)
