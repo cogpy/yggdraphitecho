@@ -1,0 +1,882 @@
+{
+  "demo_timestamp": 1756971581.7388258,
+  "task_info": {
+    "task_id": "Task 4.2.3",
+    "title": "Build Multi-Agent Training",
+    "description": "Distributed training across multiple agents with competitive and cooperative learning using population-based training methods",
+    "acceptance_criteria": "Agent populations improve through interaction"
+  },
+  "demo_phases": {
+    "system_setup": {
+      "configuration": {
+        "training_config": "TrainingConfiguration(population_size=25, max_generations=15, training_mode=<TrainingMode.HYBRID: 'hybrid'>, learning_strategy=<LearningStrategy.EVOLUTIONARY: 'evolutionary'>, mutation_rate=0.15, crossover_rate=0.75, selection_pressure=2.2, cooperation_weight=0.4, competition_weight=0.6, elite_percentage=0.15, tournament_size=4, episode_batch_size=12, fitness_aggregation='weighted_average', enable_migration=True, migration_rate=0.05)",
+        "population_config": "PopulationConfig(algorithm_type=<PopulationAlgorithm.GENETIC_ALGORITHM: 'genetic_algorithm'>, population_size=25, max_generations=15, mutation_rate=0.12, crossover_rate=0.8, selection_pressure=2.5, elite_percentage=0.2, inertia_weight=0.9, cognitive_coefficient=2.0, social_coefficient=2.0, velocity_clamp=1.0, scaling_factor=0.5, differential_probability=0.9, species_count=3, migration_rate=0.1, cooperation_bonus=0.2, objective_weights={'fitness': 1.0}, pareto_tournament_size=2, cultural_learning_rate=0.1, knowledge_sharing_probability=0.3)",
+        "learning_config": "LearningConfiguration(cooperation_reward_factor=1.3, knowledge_sharing_rate=0.35, collective_bonus_threshold=0.75, min_cooperation_group_size=2, max_cooperation_group_size=6, competition_intensity=1.2, skill_adaptation_rate=0.25, strategy_learning_rate=0.15, ranking_update_factor=0.2, cooperation_competition_balance=0.6, mode_switching_probability=0.15, interaction_history_length=100, imitation_learning_rate=0.3, expert_identification_threshold=0.75, knowledge_decay_rate=0.05)",
+        "enable_dtesn_monitoring": true,
+        "dtesn_performance_weight": 0.25,
+        "membrane_computing_integration": true,
+        "echo_state_feedback": true,
+        "enable_aar_orchestration": true,
+        "agent_arena_interactions": true,
+        "relation_graph_updates": true,
+        "convergence_threshold": 0.005,
+        "min_population_diversity": 0.08,
+        "max_training_time": 1800.0,
+        "max_concurrent_sessions": 15,
+        "memory_limit_mb": 2048,
+        "cpu_core_limit": 4
+      },
+      "system_status": {
+        "training_active": false,
+        "current_epoch": 0,
+        "population_size": 0,
+        "total_training_time": 0.0,
+        "interactions_completed": 0,
+        "best_population_fitness": 0.0,
+        "system_integrations": {
+          "dtesn_available": true,
+          "aar_available": false,
+          "dtesn_integration_active": true,
+          "aar_integration_active": false
+        },
+        "configuration": {
+          "training_mode": "hybrid",
+          "population_algorithm": "genetic_algorithm",
+          "learning_balance": 0.6
+        }
+      },
+      "setup_successful": true
+    },
+    "population_initialization": {
+      "init_results": {
+        "training_population_size": 25,
+        "evolution_population_size": 25,
+        "dtesn_monitors_active": 25,
+        "aar_agents_registered": 0
+      },
+      "initial_diversity": 115.26499147048693,
+      "sample_genetics": [
+        {
+          "learning_rate": 0.077248554781929,
+          "layer_count": 4,
+          "hidden_size": 417,
+          "activation": "sigmoid",
+          "dropout_rate": 0.3379041762711537,
+          "batch_size": 128,
+          "architecture_type": "hybrid",
+          "memory_capacity": 468,
+          "exploration_rate": 0.5976120078452221,
+          "cooperation_bias": 0.7007726728783193
+        },
+        {
+          "learning_rate": 0.08420836515712372,
+          "layer_count": 5,
+          "hidden_size": 300,
+          "activation": "tanh",
+          "dropout_rate": 0.36772607683480113,
+          "batch_size": 16,
+          "architecture_type": "residual",
+          "memory_capacity": 726,
+          "exploration_rate": 0.6735104203793355,
+          "cooperation_bias": 0.7181214584935658
+        },
+        {
+          "learning_rate": 0.0703503680187163,
+          "layer_count": 6,
+          "hidden_size": 296,
+          "activation": "gelu",
+          "dropout_rate": 0.46707135799689226,
+          "batch_size": 64,
+          "architecture_type": "residual",
+          "memory_capacity": 518,
+          "exploration_rate": 0.8253687880376406,
+          "cooperation_bias": 0.7150737278515784
+        }
+      ]
+    },
+    "distributed_training": {
+      "epoch_results": {
+        "epoch": 0,
+        "duration": 0.0064737796783447266,
+        "learning_phase": {
+          "interactions_executed": 12,
+          "interaction_results": [
+            {
+              "interaction_id": "hybrid_4502c136",
+              "learning_mode": "cooperative",
+              "outcome": "collaboration_success",
+              "results": {
+                "cooperation_results": {
+                  "session_id": "coop_eb5c9b6f",
+                  "collective_performance": 0.9519011840882496,
+                  "individual_contributions": {
+                    "agent_42161326": 0.7555271558845763,
+                    "agent_6a475454": 0.7406450014399709
+                  },
+                  "synergy_metrics": {
+                    "capability_diversity": 1.307585663053839,
+                    "communication_quality": 0.8318723162892541,
+                    "knowledge_integration": 0.0,
+                    "emergence_factor": 0.2724487344964872,
+                    "overall_synergy": 0.6029766784598951
+                  },
+                  "learning_gains": {
+                    "agent_42161326": 0.7608304529489917,
+                    "agent_6a475454": 0.7533893757266891
+                  },
+                  "duration": 7.605552673339844e-05,
+                  "knowledge_created": 0
+                },
+                "performance_metrics": {
+                  "collective_performance": 0.9519011840882496,
+                  "synergy_score": 0.6029766784598951
+                },
+                "knowledge_gained": {
+                  "shared_insights": 0,
+                  "collaboration_skills": 0.1
+                }
+              },
+              "duration": 0.00010609626770019531
+            },
+            {
+              "interaction_id": "hybrid_fdeac01f",
+              "learning_mode": "cooperative",
+              "outcome": "collaboration_success",
+              "results": {
+                "cooperation_results": {
+                  "session_id": "coop_c851de5e",
+                  "collective_performance": 1.0,
+                  "individual_contributions": {
+                    "agent_1da98572": 0.7960053859336076,
+                    "agent_2139b603": 0.7877949120765979,
+                    "agent_4965a19d": 0.7221378877923627,
+                    "agent_42161326": 0.8022500213686544,
+                    "agent_6a475454": 0.7845694395670004
+                  },
+                  "synergy_metrics": {
+                    "capability_diversity": 0.9262060498764025,
+                    "communication_quality": 0.8073561013782122,
+                    "knowledge_integration": 0.0,
+                    "emergence_factor": 0.2844364981697603,
+                    "overall_synergy": 0.5044996623560938
+                  },
+                  "learning_gains": {
+                    "agent_1da98572": 0.8239026254380226,
+                    "agent_2139b603": 0.8197973885095178,
+                    "agent_4965a19d": 0.7869688763674001,
+                    "agent_42161326": 0.827024943155546,
+                    "agent_6a475454": 0.8181846522547189
+                  },
+                  "duration": 8.702278137207031e-05,
+                  "knowledge_created": 0
+                },
+                "performance_metrics": {
+                  "collective_performance": 1.0,
+                  "synergy_score": 0.5044996623560938
+                },
+                "knowledge_gained": {
+                  "shared_insights": 0,
+                  "collaboration_skills": 0.1
+                }
+              },
+              "duration": 0.00011539459228515625
+            },
+            {
+              "interaction_id": "hybrid_3c587759",
+              "learning_mode": "competitive",
+              "outcome": "draw",
+              "results": {
+                "competition_results": {
+                  "match_id": "match_f2e29381",
+                  "winner": "agent_efd0aa18",
+                  "final_scores": {
+                    "agent_70415120": 0.3181125687032301,
+                    "agent_efd0aa18": 0.5357397846100092,
+                    "agent_1da98572": 0.3573364465815383
+                  },
+                  "learning_improvements": {
+                    "agent_70415120": 0.11122998387037851,
+                    "agent_efd0aa18": 0.1695599038364755,
+                    "agent_1da98572": 0.1121642631324041
+                  },
+                  "ranking_changes": {
+                    "agent_efd0aa18": 2.0,
+                    "agent_70415120": -1.0,
+                    "agent_1da98572": -1.0
+                  },
+                  "duration": 7.891654968261719e-05,
+                  "strategies_learned": 18
+                },
+                "performance_metrics": {
+                  "winner_score": 0.5357397846100092,
+                  "score_spread": 0.21762721590677903
+                },
+                "knowledge_gained": {
+                  "competitive_skills": 0.13098471694641936,
+                  "strategic_knowledge": 18
+                }
+              },
+              "duration": 0.00010752677917480469
+            },
+            {
+              "interaction_id": "hybrid_a5a6a38c",
+              "learning_mode": "cooperative",
+              "outcome": "collaboration_success",
+              "results": {
+                "cooperation_results": {
+                  "session_id": "coop_0413efb4",
+                  "collective_performance": 1.0,
+                  "individual_contributions": {
+                    "agent_4965a19d": 0.7482506632089966,
+                    "agent_2139b603": 0.7530236952125081,
+                    "agent_1da98572": 0.7761143538248618,
+                    "agent_42161326": 0.7543972344311602,
+                    "agent_6a475454": 0.7706239556334449
+                  },
+                  "synergy_metrics": {
+                    "capability_diversity": 0.9262060498764025,
+                    "communication_quality": 0.8139977983584099,
+                    "knowledge_integration": 0.0,
+                    "emergence_factor": 0.3149555488379028,
+                    "overall_synergy": 0.5137898492681787
+                  },
+                  "learning_gains": {
+                    "agent_4965a19d": 0.801883301458134,
+                    "agent_2139b603": 0.8042698174598898,
+                    "agent_1da98572": 0.8158151467660667,
+                    "agent_42161326": 0.8049565870692158,
+                    "agent_6a475454": 0.8130699476703581
+                  },
+                  "duration": 7.128715515136719e-05,
+                  "knowledge_created": 0
+                },
+                "performance_metrics": {
+                  "collective_performance": 1.0,
+                  "synergy_score": 0.5137898492681787
+                },
+                "knowledge_gained": {
+                  "shared_insights": 0,
+                  "collaboration_skills": 0.1
+                }
+              },
+              "duration": 0.0001010894775390625
+            },
+            {
+              "interaction_id": "hybrid_f66be544",
+              "learning_mode": "cooperative",
+              "outcome": "collaboration_success",
+              "results": {
+                "cooperation_results": {
+                  "session_id": "coop_1082ceb4",
+                  "collective_performance": 1.0,
+                  "individual_contributions": {
+                    "agent_6a475454": 0.7273975684112923,
+                    "agent_2139b603": 0.797322255354926,
+                    "agent_07aacd59": 0.7767558967736986
+                  },
+                  "synergy_metrics": {
+                    "capability_diversity": 1.1599963099911843,
+                    "communication_quality": 0.8741393634731001,
+                    "knowledge_integration": 0.0,
+                    "emergence_factor": 0.30351147015194757,
+                    "overall_synergy": 0.584411785904058
+                  },
+                  "learning_gains": {
+                    "agent_6a475454": 0.8055811413864579,
+                    "agent_2139b603": 0.8405434848582746,
+                    "agent_07aacd59": 0.830260305567661
+                  },
+                  "duration": 4.553794860839844e-05,
+                  "knowledge_created": 0
+                },
+                "performance_metrics": {
+                  "collective_performance": 1.0,
+                  "synergy_score": 0.584411785904058
+                },
+                "knowledge_gained": {
+                  "shared_insights": 0,
+                  "collaboration_skills": 0.1
+                }
+              },
+              "duration": 6.556510925292969e-05
+            },
+            {
+              "interaction_id": "hybrid_060c1e2e",
+              "learning_mode": "competitive",
+              "outcome": "draw",
+              "results": {
+                "competition_results": {
+                  "match_id": "match_b68ea897",
+                  "winner": "agent_1da98572",
+                  "final_scores": {
+                    "agent_227a43f5": 0.4138025300685809,
+                    "agent_07aacd59": 0.23520219778920012,
+                    "agent_d1d1c0fe": 0.11529301334268224,
+                    "agent_1da98572": 0.4418543068696972,
+                    "agent_3436a493": 0.3814926000486444
+                  },
+                  "learning_improvements": {
+                    "agent_227a43f5": 0.11469389856015867,
+                    "agent_07aacd59": 0.08050246495971863,
+                    "agent_d1d1c0fe": 0.07238805658563005,
+                    "agent_1da98572": 0.14565798505587993,
+                    "agent_3436a493": 0.10799614990510853
+                  },
+                  "ranking_changes": {
+                    "agent_1da98572": 2.0,
+                    "agent_227a43f5": -1.0,
+                    "agent_07aacd59": -1.0,
+                    "agent_d1d1c0fe": -1.0,
+                    "agent_3436a493": -1.0
+                  },
+                  "duration": 0.00010895729064941406,
+                  "strategies_learned": 60
+                },
+                "performance_metrics": {
+                  "winner_score": 0.4418543068696972,
+                  "score_spread": 0.3265612935270149
+                },
+                "knowledge_gained": {
+                  "competitive_skills": 0.10424771101329917,
+                  "strategic_knowledge": 60
+                }
+              },
+              "duration": 0.00014400482177734375
+            },
+            {
+              "interaction_id": "hybrid_ebf096a8",
+              "learning_mode": "competitive",
+              "outcome": "draw",
+              "results": {
+                "competition_results": {
+                  "match_id": "match_8e7d5ac2",
+                  "winner": "agent_fb3d8422",
+                  "final_scores": {
+                    "agent_d144ac75": 0.2993219669919795,
+                    "agent_c3bc8442": 0.2935663724052984,
+                    "agent_d5a7abfe": 0.1911826928257959,
+                    "agent_fb3d8422": 0.3494385215623145,
+                    "agent_d5581016": 0.1765065632800421
+                  },
+                  "learning_improvements": {
+                    "agent_d144ac75": 0.09247104428751317,
+                    "agent_c3bc8442": 0.09297211996385955,
+                    "agent_d5a7abfe": 0.07962666685228811,
+                    "agent_fb3d8422": 0.11430085153865985,
+                    "agent_d5581016": 0.06742156665456074
+                  },
+                  "ranking_changes": {
+                    "agent_fb3d8422": 2.0,
+                    "agent_d144ac75": -1.0,
+                    "agent_c3bc8442": -1.0,
+                    "agent_d5a7abfe": -1.0,
+                    "agent_d5581016": -1.0
+                  },
+                  "duration": 0.00010824203491210938,
+                  "strategies_learned": 60
+                },
+                "performance_metrics": {
+                  "winner_score": 0.3494385215623145,
+                  "score_spread": 0.17293195828227237
+                },
+                "knowledge_gained": {
+                  "competitive_skills": 0.08935844985937628,
+                  "strategic_knowledge": 60
+                }
+              },
+              "duration": 0.00013399124145507812
+            },
+            {
+              "interaction_id": "hybrid_f5be68e2",
+              "learning_mode": "competitive",
+              "outcome": "draw",
+              "results": {
+                "competition_results": {
+                  "match_id": "match_30b1bcb9",
+                  "winner": "agent_4965a19d",
+                  "final_scores": {
+                    "agent_70415120": 0.5257133123553706,
+                    "agent_2139b603": 0.12466908363454324,
+                    "agent_4965a19d": 0.5379567262667564
+                  },
+                  "learning_improvements": {
+                    "agent_70415120": 0.15703684426825681,
+                    "agent_2139b603": 0.05470381610773301,
+                    "agent_4965a19d": 0.17284906277945794
+                  },
+                  "ranking_changes": {
+                    "agent_4965a19d": 2.0,
+                    "agent_70415120": -1.0,
+                    "agent_2139b603": -1.0
+                  },
+                  "duration": 4.982948303222656e-05,
+                  "strategies_learned": 18
+                },
+                "performance_metrics": {
+                  "winner_score": 0.5379567262667564,
+                  "score_spread": 0.4132876426322132
+                },
+                "knowledge_gained": {
+                  "competitive_skills": 0.12819657438514925,
+                  "strategic_knowledge": 18
+                }
+              },
+              "duration": 7.104873657226562e-05
+            },
+            {
+              "interaction_id": "hybrid_9a64da61",
+              "learning_mode": "competitive",
+              "outcome": "draw",
+              "results": {
+                "competition_results": {
+                  "match_id": "match_6b51451b",
+                  "winner": "agent_6a475454",
+                  "final_scores": {
+                    "agent_0bd1612d": 0.027319926205685935,
+                    "agent_6a475454": 0.42929817720924046,
+                    "agent_07aacd59": 0.30088662136725297
+                  },
+                  "learning_improvements": {
+                    "agent_0bd1612d": 0.027293814481045123,
+                    "agent_6a475454": 0.14262065634062937,
+                    "agent_07aacd59": 0.0869926867899685
+                  },
+                  "ranking_changes": {
+                    "agent_6a475454": 2.0,
+                    "agent_0bd1612d": -1.0,
+                    "agent_07aacd59": -1.0
+                  },
+                  "duration": 4.696846008300781e-05,
+                  "strategies_learned": 18
+                },
+                "performance_metrics": {
+                  "winner_score": 0.42929817720924046,
+                  "score_spread": 0.40197825100355455
+                },
+                "knowledge_gained": {
+                  "competitive_skills": 0.08563571920388101,
+                  "strategic_knowledge": 18
+                }
+              },
+              "duration": 8.535385131835938e-05
+            },
+            {
+              "interaction_id": "hybrid_090936b3",
+              "learning_mode": "competitive",
+              "outcome": "draw",
+              "results": {
+                "competition_results": {
+                  "match_id": "match_07b7e612",
+                  "winner": "agent_4965a19d",
+                  "final_scores": {
+                    "agent_70415120": 0.3306789299182424,
+                    "agent_2139b603": 0.06442769537650964,
+                    "agent_4965a19d": 0.5792375290239273
+                  },
+                  "learning_improvements": {
+                    "agent_70415120": 0.12089381775541759,
+                    "agent_2139b603": 0.045272066125228265,
+                    "agent_4965a19d": 0.18587909198396654
+                  },
+                  "ranking_changes": {
+                    "agent_4965a19d": 2.0,
+                    "agent_70415120": -1.0,
+                    "agent_2139b603": -1.0
+                  },
+                  "duration": 5.078315734863281e-05,
+                  "strategies_learned": 18
+                },
+                "performance_metrics": {
+                  "winner_score": 0.5792375290239273,
+                  "score_spread": 0.5148098336474177
+                },
+                "knowledge_gained": {
+                  "competitive_skills": 0.11734832528820414,
+                  "strategic_knowledge": 18
+                }
+              },
+              "duration": 7.414817810058594e-05
+            },
+            {
+              "interaction_id": "hybrid_865a01fa",
+              "learning_mode": "cooperative",
+              "outcome": "collaboration_success",
+              "results": {
+                "cooperation_results": {
+                  "session_id": "coop_c2eb6a35",
+                  "collective_performance": 1.0,
+                  "individual_contributions": {
+                    "agent_3436a493": 0.7721073970399606,
+                    "agent_66e7a5eb": 0.7415736964582312,
+                    "agent_1da98572": 0.7401031071228318,
+                    "agent_07aacd59": 0.7645701410467342,
+                    "agent_0bd1612d": 0.8172252692939824
+                  },
+                  "synergy_metrics": {
+                    "capability_diversity": 0.9393638105217466,
+                    "communication_quality": 0.8344551175411571,
+                    "knowledge_integration": 0.0,
+                    "emergence_factor": 0.303583944838598,
+                    "overall_synergy": 0.5193507182253755
+                  },
+                  "learning_gains": {
+                    "agent_3436a493": 0.8149238421650553,
+                    "agent_66e7a5eb": 0.7996569918741907,
+                    "agent_1da98572": 0.798921697206491,
+                    "agent_07aacd59": 0.8111552141684422,
+                    "agent_0bd1612d": 0.8374827782920663
+                  },
+                  "duration": 6.961822509765625e-05,
+                  "knowledge_created": 0
+                },
+                "performance_metrics": {
+                  "collective_performance": 1.0,
+                  "synergy_score": 0.5193507182253755
+                },
+                "knowledge_gained": {
+                  "shared_insights": 0,
+                  "collaboration_skills": 0.1
+                }
+              },
+              "duration": 9.655952453613281e-05
+            },
+            {
+              "interaction_id": "hybrid_d438d774",
+              "learning_mode": "competitive",
+              "outcome": "draw",
+              "results": {
+                "competition_results": {
+                  "match_id": "match_bb4b5d3f",
+                  "winner": "agent_d144ac75",
+                  "final_scores": {
+                    "agent_d5a7abfe": 0.1783512623588469,
+                    "agent_c3bc8442": 0.13812482743122306,
+                    "agent_0bd1612d": 0.33467345992849196,
+                    "agent_d144ac75": 0.42066655422162924
+                  },
+                  "learning_improvements": {
+                    "agent_d5a7abfe": 0.06641276025947744,
+                    "agent_c3bc8442": 0.07657577986622748,
+                    "agent_0bd1612d": 0.12272218638183291,
+                    "agent_d144ac75": 0.1231658654108484
+                  },
+                  "ranking_changes": {
+                    "agent_d144ac75": 2.0,
+                    "agent_d5a7abfe": -1.0,
+                    "agent_c3bc8442": -1.0,
+                    "agent_0bd1612d": -1.0
+                  },
+                  "duration": 7.176399230957031e-05,
+                  "strategies_learned": 36
+                },
+                "performance_metrics": {
+                  "winner_score": 0.42066655422162924,
+                  "score_spread": 0.2825417267904062
+                },
+                "knowledge_gained": {
+                  "competitive_skills": 0.09721914797959655,
+                  "strategic_knowledge": 36
+                }
+              },
+              "duration": 9.560585021972656e-05
+            }
+          ],
+          "performance_updates": {
+            "total_agents": 25,
+            "improved_agents": 0,
+            "improvement_rate": 0.0,
+            "average_fitness": 0.0,
+            "average_cooperation": 0.0
+          },
+          "learning_modes_used": {
+            "cooperative": 5,
+            "competitive": 7
+          }
+        },
+        "evolution_phase": {
+          "evolution_algorithm": "genetic_algorithm",
+          "generation_stats": {
+            "generation": 0,
+            "population_size": 25,
+            "best_fitness": 1.0,
+            "average_fitness": 0.2,
+            "worst_fitness": 0.0,
+            "fitness_std": 0.4,
+            "algorithm": "genetic_algorithm",
+            "best_parameters": {
+              "layer_count": 6.1577246638258005,
+              "hidden_size": 281.692642987976,
+              "learning_rate": 0.02382606610027269,
+              "dropout_rate": 0.14036349445706087,
+              "reservoir_size": 159.55590430652833,
+              "spectral_radius": 1.2579271041011137,
+              "input_scaling": 0.4272905064536715,
+              "leak_rate": 0.3048952820027441,
+              "membrane_depth": 3.761949801638504,
+              "rule_complexity": 4.447053176848946,
+              "communication_probability": 0.5638291819554037,
+              "echo_strength": 0.17204079789489385,
+              "feedback_weight": 0.21972474079612653,
+              "noise_level": 0.07712001070855054
+            },
+            "evolution_time": 0.0005488395690917969
+          },
+          "population_diversity": 105.15395538748025,
+          "best_fitness_achieved": 1.0
+        },
+        "dtesn_integration": {
+          "dtesn_enhanced_agents": 0,
+          "average_dtesn_efficiency": 0.0,
+          "dtesn_performance_integration": "active",
+          "membrane_computing_active": true,
+          "echo_state_feedback_active": true
+        },
+        "transfer_learning": {
+          "knowledge_transfers": 75,
+          "transfer_direction": "bidirectional",
+          "top_performers_identified": 10
+        },
+        "improvement_analysis": {
+          "overall_improvement": false,
+          "improvement_magnitude": 0.0,
+          "improvement_types": [],
+          "current_population_stats": {
+            "average_fitness": 0.0,
+            "best_fitness": 0.0,
+            "total_interactions": 0,
+            "population_size": 25
+          },
+          "interaction_based_improvement": {
+            "improvement_detected": false,
+            "improvement_magnitude": 0.0,
+            "improvement_types": [],
+            "interaction_stats": {
+              "total_interactions": 0,
+              "cooperative_agents": 0,
+              "competitive_winners": 0
+            }
+          },
+          "acceptance_criteria_met": false
+        },
+        "population_metrics": {
+          "population_size": 25,
+          "average_fitness": 0.0,
+          "best_fitness": 0.0,
+          "worst_fitness": 0.0,
+          "fitness_std": 0.0,
+          "average_cooperation": 0.0,
+          "total_interactions": 0,
+          "average_interactions_per_agent": 0.0,
+          "win_rate": 0.0,
+          "population_diversity": 105.15395538748025
+        },
+        "convergence_metrics": {
+          "convergence_status": "insufficient_data"
+        }
+      },
+      "training_duration": 0.007615566253662109,
+      "participation_rate": 0.0,
+      "distributed_achieved": false
+    },
+    "competitive_cooperative": {
+      "learning_modes_observed": [
+        "competitive",
+        "cooperative"
+      ],
+      "competitive_episodes": 0,
+      "cooperative_episodes": 0,
+      "average_cooperation": 0.0,
+      "competitive_outcomes": {
+        "wins": 0,
+        "losses": 0
+      },
+      "both_modes_active": false
+    },
+    "population_based_methods": {
+      "algorithm_type": "genetic_algorithm",
+      "population_size": 25,
+      "genetic_diversity": 97.25447981491656,
+      "evolution_stats": {
+        "generation": 4,
+        "population_size": 25,
+        "best_fitness": 90.42787061491275,
+        "average_fitness": 17.029736555383632,
+        "worst_fitness": 0.0,
+        "fitness_std": 34.088356595670454,
+        "algorithm": "genetic_algorithm",
+        "best_parameters": {
+          "layer_count": 4.483549737824415,
+          "hidden_size": 440.99257735118266,
+          "learning_rate": 0.08486512540546018,
+          "dropout_rate": 0.35751135391271716,
+          "reservoir_size": 896.9618141309538,
+          "spectral_radius": 0.4274060978858353,
+          "input_scaling": 0.47601604823601773,
+          "leak_rate": 0.5286215031711021,
+          "membrane_depth": 5.944258945238258,
+          "rule_complexity": 4.1062291593366735,
+          "communication_probability": 0.14409343261605143,
+          "echo_strength": 0.7290453959539528,
+          "feedback_weight": 0.42058800876867014,
+          "noise_level": 0.0475939715397992,
+          "cooperation_bias": 0.713888961665694
+        },
+        "evolution_time": 0.00043320655822753906
+      },
+      "methods_active": true
+    },
+    "acceptance_criteria": {
+      "baseline_fitness": 0.0,
+      "final_fitness": 0.0,
+      "overall_improvement": 0.0,
+      "interaction_rate": 0.0,
+      "interaction_benefit": 0.0,
+      "total_interactions": 0,
+      "improvement_history": 0,
+      "criteria_met": {
+        "distributed_training": false,
+        "competitive_cooperative": true,
+        "population_based_methods": true,
+        "population_improvement": false
+      },
+      "all_criteria_met": false
+    }
+  },
+  "system_report": {
+    "training_summary": {
+      "total_epochs": 2,
+      "total_duration": 0.0096588134765625,
+      "total_interactions": 120,
+      "improvement_epochs": 0,
+      "improvement_rate": 0.0
+    },
+    "performance_metrics": {
+      "best_fitness_achieved": 0.0,
+      "final_average_fitness": 0.0,
+      "population_size": 25
+    },
+    "learning_statistics": {
+      "learning_modes_distribution": {
+        "competitive": 19,
+        "cooperative": 5
+      },
+      "cooperative_sessions": {
+        "total_sessions": 33,
+        "active_sessions": 0,
+        "average_collective_performance": 0.9958672532955699,
+        "average_synergy_score": 0.44913597677754274,
+        "most_cooperative_agents": [
+          [
+            "agent_07aacd59",
+            16
+          ],
+          [
+            "agent_6a475454",
+            10
+          ],
+          [
+            "agent_66e7a5eb",
+            9
+          ],
+          [
+            "agent_1da98572",
+            8
+          ],
+          [
+            "agent_2139b603",
+            8
+          ]
+        ],
+        "shared_knowledge_items": 15,
+        "average_session_size": 3.5454545454545454
+      },
+      "competitive_matches": {
+        "total_matches": 87,
+        "active_matches": 0,
+        "win_rates": {
+          "agent_efd0aa18": 0.6363636363636364,
+          "agent_1da98572": 0.375,
+          "agent_fb3d8422": 0.2,
+          "agent_4965a19d": 0.7222222222222222,
+          "agent_6a475454": 0.11764705882352941,
+          "agent_d144ac75": 0.35714285714285715,
+          "agent_63179bc9": 0.25,
+          "agent_7ba87895": 0.5,
+          "agent_c3bc8442": 0.3125,
+          "agent_82a0a671": 0.42857142857142855,
+          "agent_d1d1c0fe": 0.26666666666666666,
+          "agent_efe1b684": 0.3333333333333333,
+          "agent_7095098e": 0.375,
+          "agent_07aacd59": 0.5384615384615384,
+          "agent_d5581016": 0.2,
+          "agent_d5a7abfe": 0.1875,
+          "agent_66e7a5eb": 0.05263157894736842,
+          "agent_70415120": 0.25,
+          "agent_2653ac26": 0.125,
+          "agent_3436a493": 0.2,
+          "agent_2139b603": 0.037037037037037035,
+          "agent_42161326": 0.14285714285714285,
+          "agent_0bd1612d": 0.06666666666666667
+        },
+        "rankings": {
+          "agent_63179bc9": 993.6878618060115,
+          "agent_07aacd59": 1012.6242840725115,
+          "agent_82a0a671": 1006.3705277441858,
+          "agent_4965a19d": 1009.4826635125132,
+          "agent_d5581016": 996.8294722558143,
+          "agent_7ba87895": 1006.3410530821676,
+          "agent_7095098e": 1006.3410604879494,
+          "agent_2139b603": 996.800809235019,
+          "agent_efd0aa18": 1006.3702613169291,
+          "agent_6a475454": 990.4878689601023,
+          "agent_2653ac26": 993.6294721620899,
+          "agent_70415120": 1000.0294747327193,
+          "agent_d1d1c0fe": 1000.0578543281306,
+          "agent_66e7a5eb": 990.4886680142554,
+          "agent_d144ac75": 999.9118769685127,
+          "agent_c3bc8442": 996.9178667135706,
+          "agent_227a43f5": 996.7705277672089,
+          "agent_3436a493": 1003.2,
+          "agent_74585564": 996.8,
+          "agent_fb3d8422": 996.8583968403087
+        },
+        "top_performers": [
+          [
+            "agent_07aacd59",
+            1012.6242840725115
+          ],
+          [
+            "agent_4965a19d",
+            1009.4826635125132
+          ],
+          [
+            "agent_82a0a671",
+            1006.3705277441858
+          ],
+          [
+            "agent_efd0aa18",
+            1006.3702613169291
+          ],
+          [
+            "agent_7095098e",
+            1006.3410604879494
+          ]
+        ],
+        "skill_profiles_count": 25,
+        "average_match_duration": 6.517322584130298e-05
+      }
+    },
+    "acceptance_criteria_validation": {
+      "population_improved_through_interaction": false,
+      "distributed_training_achieved": true,
+      "competitive_and_cooperative_learning": true,
+      "population_based_methods_used": true
+    },
+    "system_integration_status": {
+      "dtesn_integration_active": true,
+      "aar_orchestration_active": false,
+      "population_evolution_active": true
+    },
+    "population_improvement_history": []
+  }
+}

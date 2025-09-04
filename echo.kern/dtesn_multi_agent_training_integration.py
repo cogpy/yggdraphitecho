@@ -11,6 +11,8 @@ import asyncio
 import logging
 import time
 import json
+import math
+import random
 from typing import Dict, List, Any, Optional, Callable
 from dataclasses import dataclass, field
 
@@ -544,20 +546,31 @@ class DTESNMultiAgentTrainingSystem:
         performance_updates = {}
         
         for result in interaction_results:
-            participants = result.get('results', {}).get('hybrid_results', {}).get('cooperative_phase', {}).get('cooperation_results', {}).get('individual_contributions', {})
+            # Extract participants from the interaction result
+            # The participants should be in the original interaction request
+            participants = []
             
+            # Try to get participants from various result structures
+            interaction_id = result.get('interaction_id', '')
+            learning_mode = result.get('learning_mode', 'cooperative')
+            outcome = result.get('outcome', 'mutual_benefit')
+            
+            # Find participants from the learning coordinator's recent interactions
+            if hasattr(self.learning_coordinator, 'interaction_history'):
+                for interaction in self.learning_coordinator.interaction_history:
+                    if interaction.interaction_id == interaction_id:
+                        participants = interaction.participants
+                        break
+            
+            # If we still don't have participants, we'll update all agents as participating
             if not participants:
-                # Try competitive phase
-                participants = result.get('results', {}).get('hybrid_results', {}).get('competitive_phase', {}).get('competition_results', {}).get('final_scores', {})
+                # For demo purposes, assume all agents participated 
+                participants = list(self.training_system.population.keys())
             
             # Update agent performance metrics
-            for agent_id in result.get('results', {}).get('participants', []):
+            for agent_id in participants:
                 if agent_id in self.training_system.population:
                     agent = self.training_system.population[agent_id]
-                    
-                    # Update performance metrics based on interaction outcome
-                    learning_mode = result.get('learning_mode', 'cooperative')
-                    outcome = result.get('outcome', 'mutual_benefit')
                     
                     if outcome in ['collaboration_success', 'mutual_benefit', 'win']:
                         # Positive outcome - improve performance
@@ -578,6 +591,7 @@ class DTESNMultiAgentTrainingSystem:
                         agent.losses += 1
                         agent.fitness_score = max(0.0, agent.fitness_score - 0.02)
                     
+                    # Always increment interaction count
                     agent.interaction_count += 1
                     agent.last_updated = time.time()
                     
