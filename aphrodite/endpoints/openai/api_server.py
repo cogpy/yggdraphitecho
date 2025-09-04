@@ -74,7 +74,13 @@ from aphrodite.endpoints.openai.protocol import (AnthropicMessagesRequest,
                                                  TranscriptionResponse,
                                                  TranslationRequest,
                                                  TranslationResponse,
-                                                 UnloadLoRAAdapterRequest)
+                                                 UnloadLoRAAdapterRequest,
+                                                 IncrementalUpdateRequest,
+                                                 ModelVersionRequest,
+                                                 ModelRollbackRequest,
+                                                 DynamicUpdateResponse,
+                                                 ModelVersionListResponse,
+                                                 ModelStatusResponse)
 from aphrodite.endpoints.openai.serving_chat import OpenAIServingChat
 from aphrodite.endpoints.openai.serving_classification import (
     ServingClassification)
@@ -93,6 +99,8 @@ from aphrodite.endpoints.openai.serving_tokenization import (
     OpenAIServingTokenization)
 from aphrodite.endpoints.openai.serving_transcription import (
     OpenAIServingTranscription, OpenAIServingTranslation)
+from aphrodite.endpoints.openai.serving_dynamic_updates import (
+    OpenAIServingDynamicUpdates)
 from aphrodite.endpoints.openai.tool_parsers import ToolParserManager
 from aphrodite.endpoints.tool_server import DemoToolServer, ToolServer
 from aphrodite.endpoints.utils import (cli_env_setup, load_aware_call,
@@ -415,6 +423,10 @@ def pooling(request: Request) -> Optional[OpenAIServingPooling]:
 
 def embedding(request: Request) -> Optional[OpenAIServingEmbedding]:
     return request.app.state.openai_serving_embedding
+
+
+def dynamic_updates(request: Request):
+    return request.app.state.openai_serving_dynamic_updates
 
 
 def score(request: Request) -> Optional[ServingScores]:
@@ -1308,6 +1320,84 @@ if envs.APHRODITE_ALLOW_RUNTIME_LORA_UPDATING:
         return Response(status_code=200, content=response)
 
 
+# Dynamic Model Update endpoints
+if envs.APHRODITE_ALLOW_RUNTIME_LORA_UPDATING:
+    logger.warning(
+        "Dynamic Model Updates are enabled in the API server. "
+        "This includes incremental learning and model versioning capabilities.")
+
+    @router.post("/v1/models/incremental_update",
+                 dependencies=[Depends(validate_json_request)])
+    async def apply_incremental_update(request: IncrementalUpdateRequest,
+                                       raw_request: Request):
+        handler = dynamic_updates(raw_request)
+        if handler is None:
+            return ErrorResponse(
+                message="Dynamic model updates not available",
+                type="FeatureNotEnabled",
+                code=HTTPStatus.NOT_IMPLEMENTED
+            )
+        
+        response = await handler.apply_incremental_update(request)
+        return JSONResponse(content=response.model_dump())
+
+    @router.post("/v1/models/create_version",
+                 dependencies=[Depends(validate_json_request)])
+    async def create_model_version(request: ModelVersionRequest,
+                                   raw_request: Request):
+        handler = dynamic_updates(raw_request)
+        if handler is None:
+            return ErrorResponse(
+                message="Dynamic model updates not available",
+                type="FeatureNotEnabled",
+                code=HTTPStatus.NOT_IMPLEMENTED
+            )
+        
+        response = await handler.create_version(request)
+        return JSONResponse(content=response.model_dump())
+
+    @router.post("/v1/models/rollback",
+                 dependencies=[Depends(validate_json_request)])
+    async def rollback_model(request: ModelRollbackRequest,
+                             raw_request: Request):
+        handler = dynamic_updates(raw_request)
+        if handler is None:
+            return ErrorResponse(
+                message="Dynamic model updates not available",
+                type="FeatureNotEnabled",
+                code=HTTPStatus.NOT_IMPLEMENTED
+            )
+        
+        response = await handler.rollback_to_version(request)
+        return JSONResponse(content=response.model_dump())
+
+    @router.get("/v1/models/versions")
+    async def list_model_versions(raw_request: Request):
+        handler = dynamic_updates(raw_request)
+        if handler is None:
+            return ErrorResponse(
+                message="Dynamic model updates not available",
+                type="FeatureNotEnabled",
+                code=HTTPStatus.NOT_IMPLEMENTED
+            )
+        
+        response = await handler.list_versions()
+        return JSONResponse(content=response.model_dump())
+
+    @router.get("/v1/models/status")
+    async def get_model_status(raw_request: Request):
+        handler = dynamic_updates(raw_request)
+        if handler is None:
+            return ErrorResponse(
+                message="Dynamic model updates not available",
+                type="FeatureNotEnabled",
+                code=HTTPStatus.NOT_IMPLEMENTED
+            )
+        
+        response = await handler.get_status()
+        return JSONResponse(content=response.model_dump())
+
+
 # ============ KoboldAI API ============ #
 
 badwordsids: list[int] = []
@@ -2068,6 +2158,17 @@ async def init_app_state(
         state.openai_serving_models,
         request_logger=request_logger,
     ) if "transcription" in supported_tasks else None
+
+    # Initialize dynamic model updates service
+    from aphrodite.dynamic_model_manager import DynamicUpdateConfig
+    dynamic_config = DynamicUpdateConfig()
+    
+    state.openai_serving_dynamic_updates = OpenAIServingDynamicUpdates(
+        engine_client=engine_client,
+        model_config=model_config,
+        lora_config=lora_config,
+        dynamic_config=dynamic_config
+    )
 
     state.enable_server_load_tracking = args.enable_server_load_tracking
     state.server_load_metrics = 0
