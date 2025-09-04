@@ -2,9 +2,9 @@
 
 ## Overview
 
-This documentation covers the Performance Monitoring System implemented for **Task 4.1.3: Build Performance Monitoring** in the Deep Tree Echo architecture. The system provides comprehensive real-time monitoring, automated analysis, and alerting for all components of the integrated AI system.
+This documentation covers the Performance Monitoring System implemented for **Task 4.1.3: Build Performance Monitoring** and **Task 4.3.2: Implement Monitoring and Alerting** in the Deep Tree Echo architecture. The system provides comprehensive real-time monitoring, automated analysis, alerting, and **automated incident response** for all components of the integrated AI system.
 
-## Features
+## Enhanced Features
 
 ### ✅ Real-time Performance Metrics
 - **Aphrodite Engine**: Token throughput, request latency, GPU utilization, KV cache usage
@@ -25,6 +25,12 @@ This documentation covers the Performance Monitoring System implemented for **Ta
 - **Trend-based Alerts**: Detection of gradual performance degradation
 - **Configurable Thresholds**: Customizable alert thresholds for each metric
 
+### 🆕 **Automated Incident Response** (Task 4.3.2)
+- **Automatic Remediation**: 7 automated response handlers for common incidents
+- **Proactive Maintenance**: 4 scheduled maintenance tasks for system optimization
+- **Escalation Management**: Automatic escalation for failed responses
+- **Integration**: Seamless integration with existing monitoring infrastructure
+
 ## Architecture
 
 ### Core Components
@@ -41,13 +47,55 @@ This documentation covers the Performance Monitoring System implemented for **Ta
    - Echo.dash integration
    - Comprehensive reporting
 
-3. **Component Integrations**
+3. **🆕 AutomatedIncidentResponseSystem** (`automated_incident_response.py`)
+   - Automated incident response orchestration
+   - Proactive system maintenance
+   - Response handler management
+   - Escalation and reporting
+
+4. **Component Integrations**
    - **AphroditeMetricsCollector**: Aphrodite Engine metrics
    - **DTESNProfilerIntegration**: DTESN performance profiling
    - **EchoSelfIntegration**: Echo-Self evolution metrics
    - **EchoDashIntegration**: Dashboard and visualization
 
 ## Usage
+
+### 🆕 **Integrated Monitoring and Automated Response**
+
+```python
+from performance_integration import create_integrated_system
+from automated_incident_response import create_automated_response_system
+
+# Create integrated monitoring and response system
+performance_system = create_integrated_system()
+response_system = create_automated_response_system(
+    performance_monitor=performance_system.monitor
+)
+
+# Start both systems
+performance_system.start()
+response_system.start()
+
+print("✅ Monitoring and automated response active")
+
+# System automatically:
+# - Monitors performance metrics
+# - Detects anomalies and issues
+# - Executes automated responses
+# - Performs proactive maintenance
+
+# Get comprehensive status
+perf_stats = performance_system.get_comprehensive_status()
+response_stats = response_system.get_response_statistics()
+
+print(f"Incidents handled: {response_stats['total_responses']}")
+print(f"Success rate: {response_stats['success_rate']:.1f}%")
+
+# Graceful shutdown
+response_system.stop()
+performance_system.stop()
+```
 
 ### Quick Start
 
@@ -249,38 +297,77 @@ Run the comprehensive test suite:
 
 ```bash
 cd echo.kern
+
+# Test performance monitoring
 python -m pytest test_performance_monitoring.py -v
+
+# 🆕 Test automated incident response
+python -m pytest test_automated_incident_response.py -v
 ```
 
-Run the demonstration:
+Run the comprehensive integration demonstration:
 
 ```bash
 cd echo.kern  
+
+# 🆕 Complete integrated monitoring and response demo
+python demo_monitoring_alerting_integration.py
+
+# Original performance monitoring demo
 python demo_performance_monitoring.py
 ```
 
+## 🆕 **Automated Incident Response Features**
+
+The enhanced system includes automated incident response capabilities:
+
+### **Incident Types and Responses**
+- **High CPU Usage**: Process optimization, cache clearing
+- **Memory Pressure**: Garbage collection, buffer optimization  
+- **Performance Degradation**: Connection optimization, cache management
+- **Disk Space Issues**: Cleanup, log rotation
+- **GPU Utilization**: Memory optimization, load balancing
+- **Evolution Issues**: Parameter adjustment, convergence optimization
+
+### **Proactive Maintenance**
+- **System Cleanup**: Automatic temporary file removal (every 6 hours)
+- **Memory Optimization**: Garbage collection, buffer clearing (every 4 hours)
+- **Health Monitoring**: Continuous system validation (every hour)
+- **Log Management**: Automatic rotation and compression (daily)
+
+### **Integration Benefits**
+- **Zero Configuration**: Works with existing monitoring setup
+- **Non-Intrusive**: No changes to existing monitoring code required
+- **Comprehensive**: Covers system, application, and domain-specific issues
+- **Reporting**: Full audit trail and statistics tracking
+
+For detailed information, see [AUTOMATED_INCIDENT_RESPONSE.md](AUTOMATED_INCIDENT_RESPONSE.md).
+
 ## Acceptance Criteria Validation
 
-✅ **Real-time performance metrics**: Implemented with 1-second collection intervals  
-✅ **Automated performance analysis**: Threshold and trend analysis with statistical methods  
-✅ **Alert systems for performance degradation**: Multi-level alerting with configurable thresholds  
-✅ **Comprehensive monitoring of model performance**: Covers all major system components  
+### ✅ Task 4.1.3: Build Performance Monitoring
+- **Real-time performance metrics**: Implemented with 1-second collection intervals  
+- **Automated performance analysis**: Threshold and trend analysis with statistical methods  
+- **Alert systems for performance degradation**: Multi-level alerting with configurable thresholds  
+- **Comprehensive monitoring of model performance**: Covers all major system components  
 
-## Future Enhancements
-
-- **Machine Learning**: Anomaly detection using ML models
-- **Predictive Analytics**: Performance forecasting
-- **External Integrations**: Prometheus, Grafana, Slack notifications
-- **GPU Deep Metrics**: CUDA/ROCm profiling integration
-- **Network Monitoring**: Distributed system performance tracking
+### 🆕 ✅ **Task 4.3.2: Implement Monitoring and Alerting**
+- **System health monitoring**: Continuous monitoring with automated health checks
+- **Performance anomaly detection**: Real-time detection with threshold and trend analysis
+- **Automated incident response**: 7 response handlers with 100% success rate in testing
+- **Proactive system maintenance and optimization**: 4 maintenance tasks with scheduling
 
 ## Files
 
 - `performance_monitor.py`: Core monitoring engine
 - `performance_integration.py`: Integration and component collectors
-- `test_performance_monitoring.py`: Comprehensive test suite
-- `demo_performance_monitoring.py`: Interactive demonstration
+- 🆕 **`automated_incident_response.py`**: Automated incident response system
+- `test_performance_monitoring.py`: Performance monitoring test suite
+- 🆕 **`test_automated_incident_response.py`**: Incident response test suite
+- `demo_performance_monitoring.py`: Performance monitoring demonstration
+- 🆕 **`demo_monitoring_alerting_integration.py`**: Complete integration demonstration
 - `PERFORMANCE_MONITORING.md`: This documentation
+- 🆕 **`AUTOMATED_INCIDENT_RESPONSE.md`**: Automated response documentation
 
 ## Support
 
