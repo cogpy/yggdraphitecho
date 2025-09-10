@@ -247,7 +247,7 @@ class DeepTreeEchoValidator:
             "bseries_tree_classifier",
             "ECHO_KERN_AVAILABLE",
             "_process_real_dtesn",
-            "_process_mock_dtesn"
+            "RuntimeError"
         ]
         
         present_features = [feat for feat in integration_features if feat in content]
@@ -257,7 +257,7 @@ class DeepTreeEchoValidator:
                 "DTESN Integration",
                 True,
                 f"Complete echo.kern integration with {len(present_features)} features",
-                f"Includes: real/mock fallback, membrane processing, ESN, B-Series"
+                f"Includes: real processing only, membrane processing, ESN, B-Series"
             ))
         else:
             self.results.append(ValidationResult(

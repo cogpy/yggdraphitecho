@@ -12,6 +12,7 @@ import sys
 import os
 from typing import Any, Dict, Optional
 
+import numpy as np
 from pydantic import BaseModel
 
 from aphrodite.endpoints.deep_tree_echo.config import DTESNConfig
@@ -34,7 +35,7 @@ try:
     ECHO_KERN_AVAILABLE = True
     logger.info("Successfully imported echo.kern DTESN components")
 except ImportError as e:
-    logger.warning(f"Echo.kern components not available: {e}, using mock implementation")
+    logger.warning(f"Echo.kern components not available: {e}")
     ECHO_KERN_AVAILABLE = False
 
 
@@ -97,10 +98,14 @@ class DTESNProcessor:
                 self._initialize_real_components()
                 logger.info("Real DTESN components initialized successfully")
             except Exception as e:
-                logger.warning(f"Failed to initialize real DTESN components: {e}")
-                self._initialize_mock_components()
+                logger.error(f"Failed to initialize real DTESN components: {e}")
+                raise RuntimeError(f"DTESN processor requires functional echo.kern components: {e}")
         else:
-            self._initialize_mock_components()
+            raise RuntimeError(
+                "DTESN processor requires echo.kern components to be available. "
+                "Cannot initialize without real DTESN implementation. "
+                "Please ensure echo.kern is properly installed and accessible."
+            )
     
     def _initialize_real_components(self):
         """Initialize real echo.kern DTESN components."""
@@ -137,51 +142,6 @@ class DTESNProcessor:
         
         self.components_real = True
     
-    def _create_membrane_system(self) -> Dict[str, Any]:
-        """Create P-System membrane computing system."""
-        # Integration with echo.kern membrane system would go here
-        # For now, create a basic structure
-        return {
-            "type": "p_system",
-            "max_depth": self.config.max_membrane_depth,
-            "hierarchy": "rooted_tree",
-            "oeis_compliance": "A000081",
-            "initialized": True
-        }
-    
-    def _create_esn_reservoir(self) -> Dict[str, Any]:
-        """Create Echo State Network reservoir."""
-        # Integration with echo.kern ESN would go here
-        # For now, create a basic structure
-        return {
-            "type": "echo_state_network",
-            "size": self.config.esn_reservoir_size,
-            "spectral_radius": 0.95,
-            "leaky_rate": 0.1,
-            "connectivity": "sparse_random",
-            "initialized": True
-        }
-    
-    def _create_bseries_computer(self) -> Dict[str, Any]:
-        """Create B-Series computation system."""
-        # Integration with echo.kern B-Series computer would go here
-        # For now, create a basic structure
-        return {
-            "type": "bseries_computer",
-            "max_order": self.config.bseries_max_order,
-            "tree_enumeration": "rooted_trees",
-            "differential_computation": "elementary",
-            "initialized": True
-        }
-    
-    def _initialize_mock_components(self):
-        """Initialize mock components when echo.kern integration is unavailable."""
-        self.membrane_system = {"type": "mock", "initialized": False}
-        self.esn_reservoir = {"type": "mock", "initialized": False}
-        self.bseries_computer = {"type": "mock", "initialized": False}
-        self.components_real = False
-        logger.info("Using mock DTESN components")
-    
     async def process(
         self, 
         input_data: str,
@@ -206,12 +166,8 @@ class DTESNProcessor:
         size = esn_size or self.config.esn_reservoir_size
         
         try:
-            if self.components_real:
-                # Use real DTESN components
-                result = await self._process_real_dtesn(input_data, depth, size)
-            else:
-                # Use mock processing
-                result = await self._process_mock_dtesn(input_data, depth, size)
+            # Process using real DTESN components
+            result = await self._process_real_dtesn(input_data, depth, size)
                 
             processing_time = (time.time() - start_time) * 1000
             result.processing_time_ms = processing_time
@@ -229,8 +185,6 @@ class DTESNProcessor:
         size: int
     ) -> DTESNResult:
         """Process using real echo.kern DTESN components."""
-        import numpy as np
-        
         # Convert input to numeric data
         input_vector = np.array([ord(c) for c in input_data[:10]]).reshape(-1, 1)
         if len(input_vector) < 10:
@@ -281,15 +235,13 @@ class DTESNProcessor:
         size: int
     ) -> Dict[str, Any]:
         """Process through real ESN reservoir."""
-        import numpy as np
-        
         # Simulate async ESN processing
         await asyncio.sleep(0.002)
         
         # Convert membrane output to ESN input
         membrane_data = np.array(membrane_result["processed_data"][:size])
         
-        # Process through ESN if available
+        # Process through ESN - must use real ESN processing
         if hasattr(self.esn_reservoir, 'evolve_state'):
             try:
                 # Use real ESN processing
@@ -303,10 +255,10 @@ class DTESNProcessor:
                     "processed_data": esn_state.flatten().tolist() if hasattr(esn_state, 'flatten') else [0.0] * size
                 }
             except Exception as e:
-                logger.warning(f"ESN processing failed: {e}, using fallback")
-                esn_output = self._mock_esn_output(membrane_result, size)
+                logger.error(f"ESN processing failed: {e}")
+                raise RuntimeError(f"ESN processing failed with real components: {e}")
         else:
-            esn_output = self._mock_esn_output(membrane_result, size)
+            raise RuntimeError("ESN reservoir does not have required 'evolve_state' method")
         
         return esn_output
     
@@ -330,20 +282,9 @@ class DTESNProcessor:
         
         return bseries_output
     
-    def _mock_esn_output(self, membrane_result: Dict[str, Any], size: int) -> Dict[str, Any]:
-        """Create mock ESN output when real processing unavailable."""
-        return {
-            "esn_processed": True,
-            "reservoir_size": size,
-            "state": "mock_state",
-            "activation": "tanh",
-            "spectral_radius": 0.95,
-            "processed_data": [float(i % 10) for i in range(min(size, 100))]
-        }
-    
     def _get_esn_state_dict(self) -> Dict[str, Any]:
         """Get ESN state as dictionary."""
-        if self.components_real and hasattr(self.esn_reservoir, 'get_state'):
+        if hasattr(self.esn_reservoir, 'get_state'):
             try:
                 state_info = self.esn_reservoir.get_state()
                 return {
@@ -352,8 +293,9 @@ class DTESNProcessor:
                     "size": self.config.esn_reservoir_size,
                     "status": "active"
                 }
-            except Exception:
-                pass
+            except Exception as e:
+                logger.error(f"Failed to get ESN state: {e}")
+                raise RuntimeError(f"ESN state retrieval failed: {e}")
         
         return {
             "type": "echo_state_network",
@@ -369,68 +311,4 @@ class DTESNProcessor:
             "max_order": self.config.bseries_max_order,
             "tree_enumeration": "rooted_trees",
             "status": "ready"
-        }
-    
-    async def _process_mock_dtesn(
-        self, 
-        input_data: str, 
-        depth: int, 
-        size: int
-    ) -> DTESNResult:
-        """Process using mock DTESN implementation."""
-        # Process through membrane system
-        membrane_result = await self._process_membrane(input_data, depth)
-        
-        # Process through ESN
-        esn_result = await self._process_esn(membrane_result, size)
-        
-        # Process through B-Series computation
-        bseries_result = await self._process_bseries(esn_result)
-        
-        return DTESNResult(
-            input_data=input_data,
-            processed_output=bseries_result,
-            membrane_layers=depth,
-            esn_state=self.esn_reservoir,
-            bseries_computation=self.bseries_computer,
-            processing_time_ms=0.0  # Will be set by caller
-        )
-    
-    async def _process_membrane(self, input_data: str, depth: int) -> Dict[str, Any]:
-        """Process input through membrane computing system."""
-        # Simulate membrane processing
-        await asyncio.sleep(0.001)  # Small delay for realistic timing
-        
-        return {
-            "membrane_processed": True,
-            "depth_used": depth,
-            "input_length": len(input_data),
-            "membrane_output": f"membrane_processed:{input_data}",
-            "hierarchy_levels": list(range(depth))
-        }
-    
-    async def _process_esn(self, membrane_result: Dict[str, Any], size: int) -> Dict[str, Any]:
-        """Process membrane result through Echo State Network."""
-        # Simulate ESN processing
-        await asyncio.sleep(0.002)  # Small delay for realistic timing
-        
-        return {
-            "esn_processed": True,
-            "reservoir_size": size,
-            "input_from_membrane": membrane_result["membrane_output"],
-            "esn_output": f"esn_processed:{membrane_result['membrane_output']}",
-            "reservoir_state": "updated"
-        }
-    
-    async def _process_bseries(self, esn_result: Dict[str, Any]) -> Dict[str, Any]:
-        """Process ESN result through B-Series computation."""
-        # Simulate B-Series processing
-        await asyncio.sleep(0.001)  # Small delay for realistic timing
-        
-        return {
-            "bseries_processed": True,
-            "computation_order": self.config.bseries_max_order,
-            "input_from_esn": esn_result["esn_output"],
-            "final_output": f"bseries_final:{esn_result['esn_output']}",
-            "tree_enumeration": "completed"
         }

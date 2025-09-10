@@ -41,7 +41,14 @@ def get_dtesn_processor(request: Request) -> DTESNProcessor:
     """Dependency to get DTESN processor from app state."""
     config = getattr(request.app.state, "config", None)
     engine = getattr(request.app.state, "engine", None)
-    return DTESNProcessor(config=config, engine=engine)
+    try:
+        return DTESNProcessor(config=config, engine=engine)
+    except RuntimeError as e:
+        logger.error(f"DTESN processor initialization failed: {e}")
+        raise HTTPException(
+            status_code=503, 
+            detail=f"DTESN service unavailable: {e}"
+        )
 
 
 @router.get("/")
