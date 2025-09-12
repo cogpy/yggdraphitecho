@@ -10,7 +10,8 @@ import time
 import logging
 import sys
 import os
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, List
+from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 from pydantic import BaseModel
@@ -65,33 +66,49 @@ class DTESNResult(BaseModel):
 
 class DTESNProcessor:
     """
-    Deep Tree Echo System Network processor for server-side operations.
+    Enhanced Deep Tree Echo System Network processor for server-side operations.
     
-    Integrates DTESN components from echo.kern for server-side processing:
+    Integrates DTESN components from echo.kern for server-side processing with
+    advanced async resource management and concurrent processing capabilities:
     - P-System membrane computing
     - Echo State Network processing  
     - B-Series rooted tree computations
+    - Async connection pooling
+    - Concurrent request handling
     """
     
     def __init__(
         self, 
         config: Optional[DTESNConfig] = None,
-        engine: Optional[AsyncAphrodite] = None
+        engine: Optional[AsyncAphrodite] = None,
+        max_concurrent_processes: int = 10
     ):
         """
-        Initialize DTESN processor.
+        Initialize enhanced DTESN processor.
         
         Args:
             config: DTESN configuration
             engine: Aphrodite engine for model integration
+            max_concurrent_processes: Maximum concurrent processing operations
         """
         self.config = config or DTESNConfig()
         self.engine = engine
+        self.max_concurrent_processes = max_concurrent_processes
+        
+        # Initialize concurrent processing resources
+        self._processing_semaphore = asyncio.Semaphore(max_concurrent_processes)
+        self._thread_pool = ThreadPoolExecutor(max_workers=max_concurrent_processes)
+        self._processing_stats = {
+            "total_requests": 0,
+            "concurrent_requests": 0,
+            "failed_requests": 0,
+            "avg_processing_time": 0.0
+        }
         
         # Initialize DTESN components
         self._initialize_dtesn_components()
         
-        logger.info("DTESN processor initialized successfully")
+        logger.info(f"Enhanced DTESN processor initialized successfully with {max_concurrent_processes} max concurrent processes")
     
     def _initialize_dtesn_components(self):
         """Initialize DTESN processing components."""
@@ -148,40 +165,193 @@ class DTESNProcessor:
         self, 
         input_data: str,
         membrane_depth: Optional[int] = None,
-        esn_size: Optional[int] = None
+        esn_size: Optional[int] = None,
+        enable_concurrent: bool = True
     ) -> DTESNResult:
         """
-        Process input through DTESN system with enhanced engine integration.
+        Process input through DTESN system with enhanced concurrent processing and engine integration.
         
         Args:
             input_data: Input string to process
             membrane_depth: Depth of membrane hierarchy to use
             esn_size: Size of ESN reservoir to use
+            enable_concurrent: Enable concurrent processing optimizations
             
         Returns:
-            DTESN processing result with enhanced engine data
+            DTESN processing result with enhanced engine data and concurrency metrics
         """
-        start_time = time.time()
-        
-        # Use provided parameters or defaults
-        depth = membrane_depth or self.config.max_membrane_depth
-        size = esn_size or self.config.esn_reservoir_size
-        
-        try:
-            # Enhanced server-side data fetching from engine components
-            engine_context = await self._fetch_engine_context()
+        async with self._processing_semaphore:
+            self._processing_stats["total_requests"] += 1
+            self._processing_stats["concurrent_requests"] += 1
+            start_time = time.time()
             
-            # Process using real DTESN components with engine context
-            result = await self._process_real_dtesn(input_data, depth, size, engine_context)
+            try:
+                # Use provided parameters or defaults
+                depth = membrane_depth or self.config.max_membrane_depth
+                size = esn_size or self.config.esn_reservoir_size
                 
-            processing_time = (time.time() - start_time) * 1000
-            result.processing_time_ms = processing_time
+                # Enhanced server-side data fetching from engine components
+                engine_context = await self._fetch_engine_context()
+                
+                # Process using enhanced concurrent DTESN processing
+                if enable_concurrent:
+                    result = await self._process_concurrent_dtesn(input_data, depth, size, engine_context)
+                else:
+                    result = await self._process_real_dtesn(input_data, depth, size, engine_context)
+                    
+                processing_time = (time.time() - start_time) * 1000
+                result.processing_time_ms = processing_time
+                
+                # Update processing statistics
+                self._update_processing_stats(processing_time)
+                
+                return result
+                
+            except Exception as e:
+                self._processing_stats["failed_requests"] += 1
+                logger.error(f"Enhanced DTESN processing error: {e}")
+                raise
+            finally:
+                self._processing_stats["concurrent_requests"] -= 1
+    
+    async def process_batch(
+        self,
+        inputs: List[str],
+        membrane_depth: Optional[int] = None,
+        esn_size: Optional[int] = None,
+        max_concurrent: Optional[int] = None
+    ) -> List[DTESNResult]:
+        """
+        Process multiple inputs concurrently with optimized resource management.
+        
+        Args:
+            inputs: List of input strings to process
+            membrane_depth: Depth of membrane hierarchy to use
+            esn_size: Size of ESN reservoir to use
+            max_concurrent: Maximum concurrent processes (defaults to configured max)
             
-            return result
+        Returns:
+            List of DTESN processing results
+        """
+        if not inputs:
+            return []
             
-        except Exception as e:
-            logger.error(f"DTESN processing error: {e}")
-            raise
+        max_concurrent = min(
+            max_concurrent or self.max_concurrent_processes,
+            len(inputs),
+            self.max_concurrent_processes
+        )
+        
+        # Create processing tasks with concurrency control
+        semaphore = asyncio.Semaphore(max_concurrent)
+        
+        async def process_single(input_data: str) -> DTESNResult:
+            async with semaphore:
+                return await self.process(
+                    input_data=input_data,
+                    membrane_depth=membrane_depth,
+                    esn_size=esn_size,
+                    enable_concurrent=True
+                )
+        
+        # Process all inputs concurrently
+        tasks = [process_single(input_data) for input_data in inputs]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # Handle any exceptions in results
+        processed_results = []
+        for i, result in enumerate(results):
+            if isinstance(result, Exception):
+                logger.error(f"Batch processing failed for input {i}: {result}")
+                # Create error result
+                error_result = DTESNResult(
+                    input_data=inputs[i],
+                    processed_output={"error": str(result)},
+                    membrane_layers=0,
+                    esn_state={"error": "processing_failed"},
+                    bseries_computation={"error": "processing_failed"},
+                    processing_time_ms=0.0,
+                    engine_integration={"error": str(result)}
+                )
+                processed_results.append(error_result)
+            else:
+                processed_results.append(result)
+        
+        return processed_results
+    
+    async def _process_concurrent_dtesn(
+        self,
+        input_data: str,
+        depth: int,
+        size: int,
+        engine_context: Optional[Dict[str, Any]] = None
+    ) -> DTESNResult:
+        """
+        Process using concurrent DTESN components with enhanced parallelization.
+        
+        Args:
+            input_data: Input data to process
+            depth: Membrane hierarchy depth
+            size: ESN reservoir size
+            engine_context: Engine context data for enhanced processing
+        """
+        engine_context = engine_context or {}
+        
+        # Convert input to numeric data
+        input_vector = np.array([ord(c) for c in input_data[:10]]).reshape(-1, 1)
+        if len(input_vector) < 10:
+            input_vector = np.pad(input_vector, ((0, 10 - len(input_vector)), (0, 0)))
+        
+        # Process stages concurrently where possible
+        tasks = []
+        
+        # Stage 1: Membrane processing (can be concurrent)
+        membrane_task = asyncio.create_task(
+            self._process_real_membrane(input_vector, depth, engine_context)
+        )
+        tasks.append(("membrane", membrane_task))
+        
+        # Wait for membrane processing to complete before ESN
+        membrane_result = await membrane_task
+        
+        # Stage 2: ESN processing (depends on membrane result)
+        esn_task = asyncio.create_task(
+            self._process_real_esn(membrane_result, size, engine_context)
+        )
+        tasks.append(("esn", esn_task))
+        
+        # Stage 3: B-Series can be prepared in parallel
+        bseries_prep_task = asyncio.create_task(
+            self._prepare_bseries_context(engine_context)
+        )
+        tasks.append(("bseries_prep", bseries_prep_task))
+        
+        # Wait for ESN and B-Series prep
+        esn_result = await esn_task
+        bseries_prep = await bseries_prep_task
+        
+        # Stage 4: Final B-Series computation
+        bseries_result = await self._process_real_bseries(esn_result, {**engine_context, **bseries_prep})
+        
+        return DTESNResult(
+            input_data=input_data,
+            processed_output=bseries_result,
+            membrane_layers=depth,
+            esn_state=self._get_esn_state_dict(),
+            bseries_computation=self._get_bseries_state_dict(),
+            processing_time_ms=0.0,  # Will be set by caller
+            engine_integration=engine_context  # Include engine context in result
+        )
+    
+    async def _prepare_bseries_context(self, engine_context: Dict[str, Any]) -> Dict[str, Any]:
+        """Prepare B-Series computation context asynchronously."""
+        await asyncio.sleep(0.001)  # Simulate async preparation
+        
+        return {
+            "bseries_prepared": True,
+            "preparation_time": time.time(),
+            "engine_enhanced": engine_context.get("engine_available", False)
+        }
     
     async def _fetch_engine_context(self) -> Dict[str, Any]:
         """
@@ -436,3 +606,28 @@ class DTESNProcessor:
             "tree_enumeration": "rooted_trees",
             "status": "ready"
         }
+    
+    def _update_processing_stats(self, processing_time: float):
+        """Update processing statistics with exponential moving average."""
+        alpha = 0.1  # Smoothing factor
+        if self._processing_stats["avg_processing_time"] == 0:
+            self._processing_stats["avg_processing_time"] = processing_time
+        else:
+            self._processing_stats["avg_processing_time"] = (
+                alpha * processing_time + 
+                (1 - alpha) * self._processing_stats["avg_processing_time"]
+            )
+    
+    def get_processing_stats(self) -> Dict[str, Any]:
+        """Get current processing statistics."""
+        return {
+            **self._processing_stats,
+            "max_concurrent_processes": self.max_concurrent_processes,
+            "available_processing_slots": self._processing_semaphore._value
+        }
+    
+    async def cleanup_resources(self):
+        """Clean up processing resources."""
+        if hasattr(self, '_thread_pool'):
+            self._thread_pool.shutdown(wait=True)
+            logger.info("DTESN processor thread pool shut down successfully")

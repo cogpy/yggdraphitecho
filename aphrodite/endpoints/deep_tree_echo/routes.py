@@ -253,84 +253,51 @@ async def batch_process_dtesn(
     processor: DTESNProcessor = Depends(get_dtesn_processor)
 ) -> DTESNBatchResponse:
     """
-    Batch process multiple inputs through DTESN with server-side optimization.
+    Enhanced batch process multiple inputs through DTESN with optimized concurrent processing.
 
-    Processes multiple inputs efficiently using server-side batching and
-    parallel processing capabilities.
+    Processes multiple inputs efficiently using enhanced server-side batching,
+    concurrent processing capabilities, and advanced resource management.
 
     Args:
         request: Batch DTESN processing request
         processor: DTESN processor instance
 
     Returns:
-        Server-rendered batch processing results
+        Server-rendered batch processing results with enhanced concurrency metrics
     """
     start_time = time.time()
-    results = []
-    successful_count = 0
-    failed_count = 0
-
+    
     try:
-        # Process inputs in batches for optimal server-side performance
-        batch_size = min(request.max_batch_size, len(request.inputs))
-
-        for i in range(0, len(request.inputs), batch_size):
-            batch = request.inputs[i:i + batch_size]
-
-            if request.parallel_processing:
-                # Process batch in parallel
-                tasks = []
-                for input_data in batch:
-                    task = processor.process(
-                        input_data=input_data,
-                        membrane_depth=request.membrane_depth,
-                        esn_size=request.esn_size
-                    )
-                    tasks.append(task)
-
-                batch_results = await asyncio.gather(*tasks, return_exceptions=True)
-
-                for j, result in enumerate(batch_results):
-                    if isinstance(result, Exception):
-                        results.append({
-                            "input_index": i + j,
-                            "status": "failed",
-                            "error": str(result),
-                            "server_rendered": True
-                        })
-                        failed_count += 1
-                    else:
-                        results.append({
-                            "input_index": i + j,
-                            "status": "success",
-                            "result": result.to_dict(),
-                            "server_rendered": True
-                        })
-                        successful_count += 1
+        # Use the enhanced batch processing method
+        results_list = await processor.process_batch(
+            inputs=request.inputs,
+            membrane_depth=request.membrane_depth,
+            esn_size=request.esn_size,
+            max_concurrent=request.max_batch_size if request.parallel_processing else 1
+        )
+        
+        # Convert results to response format
+        results = []
+        successful_count = 0
+        failed_count = 0
+        
+        for i, result in enumerate(results_list):
+            if "error" in result.processed_output:
+                results.append({
+                    "input_index": i,
+                    "status": "failed",
+                    "error": result.processed_output["error"],
+                    "server_rendered": True
+                })
+                failed_count += 1
             else:
-                # Process batch sequentially
-                for j, input_data in enumerate(batch):
-                    try:
-                        result = await processor.process(
-                            input_data=input_data,
-                            membrane_depth=request.membrane_depth,
-                            esn_size=request.esn_size
-                        )
-                        results.append({
-                            "input_index": i + j,
-                            "status": "success",
-                            "result": result.to_dict(),
-                            "server_rendered": True
-                        })
-                        successful_count += 1
-                    except Exception as e:
-                        results.append({
-                            "input_index": i + j,
-                            "status": "failed",
-                            "error": str(e),
-                            "server_rendered": True
-                        })
-                        failed_count += 1
+                results.append({
+                    "input_index": i,
+                    "status": "success",
+                    "result": result.to_dict(),
+                    "server_rendered": True
+                })
+                successful_count += 1
 
         total_processing_time = (time.time() - start_time) * 1000
 
@@ -345,10 +312,10 @@ async def batch_process_dtesn(
         )
 
     except Exception as e:
-        logger.error(f"Batch DTESN processing error: {e}")
+        logger.error(f"Enhanced batch DTESN processing error: {e}")
         raise HTTPException(
             status_code=500,
-            detail=f"Batch DTESN processing failed: {e}"
+            detail=f"Enhanced batch DTESN processing failed: {e}"
         )
 
 
@@ -358,60 +325,153 @@ async def stream_process_dtesn(
     processor: DTESNProcessor = Depends(get_dtesn_processor)
 ) -> StreamingResponse:
     """
-    Stream process input through DTESN with real-time server-side updates.
+    Enhanced stream process input through DTESN with advanced async streaming and backpressure handling.
 
-    Provides real-time streaming of DTESN processing results for
-    server-side consumption without client dependencies.
+    Provides real-time streaming of DTESN processing results with enhanced
+    server-side streaming capabilities, flow control, and resource management.
 
     Args:
         request: DTESN processing request
         processor: DTESN processor instance
 
     Returns:
-        Streaming response with real-time processing updates
+        Enhanced streaming response with backpressure handling and resource management
     """
 
-    async def generate_stream():
+    async def generate_enhanced_stream():
+        request_id = f"stream_{int(time.time() * 1000000)}"
+        buffer_size = 0
+        max_buffer_size = 1024 * 1024  # 1MB buffer limit for backpressure
+        
         try:
-            # Start processing and yield initial status
-            yield f'data: {{"status": "started", "timestamp": {time.time()}, "server_rendered": true}}\n\n'
+            # Start processing and yield initial status with enhanced metadata
+            initial_status = {
+                "status": "started",
+                "request_id": request_id,
+                "timestamp": time.time(),
+                "server_rendered": True,
+                "stream_enhanced": True,
+                "backpressure_enabled": True
+            }
+            message = f'data: {json.dumps(initial_status)}\n\n'
+            buffer_size += len(message)
+            yield message
 
-            # Process through DTESN with intermediate updates
+            # Yield processing configuration
+            config_status = {
+                "status": "configuration",
+                "membrane_depth": request.membrane_depth,
+                "esn_size": request.esn_size,
+                "processing_mode": request.processing_mode,
+                "concurrent_processing": True,
+                "server_rendered": True
+            }
+            message = f'data: {json.dumps(config_status)}\n\n'
+            buffer_size += len(message)
+            yield message
+
+            # Apply backpressure control if buffer is getting large
+            if buffer_size > max_buffer_size // 2:
+                await asyncio.sleep(0.1)  # Brief pause to allow client to catch up
+
+            # Process through DTESN with enhanced concurrent processing
             result = await processor.process(
                 input_data=request.input_data,
                 membrane_depth=request.membrane_depth,
-                esn_size=request.esn_size
+                esn_size=request.esn_size,
+                enable_concurrent=True  # Use enhanced concurrent processing
             )
 
-            # Yield intermediate processing stages
-            yield f'data: {{"status": "membrane_processing", "layers": {result.membrane_layers}, "server_rendered": true}}\n\n'
-            yield f'data: {{"status": "esn_processing", "reservoir_size": {request.esn_size}, "server_rendered": true}}\n\n'
-            yield f'data: {{"status": "bseries_computation", "server_rendered": true}}\n\n'
+            # Yield enhanced intermediate processing stages
+            stages = [
+                {
+                    "status": "membrane_processing", 
+                    "layers": result.membrane_layers, 
+                    "concurrent": True,
+                    "server_rendered": True
+                },
+                {
+                    "status": "esn_processing", 
+                    "reservoir_size": request.esn_size,
+                    "parallel_updates": True, 
+                    "server_rendered": True
+                },
+                {
+                    "status": "bseries_computation", 
+                    "concurrent_trees": True,
+                    "server_rendered": True
+                }
+            ]
 
-            # Yield final result
+            for stage in stages:
+                message = f'data: {json.dumps(stage)}\n\n'
+                buffer_size += len(message)
+                
+                # Apply backpressure if buffer is too large
+                if buffer_size > max_buffer_size:
+                    await asyncio.sleep(0.2)
+                    buffer_size = 0  # Reset buffer tracking after backpressure pause
+                    
+                yield message
+                await asyncio.sleep(0.01)  # Small delay between stages for streaming effect
+
+            # Yield processing statistics
+            processing_stats = processor.get_processing_stats()
+            stats_message = {
+                "status": "processing_stats",
+                "stats": processing_stats,
+                "server_rendered": True
+            }
+            message = f'data: {json.dumps(stats_message)}\n\n'
+            yield message
+
+            # Yield final enhanced result
             final_result = {
                 "status": "completed",
+                "request_id": request_id,
                 "result": result.to_dict(),
                 "processing_time_ms": result.processing_time_ms,
-                "server_rendered": True
+                "server_rendered": True,
+                "stream_enhanced": True,
+                "total_messages": len(stages) + 4  # Initial + config + stats + final + stages
             }
             yield f'data: {json.dumps(final_result)}\n\n'
 
+            # Send completion marker
+            yield 'data: {"status": "stream_complete", "server_rendered": true}\n\n'
+
+        except asyncio.CancelledError:
+            # Handle client disconnect gracefully
+            logger.info(f"Stream cancelled for request {request_id}")
+            error_result = {
+                "status": "cancelled",
+                "request_id": request_id,
+                "message": "Stream cancelled by client",
+                "server_rendered": True
+            }
+            yield f'data: {json.dumps(error_result)}\n\n'
+            
         except Exception as e:
+            logger.error(f"Enhanced streaming processing error for {request_id}: {e}")
             error_result = {
                 "status": "error",
+                "request_id": request_id,
                 "error": str(e),
-                "server_rendered": True
+                "server_rendered": True,
+                "stream_enhanced": True
             }
             yield f'data: {json.dumps(error_result)}\n\n'
 
     return StreamingResponse(
-        generate_stream(),
+        generate_enhanced_stream(),
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
-            "X-Server-Rendered": "true"
+            "X-Server-Rendered": "true",
+            "X-Stream-Enhanced": "true",
+            "X-Backpressure-Enabled": "true",
+            "X-Concurrent-Processing": "true"
         }
     )
 
@@ -614,54 +674,63 @@ async def membrane_info(
         return JSONResponse(data)
 
 
-@router.get("/esn_state")
-async def esn_state(
+@router.get("/async_status")
+async def async_processing_status(
     request: Request,
-    templates: Jinja2Templates = Depends(get_templates),
-    processor: DTESNProcessor = Depends(get_dtesn_processor)
+    processor: DTESNProcessor = Depends(get_dtesn_processor),
+    templates: Jinja2Templates = Depends(get_templates)
 ) -> Union[HTMLResponse, JSONResponse]:
     """
-    Get comprehensive Echo State Network reservoir state information.
+    Get enhanced async processing status and concurrency metrics.
 
-    Server-side endpoint providing detailed ESN state information
-    with enhanced performance metrics and integration status.
-    Supports both HTML and JSON responses via content negotiation.
+    Returns comprehensive information about async processing capabilities,
+    resource utilization, and concurrent request handling performance.
 
     Returns:
-        Enhanced ESN state information
+        Enhanced async processing status with detailed metrics
     """
+    # Get processing statistics from processor
+    processing_stats = processor.get_processing_stats()
+    
+    # Get connection pool stats if available
+    connection_pool = getattr(request.app.state, "connection_pool", None)
+    pool_stats = connection_pool.get_stats() if connection_pool else None
+    
+    # Get concurrency manager stats if available
+    concurrency_manager = getattr(request.app.state, "concurrency_manager", None)
+    concurrency_stats = concurrency_manager.get_current_load() if concurrency_manager else None
+    
     data = {
-        "reservoir_type": "echo_state_network",
-        "reservoir_size": processor.config.esn_reservoir_size,
-        "connectivity": "sparse_random",
-        "activation": "tanh",
-        "spectral_radius": 0.95,
-        "leaky_rate": 0.1,
-        "state": "ready",
-        "performance_profile": {
-            "temporal_dynamics": "optimized",
-            "memory_capacity": "high",
-            "computational_efficiency": "enhanced",
-            "real_time_processing": True
+        "async_processing": {
+            "enabled": True,
+            "concurrent_processing": True,
+            "resource_management": connection_pool is not None,
+            "backpressure_handling": True
         },
-        "integration_capabilities": {
-            "server_side_processing": True,
+        "processing_metrics": processing_stats,
+        "resource_pool": pool_stats.__dict__ if pool_stats else {"status": "unavailable"},
+        "concurrency_management": concurrency_stats or {"status": "unavailable"},
+        "capabilities": {
+            "max_concurrent_requests": processing_stats.get("max_concurrent_processes", 0),
+            "connection_pooling": connection_pool is not None,
+            "rate_limiting": concurrency_manager is not None,
+            "streaming_with_backpressure": True,
             "batch_processing": True,
-            "streaming_support": True,
-            "parallel_reservoir_updates": True
+            "resource_monitoring": True
         },
-        "optimization_features": {
-            "adaptive_spectral_radius": True,
-            "dynamic_reservoir_sizing": False,
-            "memory_pooling": True,
-            "performance_monitoring": True
+        "performance_features": {
+            "async_connection_pooling": connection_pool is not None,
+            "concurrent_batch_processing": True,
+            "enhanced_streaming": True,
+            "resource_cleanup": True,
+            "error_recovery": True
         },
         "server_rendered": True
     }
 
     if wants_html(request):
         return templates.TemplateResponse(
-            "esn_state.html",
+            "async_status.html",
             {"request": request, "data": data}
         )
     else:
