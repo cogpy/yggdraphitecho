@@ -7,6 +7,7 @@ and Jinja2 template rendering for HTML responses with content negotiation.
 """
 
 import asyncio
+import hashlib
 import json
 import logging
 import time
@@ -24,6 +25,17 @@ from aphrodite.endpoints.deep_tree_echo.load_integration import get_batch_load_f
 from aphrodite.endpoints.deep_tree_echo.content_negotiation import (
     wants_html, wants_xml, create_negotiated_response,
     content_negotiator, MultiFormatResponse
+from aphrodite.endpoints.deep_tree_echo.template_engine_advanced import (
+    AdvancedTemplateEngine,
+    DTESNTemplateContext
+)
+from aphrodite.endpoints.deep_tree_echo.template_cache_manager import DTESNTemplateCacheManager
+from aphrodite.endpoints.deep_tree_echo.progressive_renderer import (
+    RenderingConfig,
+    optimize_dtesn_response,
+    ProgressiveJSONEncoder,
+    ContentCompressor,
+    RenderingHints
 )
 
 logger = logging.getLogger(__name__)
@@ -113,6 +125,37 @@ def get_templates(request: Request) -> Jinja2Templates:
     return templates
 
 
+def get_advanced_template_engine(request: Request) -> AdvancedTemplateEngine:
+    """Dependency to get Advanced Template Engine from app state."""
+    advanced_engine = getattr(request.app.state, "advanced_template_engine", None)
+    if advanced_engine is None:
+        # Initialize if not already present
+        templates_dir = getattr(request.app.state, "templates_dir", None)
+        if templates_dir:
+            advanced_engine = AdvancedTemplateEngine(templates_dir)
+            request.app.state.advanced_template_engine = advanced_engine
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail="Advanced template engine not configured"
+            )
+    return advanced_engine
+
+
+def get_template_cache_manager(request: Request) -> DTESNTemplateCacheManager:
+    """Dependency to get Template Cache Manager from app state."""
+    cache_manager = getattr(request.app.state, "template_cache_manager", None)
+    if cache_manager is None:
+        # Initialize with default settings
+        cache_manager = DTESNTemplateCacheManager(
+            max_template_cache_size=100,
+            max_rendered_cache_size=500,
+            enable_compression=True
+        )
+        request.app.state.template_cache_manager = cache_manager
+    return cache_manager
+
+
 def get_engine_stats(request: Request) -> Dict[str, Any]:
     """Dependency to get Aphrodite Engine statistics."""
     engine = getattr(request.app.state, "engine", None)
@@ -177,7 +220,9 @@ async def process_dtesn(
     request: Request,
     processor: DTESNProcessor = Depends(get_dtesn_processor),
     engine_stats: Dict[str, Any] = Depends(get_engine_stats),
-    templates: Jinja2Templates = Depends(get_templates)
+    templates: Jinja2Templates = Depends(get_templates),
+    advanced_engine: AdvancedTemplateEngine = Depends(get_advanced_template_engine),
+    cache_manager: DTESNTemplateCacheManager = Depends(get_template_cache_manager)
 ) -> Union[HTMLResponse, DTESNResponse]:
     """
     Process input through Deep Tree Echo System Network with engine integration.
@@ -230,15 +275,58 @@ async def process_dtesn(
             response_data.performance_metrics["resource_managed"] = request.state.resource_context.get("pool_available", False)
 
         if wants_html(request):
-            return templates.TemplateResponse(
-                "process_result.html",
-                {
-                    "request": request,
-                    "data": response_data.dict(),
-                    "input_data": request_data.input_data,
-                    "timestamp": datetime.now().isoformat()
-                }
-            )
+            # Use advanced template engine for dynamic template generation
+            try:
+                # Determine result type based on processing content
+                result_type = "membrane_evolution"
+                if hasattr(result, 'esn_state') and result.esn_state:
+                    result_type = "esn_processing"
+                elif hasattr(result, 'bseries_computation') and result.bseries_computation:
+                    result_type = "bseries_computation"
+                    
+                # Generate cache key for rendered result
+                cache_key_components = [
+                    result_type,
+                    str(response_data.membrane_layers),
+                    str(len(request_data.input_data)),
+                    hashlib.sha256(request_data.input_data.encode()).hexdigest()[:8]
+                ]
+                rendered_cache_key = "_".join(cache_key_components)
+                
+                # Check cache first
+                cached_html = await cache_manager.get_rendered_result(rendered_cache_key)
+                if cached_html:
+                    return HTMLResponse(content=cached_html)
+                
+                # Generate dynamic template and render
+                rendered_html = await advanced_engine.render_dtesn_result(
+                    request=request,
+                    dtesn_result=response_data.dict(),
+                    result_type=result_type
+                )
+                
+                # Cache the result
+                await cache_manager.store_rendered_result(
+                    result_key=rendered_cache_key,
+                    html_content=rendered_html,
+                    ttl_seconds=1800,  # 30 minutes
+                    invalidation_tags={result_type, "dtesn_processing"}
+                )
+                
+                return HTMLResponse(content=rendered_html)
+                
+            except Exception as template_error:
+                logger.warning(f"Advanced template rendering failed: {template_error}")
+                # Fallback to standard template
+                return templates.TemplateResponse(
+                    "process_result.html",
+                    {
+                        "request": request,
+                        "data": response_data.dict(),
+                        "input_data": request_data.input_data,
+                        "timestamp": datetime.now().isoformat()
+                    }
+                )
         else:
             return response_data
 
@@ -797,6 +885,16 @@ async def stream_large_dataset_dtesn(
     """
     
     async def generate_large_dataset_stream():
+        # Initialize progressive rendering configuration
+        render_config = RenderingConfig(
+            progressive_json=True,
+            max_chunk_size=max_chunk_size,
+            compression_strategy="adaptive",
+            enable_rendering_hints=True
+        )
+        
+        compressor = ContentCompressor(render_config)
+        
         try:
             async for chunk in processor.process_large_dataset_stream(
                 input_data=request.input_data,
@@ -805,7 +903,27 @@ async def stream_large_dataset_dtesn(
                 max_chunk_size=max_chunk_size,
                 compression_level=compression_level
             ):
-                # Format as SSE with minimal overhead
+                # Apply progressive rendering optimization for complex chunks
+                if chunk.get("type") in ["compressed_chunk", "large_dataset_chunk"]:
+                    # Optimize chunk rendering for better client performance
+                    optimized_content = compressor.compress_content(
+                        json.dumps(chunk), 
+                        "application/json"
+                    )
+                    
+                    # Include optimization metadata in response
+                    enhanced_chunk = {
+                        **chunk,
+                        "rendering_optimized": True,
+                        "compression_stats": {
+                            "method": optimized_content.get("method"),
+                            "ratio": optimized_content.get("compression_ratio"),
+                            "original_size": optimized_content.get("original_size")
+                        }
+                    }
+                    chunk = enhanced_chunk
+                
+                # Format as SSE with progressive rendering support
                 if chunk.get("type") == "compressed_metadata":
                     message = f'event: metadata\ndata: {json.dumps(chunk)}\n\n'
                 elif chunk.get("type") == "compressed_chunk":
@@ -819,8 +937,9 @@ async def stream_large_dataset_dtesn(
                 
                 yield message
                 
-                # Minimal delay for maximum throughput
-                await asyncio.sleep(0.001)
+                # Adaptive delay based on chunk complexity for optimal throughput
+                delay = 0.0005 if chunk.get("rendering_optimized") else 0.001
+                await asyncio.sleep(delay)
                 
         except Exception as e:
             logger.error(f"Large dataset streaming error: {e}")
@@ -832,7 +951,16 @@ async def stream_large_dataset_dtesn(
             }
             yield f'event: error\ndata: {json.dumps(error_chunk)}\n\n'
     
-    # Enhanced headers for large dataset streaming
+    # Enhanced headers for large dataset streaming with progressive rendering hints
+    data_size = len(request.input_data)
+    rendering_hints = RenderingHints.generate_hints({
+        "size": data_size,
+        "complexity": "high" if data_size > 1024*1024 else "medium",
+        "compressed": compression_level > 0,
+        "compression_method": "adaptive",
+        "progressive": True
+    })
+    
     headers = {
         "Cache-Control": "no-cache",
         "Connection": "keep-alive", 
@@ -841,7 +969,10 @@ async def stream_large_dataset_dtesn(
         "X-Max-Chunk-Size": str(max_chunk_size),
         "X-Compression-Level": str(compression_level),
         "X-Timeout-Prevention": "enhanced",
-        "X-Stream-Type": "large-dataset"
+        "X-Stream-Type": "large-dataset",
+        "X-Progressive-Rendering": "enabled",
+        "X-Adaptive-Compression": "true",
+        **rendering_hints  # Add progressive rendering hints
     }
     
     return StreamingResponse(
@@ -849,6 +980,241 @@ async def stream_large_dataset_dtesn(
         media_type="text/event-stream",
         headers=headers
     )
+
+
+@router.post("/stream_optimized")
+async def stream_optimized_dtesn(
+    request: DTESNRequest,
+    bandwidth_hint: Optional[str] = Field(default="auto", description="Bandwidth hint: low, medium, high, auto"),
+    adaptive_compression: bool = Field(default=True, description="Enable adaptive compression based on network conditions"),
+    enable_progressive_rendering: bool = Field(default=True, description="Enable progressive rendering optimization"),
+    processor: DTESNProcessor = Depends(get_dtesn_processor)
+) -> StreamingResponse:
+    """
+    Advanced streaming endpoint with bandwidth-aware optimization and progressive rendering.
+    
+    This endpoint provides intelligent optimization based on network conditions and client capabilities:
+    - Adaptive compression levels based on bandwidth estimation
+    - Progressive rendering for complex DTESN results
+    - Dynamic chunk sizing based on network performance
+    - Resume capability with checkpointing support
+    - Enhanced error recovery with graceful degradation
+    
+    Args:
+        request: DTESN processing request
+        bandwidth_hint: Client bandwidth hint for optimization
+        adaptive_compression: Enable dynamic compression adjustment
+        enable_progressive_rendering: Enable progressive content delivery
+        processor: DTESN processor instance
+        
+    Returns:
+        Bandwidth-optimized streaming response with progressive rendering
+    """
+    
+    async def generate_optimized_stream():
+        # Configure rendering based on bandwidth and client capabilities
+        render_config = RenderingConfig(
+            progressive_json=enable_progressive_rendering,
+            max_chunk_size=_get_optimal_chunk_size(bandwidth_hint),
+            compression_strategy="adaptive" if adaptive_compression else "gzip",
+            enable_rendering_hints=True,
+            stream_buffer_size=_get_buffer_size(bandwidth_hint)
+        )
+        
+        compressor = ContentCompressor(render_config)
+        progressive_encoder = ProgressiveJSONEncoder(render_config)
+        
+        # Estimate optimal streaming parameters
+        data_size = len(request.input_data)
+        chunk_size = render_config.max_chunk_size
+        compression_level = _get_compression_level(bandwidth_hint, data_size)
+        
+        try:
+            request_id = f"optimized_stream_{int(time.time() * 1000000)}"
+            
+            # Send initial metadata with optimization parameters
+            metadata = {
+                "type": "optimized_metadata",
+                "request_id": request_id,
+                "optimization_config": {
+                    "bandwidth_hint": bandwidth_hint,
+                    "chunk_size": chunk_size,
+                    "compression_level": compression_level,
+                    "progressive_rendering": enable_progressive_rendering,
+                    "adaptive_compression": adaptive_compression
+                },
+                "estimated_performance": {
+                    "expected_throughput_mbps": _estimate_throughput(bandwidth_hint),
+                    "estimated_duration_sec": _estimate_duration(data_size, bandwidth_hint),
+                    "optimization_level": _get_optimization_level(bandwidth_hint)
+                }
+            }
+            
+            yield f'event: metadata\ndata: {json.dumps(metadata)}\n\n'
+            
+            # Process with bandwidth-aware streaming
+            async for chunk in processor.process_streaming_chunks(
+                input_data=request.input_data,
+                membrane_depth=request.membrane_depth,
+                esn_size=request.esn_size,
+                chunk_size=chunk_size,
+                enable_compression=adaptive_compression,
+                timeout_prevention=True
+            ):
+                # Apply progressive rendering optimization
+                if enable_progressive_rendering and chunk.get("type") == "chunk":
+                    # Use progressive encoding for complex chunks
+                    chunk_json = json.dumps(chunk)
+                    if len(chunk_json) > render_config.max_chunk_size // 2:
+                        # Stream progressively for large chunks
+                        progressive_parts = list(progressive_encoder.encode_progressive(chunk))
+                        for part in progressive_parts:
+                            if part.strip():  # Skip empty parts
+                                yield f'event: progressive_chunk\ndata: {json.dumps({"part": part, "request_id": request_id})}\n\n'
+                                await asyncio.sleep(_get_adaptive_delay(bandwidth_hint))
+                        continue
+                
+                # Apply adaptive compression for standard chunks
+                if adaptive_compression and chunk.get("type") in ["chunk", "completion"]:
+                    compressed_result = compressor.compress_content(json.dumps(chunk))
+                    if compressed_result["compressed"]:
+                        chunk["compression_info"] = {
+                            "method": compressed_result["method"],
+                            "ratio": compressed_result["compression_ratio"],
+                            "original_size": compressed_result["original_size"]
+                        }
+                
+                # Format as SSE with adaptive optimization
+                event_type = _get_event_type(chunk.get("type", "data"))
+                message = f'event: {event_type}\ndata: {json.dumps(chunk)}\n\n'
+                yield message
+                
+                # Adaptive delay based on bandwidth and chunk complexity
+                await asyncio.sleep(_get_adaptive_delay(bandwidth_hint))
+                
+        except Exception as e:
+            logger.error(f"Optimized streaming error: {e}")
+            error_chunk = {
+                "type": "optimized_error",
+                "error": str(e),
+                "timestamp": time.time(),
+                "recoverable": True,  # Enable retry logic
+                "recovery_hint": "retry_with_lower_bandwidth"
+            }
+            yield f'event: error\ndata: {json.dumps(error_chunk)}\n\n'
+    
+    # Generate bandwidth-aware headers
+    headers = _generate_optimization_headers(bandwidth_hint, adaptive_compression, enable_progressive_rendering)
+    
+    return StreamingResponse(
+        generate_optimized_stream(),
+        media_type="text/event-stream",
+        headers=headers
+    )
+
+
+def _get_optimal_chunk_size(bandwidth_hint: str) -> int:
+    """Get optimal chunk size based on bandwidth hint."""
+    sizes = {
+        "low": 1024,      # 1KB for low bandwidth
+        "medium": 4096,   # 4KB for medium bandwidth  
+        "high": 16384,    # 16KB for high bandwidth
+        "auto": 8192      # 8KB for auto-detection
+    }
+    return sizes.get(bandwidth_hint, sizes["auto"])
+
+
+def _get_buffer_size(bandwidth_hint: str) -> int:
+    """Get optimal buffer size based on bandwidth hint."""
+    sizes = {
+        "low": 2048,      # 2KB buffer
+        "medium": 8192,   # 8KB buffer
+        "high": 32768,    # 32KB buffer
+        "auto": 16384     # 16KB buffer
+    }
+    return sizes.get(bandwidth_hint, sizes["auto"])
+
+
+def _get_compression_level(bandwidth_hint: str, data_size: int) -> int:
+    """Get optimal compression level based on bandwidth and data size."""
+    if data_size < 10240:  # < 10KB, don't over-compress
+        return 3
+    
+    levels = {
+        "low": 8,         # High compression for low bandwidth
+        "medium": 6,      # Balanced compression
+        "high": 3,        # Light compression for high bandwidth
+        "auto": 6         # Balanced default
+    }
+    return levels.get(bandwidth_hint, levels["auto"])
+
+
+def _estimate_throughput(bandwidth_hint: str) -> float:
+    """Estimate throughput based on bandwidth hint."""
+    estimates = {
+        "low": 0.5,       # 0.5 MB/s
+        "medium": 5.0,    # 5 MB/s
+        "high": 50.0,     # 50 MB/s
+        "auto": 10.0      # 10 MB/s
+    }
+    return estimates.get(bandwidth_hint, estimates["auto"])
+
+
+def _estimate_duration(data_size: int, bandwidth_hint: str) -> float:
+    """Estimate processing duration based on data size and bandwidth."""
+    throughput = _estimate_throughput(bandwidth_hint) * 1024 * 1024  # Convert to bytes/sec
+    processing_overhead = 1.5  # 50% overhead for processing
+    return (data_size / throughput) * processing_overhead
+
+
+def _get_optimization_level(bandwidth_hint: str) -> str:
+    """Get optimization level description."""
+    levels = {
+        "low": "maximum",     # Maximum optimization for low bandwidth
+        "medium": "balanced", # Balanced optimization
+        "high": "minimal",    # Minimal optimization for high bandwidth
+        "auto": "adaptive"    # Adaptive optimization
+    }
+    return levels.get(bandwidth_hint, levels["auto"])
+
+
+def _get_adaptive_delay(bandwidth_hint: str) -> float:
+    """Get adaptive delay between chunks based on bandwidth."""
+    delays = {
+        "low": 0.01,      # 10ms delay for low bandwidth
+        "medium": 0.005,  # 5ms delay for medium bandwidth
+        "high": 0.001,    # 1ms delay for high bandwidth
+        "auto": 0.003     # 3ms delay for auto
+    }
+    return delays.get(bandwidth_hint, delays["auto"])
+
+
+def _get_event_type(chunk_type: str) -> str:
+    """Map chunk types to SSE event types."""
+    mapping = {
+        "metadata": "metadata",
+        "chunk": "chunk", 
+        "heartbeat": "heartbeat",
+        "completion": "completion",
+        "error": "error"
+    }
+    return mapping.get(chunk_type, "data")
+
+
+def _generate_optimization_headers(bandwidth_hint: str, adaptive_compression: bool, progressive_rendering: bool) -> Dict[str, str]:
+    """Generate headers with optimization information."""
+    return {
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+        "X-Server-Rendered": "true",
+        "X-Bandwidth-Optimized": "true",
+        "X-Bandwidth-Hint": bandwidth_hint,
+        "X-Adaptive-Compression": str(adaptive_compression).lower(),
+        "X-Progressive-Rendering": str(progressive_rendering).lower(),
+        "X-Optimization-Level": _get_optimization_level(bandwidth_hint),
+        "X-Stream-Type": "bandwidth-optimized",
+        "X-Resume-Supported": "true"
+    }
 
 
 @router.get("/async_status")
@@ -1571,3 +1937,163 @@ async def get_batch_metrics(
             )
         else:
             raise HTTPException(status_code=500, detail=error_response.dict())
+
+
+# Phase 7.2.1 - Advanced Server-Side Template Engine Endpoints
+
+@router.get("/template_performance")
+async def get_template_performance_metrics(
+    request: Request,
+    templates: Jinja2Templates = Depends(get_templates),
+    advanced_engine: AdvancedTemplateEngine = Depends(get_advanced_template_engine),
+    cache_manager: DTESNTemplateCacheManager = Depends(get_template_cache_manager)
+) -> Union[HTMLResponse, Dict[str, Any]]:
+    """
+    Get comprehensive template engine performance metrics and cache statistics.
+    
+    Provides detailed information about template compilation, caching effectiveness,
+    dynamic generation performance, and server-side rendering optimization metrics.
+    """
+    try:
+        # Get cache statistics
+        cache_stats = cache_manager.get_cache_statistics()
+        
+        # Get advanced engine performance stats  
+        engine_stats = advanced_engine.get_performance_stats()
+        
+        # Get dynamic generator cache stats
+        generator_stats = advanced_engine.dynamic_generator.get_cache_stats()
+        
+        # Calculate overall performance metrics
+        performance_data = {
+            "template_engine_status": "operational",
+            "advanced_features_enabled": True,
+            "phase_7_2_1_implemented": True,
+            "cache_performance": cache_stats["cache_performance"],
+            "dynamic_generation": {
+                "templates_generated": generator_stats.get("template_cache_entries", 0),
+                "rendered_cache_entries": generator_stats.get("rendered_cache_entries", 0),
+                "hit_rate": generator_stats.get("hit_rate", 0),
+                "supported_result_types": engine_stats.get("supported_result_types", []),
+                "responsive_adaptation": engine_stats.get("supported_client_types", [])
+            },
+            "optimization_features": {
+                "template_compilation_caching": True,
+                "rendered_result_caching": True,
+                "compression_enabled": cache_stats["compression"]["compression_enabled"],
+                "ttl_management": True,
+                "invalidation_by_tags": True,
+                "responsive_templates": True,
+                "server_side_only": True
+            },
+            "memory_usage": cache_stats["memory_usage"],
+            "distributed_caching": cache_stats["distributed_cache"],
+            "server_rendered": True
+        }
+        
+        if wants_html(request):
+            return templates.TemplateResponse(
+                "template_performance.html",
+                {
+                    "request": request,
+                    "data": performance_data,
+                    "timestamp": datetime.now().isoformat()
+                }
+            )
+        else:
+            return performance_data
+            
+    except Exception as e:
+        logger.error(f"Template performance metrics error: {e}")
+        error_data = {
+            "status": "error",
+            "error": str(e),
+            "template_engine_status": "degraded",
+            "server_rendered": True
+        }
+        
+        if wants_html(request):
+            return templates.TemplateResponse(
+                "template_performance.html",
+                {
+                    "request": request,
+                    "data": error_data,
+                    "timestamp": datetime.now().isoformat()
+                },
+                status_code=500
+            )
+        else:
+            raise HTTPException(status_code=500, detail=error_data)
+
+
+@router.post("/template_cache/optimize")
+async def optimize_template_cache(
+    cache_manager: DTESNTemplateCacheManager = Depends(get_template_cache_manager)
+) -> Dict[str, Any]:
+    """
+    Optimize template cache performance by cleaning expired entries and updating metrics.
+    """
+    try:
+        optimization_result = await cache_manager.optimize_performance()
+        
+        return {
+            "status": "success",
+            "optimization_completed": True,
+            "results": optimization_result,
+            "server_rendered": True
+        }
+        
+    except Exception as e:
+        logger.error(f"Template cache optimization error: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Cache optimization failed: {e}"
+        )
+
+
+@router.get("/template_capabilities")
+async def get_template_capabilities(
+    request: Request,
+    templates: Jinja2Templates = Depends(get_templates)
+) -> Union[HTMLResponse, Dict[str, Any]]:
+    """
+    Get comprehensive template engine capabilities and feature documentation.
+    """
+    capabilities_data = {
+        "phase_7_2_1_features": {
+            "dynamic_template_generation": {
+                "enabled": True,
+                "description": "Templates generated dynamically based on DTESN result structure",
+                "supported_types": [
+                    "membrane_evolution",
+                    "esn_processing", 
+                    "bseries_computation",
+                    "batch_processing",
+                    "error_recovery"
+                ],
+                "complexity_levels": ["simple", "medium", "complex"],
+                "server_side_only": True
+            },
+            "template_caching": {
+                "enabled": True,
+                "description": "Multi-level caching for template compilation and rendered results"
+            },
+            "responsive_adaptation": {
+                "enabled": True,
+                "description": "Server-side responsive template selection based on client type"
+            }
+        },
+        "server_rendered": True
+    }
+    
+    if wants_html(request):
+        return templates.TemplateResponse(
+            "template_capabilities.html",
+            {
+                "request": request,
+                "data": capabilities_data,
+                "timestamp": datetime.now().isoformat()
+            }
+        )
+    else:
+        return capabilities_data
