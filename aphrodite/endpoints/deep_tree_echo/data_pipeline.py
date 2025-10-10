@@ -15,7 +15,8 @@ import logging
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
-from typing import Any, AsyncGenerator, Dict, List, Optional, Tuple, Union
+from typing import Any, AsyncGenerator, Dict, List, Optional
+
 import numpy as np
 
 # Performance monitoring imports
@@ -25,10 +26,10 @@ try:
 except ImportError:
     PSUTIL_AVAILABLE = False
 
+from aphrodite.endpoints.deep_tree_echo.async_manager import (
+    AsyncConnectionPool)
 from aphrodite.endpoints.deep_tree_echo.batch_manager import (
-    DynamicBatchManager, BatchConfiguration
-)
-from aphrodite.endpoints.deep_tree_echo.async_manager import AsyncConnectionPool
+    BatchConfiguration, DynamicBatchManager)
 
 logger = logging.getLogger(__name__)
 
@@ -123,7 +124,8 @@ class VectorizedDataTransformer:
             return np.array([]).reshape(0, 0)
             
         # Determine maximum length for batch
-        max_len = min(max(len(text) for text in text_batch), 512)  # Cap at 512 chars
+        # Cap at 512 chars for memory efficiency
+        max_len = min(max(len(text) for text in text_batch), 512)
         
         # Vectorized character encoding
         batch_size = len(text_batch)
@@ -158,9 +160,12 @@ class VectorizedDataTransformer:
         ]
         
         results = []
-        with ThreadPoolExecutor(max_workers=self.config.max_workers) as executor:
+        with ThreadPoolExecutor(
+            max_workers=self.config.max_workers
+        ) as executor:
             future_to_chunk = {
-                executor.submit(self._process_chunk, chunk, transform_func): chunk 
+                executor.submit(self._process_chunk, chunk, transform_func): 
+                chunk
                 for chunk in chunks
             }
             
@@ -176,7 +181,9 @@ class VectorizedDataTransformer:
                     
         return results
     
-    def _process_chunk(self, chunk: List[Any], transform_func: callable) -> List[Any]:
+    def _process_chunk(
+        self, chunk: List[Any], transform_func: callable
+    ) -> List[Any]:
         """Process a single data chunk with transformation function."""
         return [transform_func(item) for item in chunk]
     
@@ -250,7 +257,10 @@ class DataProcessingPipeline:
         self._batch_sizes = []
         self._memory_samples = []
         
-        logger.info(f"Initialized data processing pipeline with {self.config.max_workers} workers")
+        logger.info(
+            f"Initialized data processing pipeline with "
+            f"{self.config.max_workers} workers"
+        )
     
     async def start(self):
         """Start the data processing pipeline."""

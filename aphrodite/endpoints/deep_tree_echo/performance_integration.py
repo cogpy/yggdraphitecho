@@ -10,8 +10,8 @@ import logging
 import os
 import sys
 import time
-from typing import Dict, Any, Optional, List, Callable
 from dataclasses import asdict
+from typing import Any, Callable, Dict, List, Optional
 
 # Add echo.kern to path for performance monitoring imports
 echo_kern_path = os.path.join(
@@ -21,15 +21,10 @@ if echo_kern_path not in sys.path:
     sys.path.insert(0, echo_kern_path)
 
 try:
-    from performance_monitor import (
-        UnifiedPerformanceMonitor, 
-        PerformanceMetrics, 
-        AlertSeverity
-    )
-    from performance_integration import (
-        IntegratedPerformanceSystem,
-        create_integrated_system
-    )
+    from performance_integration import (IntegratedPerformanceSystem,
+                                         create_integrated_system)
+    from performance_monitor import (AlertSeverity, PerformanceMetrics,
+                                     UnifiedPerformanceMonitor)
     PERFORMANCE_MONITORING_AVAILABLE = True
 except ImportError as e:
     logging.warning(f"Performance monitoring not available: {e}")
@@ -54,10 +49,7 @@ except ImportError as e:
         CRITICAL = "critical"
 
 from aphrodite.endpoints.deep_tree_echo.data_pipeline import (
-    DataProcessingPipeline,
-    DataProcessingMetrics,
-    PipelineConfiguration
-)
+    DataProcessingPipeline)
 
 logger = logging.getLogger(__name__)
 
