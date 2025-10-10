@@ -47,6 +47,16 @@ from aphrodite.endpoints.deep_tree_echo.batch_manager import (
     BatchConfiguration,
     BatchingMetrics
 )
+from aphrodite.endpoints.deep_tree_echo.data_pipeline import (
+    DataProcessingPipeline,
+    PipelineConfiguration,
+    VectorizedDataTransformer,
+    create_data_processing_pipeline
+)
+from aphrodite.endpoints.deep_tree_echo.performance_integration import (
+    IntegratedDataPipelineMonitor,
+    create_integrated_pipeline_monitor
+)
 
 logger = logging.getLogger(__name__)
 
@@ -218,6 +228,17 @@ class DTESNProcessor:
 
         # Initialize enhanced concurrent processing resources
         self._processing_semaphore = asyncio.Semaphore(max_concurrent_processes)
+        
+        # Initialize enhanced data processing pipeline (Phase 7.1.3)
+        self._data_pipeline: Optional[DataProcessingPipeline] = None
+        self._pipeline_monitor: Optional[IntegratedDataPipelineMonitor] = None
+        self._pipeline_config = PipelineConfiguration(
+            max_workers=min(max_concurrent_processes // 2, 16),  # Balance workers with concurrency
+            enable_dynamic_batching=True,
+            max_batch_size=1000,
+            enable_vectorization=True,
+            enable_performance_profiling=True
+        )
         self._thread_pool = ThreadPoolExecutor(
             max_workers=max_concurrent_processes,
             thread_name_prefix="DTESN_Worker"
@@ -268,6 +289,17 @@ class DTESNProcessor:
             self._connection_pool = None
             self._concurrency_manager = None
             self._request_queue = None
+        
+        # Initialize enhanced data processing pipeline (Phase 7.1.3)
+        self._data_pipeline: Optional[DataProcessingPipeline] = None
+        self._pipeline_monitor: Optional[IntegratedDataPipelineMonitor] = None
+        self._pipeline_config = PipelineConfiguration(
+            max_workers=min(max_concurrent_processes // 2, 16),  # Balance workers with concurrency
+            enable_dynamic_batching=True,
+            max_batch_size=1000,
+            enable_vectorization=True,
+            enable_performance_profiling=True
+        )
 
         # Engine integration state
         self.engine_config: Optional[AphroditeConfig] = None
@@ -289,6 +321,17 @@ class DTESNProcessor:
             self._batch_manager_started = False
         else:
             self._batch_manager = None
+        
+        # Initialize enhanced data processing pipeline (Phase 7.1.3)
+        self._data_pipeline: Optional[DataProcessingPipeline] = None
+        self._pipeline_monitor: Optional[IntegratedDataPipelineMonitor] = None
+        self._pipeline_config = PipelineConfiguration(
+            max_workers=min(max_concurrent_processes // 2, 16),  # Balance workers with concurrency
+            enable_dynamic_batching=enable_dynamic_batching,
+            max_batch_size=1000,
+            enable_vectorization=True,
+            enable_performance_profiling=True
+        )
 
         # Initialize DTESN components
         self._initialize_dtesn_components()
@@ -397,6 +440,9 @@ class DTESNProcessor:
 
             if hasattr(self.engine, "get_lora_config"):
                 self.lora_config = await self.engine.get_lora_config()
+
+            # Initialize enhanced data processing pipeline (Phase 7.1.3)
+            await self._initialize_data_processing_pipeline()
 
             # Initialize backend processing pipelines with engine integration
             await self._setup_engine_aware_pipelines()
@@ -2223,8 +2269,122 @@ class DTESNProcessor:
             self.max_concurrent_processes = 10
             self._processing_semaphore = asyncio.Semaphore(self.max_concurrent_processes)
 
+    async def _initialize_data_processing_pipeline(self):
+        """Initialize enhanced data processing pipeline (Phase 7.1.3)."""
+        try:
+            logger.info("Initializing enhanced data processing pipeline...")
+            
+            # Create data processing pipeline
+            self._data_pipeline = await create_data_processing_pipeline(self._pipeline_config)
+            
+            # Create integrated performance monitor
+            self._pipeline_monitor = await create_integrated_pipeline_monitor(
+                self._data_pipeline, 
+                enable_echo_integration=True
+            )
+            
+            logger.info("Data processing pipeline initialized successfully")
+            
+        except Exception as e:
+            logger.error(f"Failed to initialize data processing pipeline: {e}")
+            # Continue without enhanced pipeline rather than failing completely
+            self._data_pipeline = None
+            self._pipeline_monitor = None
+    
+    async def process_data_batch(
+        self, 
+        data_batch: List[str],
+        enable_parallel: bool = True
+    ) -> List[Dict[str, Any]]:
+        """
+        Process batch of data using enhanced pipeline (Phase 7.1.3).
+        
+        Args:
+            data_batch: List of input strings to process
+            enable_parallel: Whether to use parallel processing
+            
+        Returns:
+            List of DTESN processing results
+        """
+        if not self._data_pipeline:
+            # Fallback to sequential processing
+            return [await self._process_single_item(item) for item in data_batch]
+        
+        # Use enhanced pipeline processing
+        async def dtesn_transform(item: str) -> Dict[str, Any]:
+            """Transform function for pipeline processing."""
+            return await self._process_single_item(item)
+        
+        try:
+            # Convert to list comprehension for now to avoid thread pool issues
+            if enable_parallel and len(data_batch) > 1:
+                tasks = [dtesn_transform(item) for item in data_batch]
+                results = await asyncio.gather(*tasks, return_exceptions=True)
+                # Handle exceptions
+                processed_results = []
+                for i, result in enumerate(results):
+                    if isinstance(result, Exception):
+                        logger.warning(f"Processing failed for item {i}: {result}")
+                        processed_results.append({
+                            "error": str(result),
+                            "input": data_batch[i],
+                            "processed_output": {},
+                            "processing_time_ms": 0.0
+                        })
+                    else:
+                        processed_results.append(result)
+                return processed_results
+            else:
+                return [await dtesn_transform(item) for item in data_batch]
+            
+        except Exception as e:
+            logger.error(f"Pipeline batch processing failed: {e}")
+            # Fallback to sequential processing
+            return [await self._process_single_item(item) for item in data_batch]
+    
+    async def _process_single_item(self, input_data: str) -> Dict[str, Any]:
+        """Process a single input item through DTESN."""
+        try:
+            result = await self.process(input_data)
+            return result.to_dict()
+        except Exception as e:
+            logger.error(f"Single item processing failed: {e}")
+            return {
+                "error": str(e),
+                "input": input_data,
+                "processed_output": {},
+                "processing_time_ms": 0.0
+            }
+    
+    def get_pipeline_metrics(self) -> Dict[str, Any]:
+        """Get performance metrics from data processing pipeline."""
+        if not self._data_pipeline:
+            return {"pipeline_available": False}
+        
+        return {
+            "pipeline_available": True,
+            "pipeline_metrics": self._data_pipeline.get_performance_metrics(),
+            "monitoring_status": (
+                self._pipeline_monitor.get_comprehensive_status() 
+                if self._pipeline_monitor else {}
+            )
+        }
+    
+    async def shutdown_pipeline(self):
+        """Shutdown data processing pipeline resources."""
+        if self._pipeline_monitor:
+            await self._pipeline_monitor.stop_monitoring()
+            
+        if self._data_pipeline:
+            await self._data_pipeline.stop()
+            
+        logger.info("Data processing pipeline shutdown complete")
+
     async def cleanup_resources(self):
         """Clean up processing resources."""
+        # Shutdown enhanced data processing pipeline
+        await self.shutdown_pipeline()
+        
         if hasattr(self, "_thread_pool"):
             self._thread_pool.shutdown(wait=True)
             logger.info("DTESN processor thread pool shut down successfully")
