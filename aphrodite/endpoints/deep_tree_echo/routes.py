@@ -7,6 +7,7 @@ and Jinja2 template rendering for HTML responses with content negotiation.
 """
 
 import asyncio
+import hashlib
 import json
 import logging
 import time
@@ -14,13 +15,21 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, Response
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
 
 from aphrodite.endpoints.deep_tree_echo.dtesn_processor import DTESNProcessor
 from aphrodite.endpoints.deep_tree_echo.batch_manager import BatchConfiguration
 from aphrodite.endpoints.deep_tree_echo.load_integration import get_batch_load_function
+from aphrodite.endpoints.deep_tree_echo.content_negotiation import (
+    wants_html, wants_xml, create_negotiated_response,
+    content_negotiator, MultiFormatResponse
+from aphrodite.endpoints.deep_tree_echo.template_engine_advanced import (
+    AdvancedTemplateEngine,
+    DTESNTemplateContext
+)
+from aphrodite.endpoints.deep_tree_echo.template_cache_manager import DTESNTemplateCacheManager
 from aphrodite.endpoints.deep_tree_echo.progressive_renderer import (
     RenderingConfig,
     optimize_dtesn_response,
@@ -119,6 +128,37 @@ def get_templates(request: Request) -> Jinja2Templates:
     return templates
 
 
+def get_advanced_template_engine(request: Request) -> AdvancedTemplateEngine:
+    """Dependency to get Advanced Template Engine from app state."""
+    advanced_engine = getattr(request.app.state, "advanced_template_engine", None)
+    if advanced_engine is None:
+        # Initialize if not already present
+        templates_dir = getattr(request.app.state, "templates_dir", None)
+        if templates_dir:
+            advanced_engine = AdvancedTemplateEngine(templates_dir)
+            request.app.state.advanced_template_engine = advanced_engine
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail="Advanced template engine not configured"
+            )
+    return advanced_engine
+
+
+def get_template_cache_manager(request: Request) -> DTESNTemplateCacheManager:
+    """Dependency to get Template Cache Manager from app state."""
+    cache_manager = getattr(request.app.state, "template_cache_manager", None)
+    if cache_manager is None:
+        # Initialize with default settings
+        cache_manager = DTESNTemplateCacheManager(
+            max_template_cache_size=100,
+            max_rendered_cache_size=500,
+            enable_compression=True
+        )
+        request.app.state.template_cache_manager = cache_manager
+    return cache_manager
+
+
 def get_engine_stats(request: Request) -> Dict[str, Any]:
     """Dependency to get Aphrodite Engine statistics."""
     engine = getattr(request.app.state, "engine", None)
@@ -139,10 +179,8 @@ def get_engine_stats(request: Request) -> Dict[str, Any]:
         return {"engine_status": "error", "error": str(e)}
 
 
-def wants_html(request: Request) -> bool:
-    """Check if client wants HTML response based on Accept header."""
-    accept_header = request.headers.get("accept", "")
-    return "text/html" in accept_header or "application/xhtml+xml" in accept_header
+# Note: wants_html function now imported from content_negotiation module
+# The original function is replaced by enhanced content negotiation system
 
 
 @router.get("/")
@@ -150,15 +188,15 @@ async def dtesn_root(
     request: Request,
     templates: Jinja2Templates = Depends(get_templates),
     engine_stats: Dict[str, Any] = Depends(get_engine_stats)
-) -> Union[HTMLResponse, JSONResponse]:
-    """Root endpoint for Deep Tree Echo SSR API with engine integration status and content negotiation."""
+) -> Response:
+    """Root endpoint for Deep Tree Echo SSR API with engine integration status and multi-format content negotiation."""
     data = {
         "service": "Deep Tree Echo API",
         "version": "1.0.0",
         "description": "Server-side rendering API for DTESN processing with Aphrodite Engine integration",
         "endpoints": [
             "/process",
-            "/batch_process",
+            "/batch_process", 
             "/stream_process",
             "/status",
             "/membrane_info",
@@ -170,13 +208,13 @@ async def dtesn_root(
         "engine_integration": engine_stats
     }
 
-    if wants_html(request):
-        return templates.TemplateResponse(
-            "index.html",
-            {"request": request, "data": data}
-        )
-    else:
-        return JSONResponse(data)
+    return create_negotiated_response(
+        data=data,
+        request=request,
+        templates=templates,
+        template_name="index.html",
+        xml_root="deep_tree_echo_api"
+    )
 
 
 @router.post("/process", response_model=DTESNResponse)
@@ -185,7 +223,9 @@ async def process_dtesn(
     request: Request,
     processor: DTESNProcessor = Depends(get_dtesn_processor),
     engine_stats: Dict[str, Any] = Depends(get_engine_stats),
-    templates: Jinja2Templates = Depends(get_templates)
+    templates: Jinja2Templates = Depends(get_templates),
+    advanced_engine: AdvancedTemplateEngine = Depends(get_advanced_template_engine),
+    cache_manager: DTESNTemplateCacheManager = Depends(get_template_cache_manager)
 ) -> Union[HTMLResponse, DTESNResponse]:
     """
     Process input through Deep Tree Echo System Network with engine integration.
@@ -238,15 +278,58 @@ async def process_dtesn(
             response_data.performance_metrics["resource_managed"] = request.state.resource_context.get("pool_available", False)
 
         if wants_html(request):
-            return templates.TemplateResponse(
-                "process_result.html",
-                {
-                    "request": request,
-                    "data": response_data.dict(),
-                    "input_data": request_data.input_data,
-                    "timestamp": datetime.now().isoformat()
-                }
-            )
+            # Use advanced template engine for dynamic template generation
+            try:
+                # Determine result type based on processing content
+                result_type = "membrane_evolution"
+                if hasattr(result, 'esn_state') and result.esn_state:
+                    result_type = "esn_processing"
+                elif hasattr(result, 'bseries_computation') and result.bseries_computation:
+                    result_type = "bseries_computation"
+                    
+                # Generate cache key for rendered result
+                cache_key_components = [
+                    result_type,
+                    str(response_data.membrane_layers),
+                    str(len(request_data.input_data)),
+                    hashlib.sha256(request_data.input_data.encode()).hexdigest()[:8]
+                ]
+                rendered_cache_key = "_".join(cache_key_components)
+                
+                # Check cache first
+                cached_html = await cache_manager.get_rendered_result(rendered_cache_key)
+                if cached_html:
+                    return HTMLResponse(content=cached_html)
+                
+                # Generate dynamic template and render
+                rendered_html = await advanced_engine.render_dtesn_result(
+                    request=request,
+                    dtesn_result=response_data.dict(),
+                    result_type=result_type
+                )
+                
+                # Cache the result
+                await cache_manager.store_rendered_result(
+                    result_key=rendered_cache_key,
+                    html_content=rendered_html,
+                    ttl_seconds=1800,  # 30 minutes
+                    invalidation_tags={result_type, "dtesn_processing"}
+                )
+                
+                return HTMLResponse(content=rendered_html)
+                
+            except Exception as template_error:
+                logger.warning(f"Advanced template rendering failed: {template_error}")
+                # Fallback to standard template
+                return templates.TemplateResponse(
+                    "process_result.html",
+                    {
+                        "request": request,
+                        "data": response_data.dict(),
+                        "input_data": request_data.input_data,
+                        "timestamp": datetime.now().isoformat()
+                    }
+                )
         else:
             return response_data
 
@@ -1374,13 +1457,13 @@ async def dtesn_status(
     templates: Jinja2Templates = Depends(get_templates),
     processor: DTESNProcessor = Depends(get_dtesn_processor),
     engine_stats: Dict[str, Any] = Depends(get_engine_stats)
-) -> Union[HTMLResponse, JSONResponse]:
+) -> Response:
     """
     Get enhanced DTESN system status with engine integration.
 
     Returns server-rendered status information about the DTESN system
     including Aphrodite Engine integration status.
-    Supports both HTML and JSON responses via content negotiation.
+    Supports JSON, HTML, and XML responses via content negotiation.
 
     Returns:
         Enhanced system status information
@@ -1405,13 +1488,13 @@ async def dtesn_status(
         "server_rendered": True
     }
 
-    if wants_html(request):
-        return templates.TemplateResponse(
-            "status.html",
-            {"request": request, "data": data}
-        )
-    else:
-        return JSONResponse(data)
+    return create_negotiated_response(
+        data=data,
+        request=request,
+        templates=templates,
+        template_name="status.html",
+        xml_root="dtesn_status"
+    )
 
 
 @router.get("/membrane_info")
@@ -1419,13 +1502,13 @@ async def membrane_info(
     request: Request,
     templates: Jinja2Templates = Depends(get_templates),
     processor: DTESNProcessor = Depends(get_dtesn_processor)
-) -> Union[HTMLResponse, JSONResponse]:
+) -> Response:
     """
     Get comprehensive information about DTESN membrane hierarchy.
 
     Server-side endpoint providing detailed membrane computing information
     with enhanced server-side data fetching capabilities.
-    Supports both HTML and JSON responses via content negotiation.
+    Supports JSON, HTML, and XML responses via content negotiation.
 
     Returns:
         Enhanced membrane hierarchy information
@@ -1455,27 +1538,22 @@ async def membrane_info(
             "streaming_compatible": True,
             "engine_integrated": True
         },
-        "server_rendered": True
-    }
-
-    if wants_html(request):
-        operation_descriptions = {
+        "server_rendered": True,
+        "operation_descriptions": {
             "membrane_evolution": "Dynamic transformation of membrane structures",
             "cross_membrane_communication": "Communication protocols between different membrane levels",
             "rule_application": "Application of P-system evolution rules within membranes",
             "tree_enumeration": "OEIS A000081 compliant counting of rooted tree structures"
         }
+    }
 
-        return templates.TemplateResponse(
-            "membrane_info.html",
-            {
-                "request": request,
-                "data": data,
-                "operation_descriptions": operation_descriptions
-            }
-        )
-    else:
-        return JSONResponse(data)
+    return create_negotiated_response(
+        data=data,
+        request=request,
+        templates=templates,
+        template_name="membrane_info.html",
+        xml_root="membrane_hierarchy_info"
+    )
 
 
 @router.get("/async_status")
@@ -1862,3 +1940,163 @@ async def get_batch_metrics(
             )
         else:
             raise HTTPException(status_code=500, detail=error_response.dict())
+
+
+# Phase 7.2.1 - Advanced Server-Side Template Engine Endpoints
+
+@router.get("/template_performance")
+async def get_template_performance_metrics(
+    request: Request,
+    templates: Jinja2Templates = Depends(get_templates),
+    advanced_engine: AdvancedTemplateEngine = Depends(get_advanced_template_engine),
+    cache_manager: DTESNTemplateCacheManager = Depends(get_template_cache_manager)
+) -> Union[HTMLResponse, Dict[str, Any]]:
+    """
+    Get comprehensive template engine performance metrics and cache statistics.
+    
+    Provides detailed information about template compilation, caching effectiveness,
+    dynamic generation performance, and server-side rendering optimization metrics.
+    """
+    try:
+        # Get cache statistics
+        cache_stats = cache_manager.get_cache_statistics()
+        
+        # Get advanced engine performance stats  
+        engine_stats = advanced_engine.get_performance_stats()
+        
+        # Get dynamic generator cache stats
+        generator_stats = advanced_engine.dynamic_generator.get_cache_stats()
+        
+        # Calculate overall performance metrics
+        performance_data = {
+            "template_engine_status": "operational",
+            "advanced_features_enabled": True,
+            "phase_7_2_1_implemented": True,
+            "cache_performance": cache_stats["cache_performance"],
+            "dynamic_generation": {
+                "templates_generated": generator_stats.get("template_cache_entries", 0),
+                "rendered_cache_entries": generator_stats.get("rendered_cache_entries", 0),
+                "hit_rate": generator_stats.get("hit_rate", 0),
+                "supported_result_types": engine_stats.get("supported_result_types", []),
+                "responsive_adaptation": engine_stats.get("supported_client_types", [])
+            },
+            "optimization_features": {
+                "template_compilation_caching": True,
+                "rendered_result_caching": True,
+                "compression_enabled": cache_stats["compression"]["compression_enabled"],
+                "ttl_management": True,
+                "invalidation_by_tags": True,
+                "responsive_templates": True,
+                "server_side_only": True
+            },
+            "memory_usage": cache_stats["memory_usage"],
+            "distributed_caching": cache_stats["distributed_cache"],
+            "server_rendered": True
+        }
+        
+        if wants_html(request):
+            return templates.TemplateResponse(
+                "template_performance.html",
+                {
+                    "request": request,
+                    "data": performance_data,
+                    "timestamp": datetime.now().isoformat()
+                }
+            )
+        else:
+            return performance_data
+            
+    except Exception as e:
+        logger.error(f"Template performance metrics error: {e}")
+        error_data = {
+            "status": "error",
+            "error": str(e),
+            "template_engine_status": "degraded",
+            "server_rendered": True
+        }
+        
+        if wants_html(request):
+            return templates.TemplateResponse(
+                "template_performance.html",
+                {
+                    "request": request,
+                    "data": error_data,
+                    "timestamp": datetime.now().isoformat()
+                },
+                status_code=500
+            )
+        else:
+            raise HTTPException(status_code=500, detail=error_data)
+
+
+@router.post("/template_cache/optimize")
+async def optimize_template_cache(
+    cache_manager: DTESNTemplateCacheManager = Depends(get_template_cache_manager)
+) -> Dict[str, Any]:
+    """
+    Optimize template cache performance by cleaning expired entries and updating metrics.
+    """
+    try:
+        optimization_result = await cache_manager.optimize_performance()
+        
+        return {
+            "status": "success",
+            "optimization_completed": True,
+            "results": optimization_result,
+            "server_rendered": True
+        }
+        
+    except Exception as e:
+        logger.error(f"Template cache optimization error: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Cache optimization failed: {e}"
+        )
+
+
+@router.get("/template_capabilities")
+async def get_template_capabilities(
+    request: Request,
+    templates: Jinja2Templates = Depends(get_templates)
+) -> Union[HTMLResponse, Dict[str, Any]]:
+    """
+    Get comprehensive template engine capabilities and feature documentation.
+    """
+    capabilities_data = {
+        "phase_7_2_1_features": {
+            "dynamic_template_generation": {
+                "enabled": True,
+                "description": "Templates generated dynamically based on DTESN result structure",
+                "supported_types": [
+                    "membrane_evolution",
+                    "esn_processing", 
+                    "bseries_computation",
+                    "batch_processing",
+                    "error_recovery"
+                ],
+                "complexity_levels": ["simple", "medium", "complex"],
+                "server_side_only": True
+            },
+            "template_caching": {
+                "enabled": True,
+                "description": "Multi-level caching for template compilation and rendered results"
+            },
+            "responsive_adaptation": {
+                "enabled": True,
+                "description": "Server-side responsive template selection based on client type"
+            }
+        },
+        "server_rendered": True
+    }
+    
+    if wants_html(request):
+        return templates.TemplateResponse(
+            "template_capabilities.html",
+            {
+                "request": request,
+                "data": capabilities_data,
+                "timestamp": datetime.now().isoformat()
+            }
+        )
+    else:
+        return capabilities_data

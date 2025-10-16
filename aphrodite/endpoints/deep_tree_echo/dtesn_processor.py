@@ -47,6 +47,16 @@ from aphrodite.endpoints.deep_tree_echo.batch_manager import (
     BatchConfiguration,
     BatchingMetrics
 )
+from aphrodite.endpoints.deep_tree_echo.data_pipeline import (
+    DataProcessingPipeline,
+    PipelineConfiguration,
+    VectorizedDataTransformer,
+    create_data_processing_pipeline
+)
+from aphrodite.endpoints.deep_tree_echo.performance_integration import (
+    IntegratedDataPipelineMonitor,
+    create_integrated_pipeline_monitor
+)
 
 logger = logging.getLogger(__name__)
 
@@ -219,6 +229,17 @@ class DTESNProcessor:
 
         # Initialize enhanced concurrent processing resources
         self._processing_semaphore = asyncio.Semaphore(max_concurrent_processes)
+        
+        # Initialize enhanced data processing pipeline (Phase 7.1.3)
+        self._data_pipeline: Optional[DataProcessingPipeline] = None
+        self._pipeline_monitor: Optional[IntegratedDataPipelineMonitor] = None
+        self._pipeline_config = PipelineConfiguration(
+            max_workers=min(max_concurrent_processes // 2, 16),  # Balance workers with concurrency
+            enable_dynamic_batching=True,
+            max_batch_size=1000,
+            enable_vectorization=True,
+            enable_performance_profiling=True
+        )
         self._thread_pool = ThreadPoolExecutor(
             max_workers=max_concurrent_processes,
             thread_name_prefix="DTESN_Worker"
@@ -269,6 +290,17 @@ class DTESNProcessor:
             self._connection_pool = None
             self._concurrency_manager = None
             self._request_queue = None
+        
+        # Initialize enhanced data processing pipeline (Phase 7.1.3)
+        self._data_pipeline: Optional[DataProcessingPipeline] = None
+        self._pipeline_monitor: Optional[IntegratedDataPipelineMonitor] = None
+        self._pipeline_config = PipelineConfiguration(
+            max_workers=min(max_concurrent_processes // 2, 16),  # Balance workers with concurrency
+            enable_dynamic_batching=True,
+            max_batch_size=1000,
+            enable_vectorization=True,
+            enable_performance_profiling=True
+        )
 
         # Engine integration state
         self.engine_config: Optional[AphroditeConfig] = None
@@ -290,6 +322,17 @@ class DTESNProcessor:
             self._batch_manager_started = False
         else:
             self._batch_manager = None
+        
+        # Initialize enhanced data processing pipeline (Phase 7.1.3)
+        self._data_pipeline: Optional[DataProcessingPipeline] = None
+        self._pipeline_monitor: Optional[IntegratedDataPipelineMonitor] = None
+        self._pipeline_config = PipelineConfiguration(
+            max_workers=min(max_concurrent_processes // 2, 16),  # Balance workers with concurrency
+            enable_dynamic_batching=enable_dynamic_batching,
+            max_batch_size=1000,
+            enable_vectorization=True,
+            enable_performance_profiling=True
+        )
 
         # Initialize DTESN components
         self._initialize_dtesn_components()
@@ -402,6 +445,9 @@ class DTESNProcessor:
 
             if hasattr(self.engine, "get_lora_config"):
                 self.lora_config = await self.engine.get_lora_config()
+
+            # Initialize enhanced data processing pipeline (Phase 7.1.3)
+            await self._initialize_data_processing_pipeline()
 
             # Initialize backend processing pipelines with engine integration
             await self._setup_engine_aware_pipelines()
@@ -716,6 +762,7 @@ class DTESNProcessor:
             "processing_enhancements": {},
             "performance_metrics": {},
             "backend_integration": {},
+            "multi_source_data": {},
         }
 
         if not self.engine:
@@ -790,6 +837,9 @@ class DTESNProcessor:
                 "configuration_synchronized": self.last_engine_sync > 0,
                 "error_handling_active": True
             }
+            
+            # Multi-source data integration - Task 7.1.1
+            context["multi_source_data"] = await self._fetch_multi_source_data()
                 
         except Exception as e:
             logger.warning(f"Comprehensive engine context fetch error: {e}")
@@ -797,6 +847,318 @@ class DTESNProcessor:
             context["error"] = str(e)
         
         return context
+
+    async def _fetch_multi_source_data(self) -> Dict[str, Any]:
+        """
+        Task 7.1.1: Implement Multi-Source Data Integration
+        
+        Fetches data from multiple engine components simultaneously and aggregates
+        them into a unified data structure for DTESN processing.
+        
+        Returns:
+            Aggregated data from multiple engine sources
+        """
+        multi_source_data = {
+            "sources": {},
+            "aggregation": {},
+            "processing_pipelines": {},
+            "transformation_ready": False,
+            "source_count": 0,
+            "timestamp": time.time()
+        }
+        
+        if not self.engine:
+            return multi_source_data
+            
+        try:
+            # Concurrent data fetching from multiple sources
+            fetch_tasks = []
+            source_names = []
+            
+            # Source 1: Model Configuration Data
+            if hasattr(self.engine, 'get_model_config'):
+                fetch_tasks.append(self._fetch_model_data_source())
+                source_names.append("model_config")
+            
+            # Source 2: Engine State Data  
+            if hasattr(self.engine, 'get_tokenizer'):
+                fetch_tasks.append(self._fetch_tokenizer_data_source())
+                source_names.append("tokenizer")
+                
+            # Source 3: Performance Metrics Data
+            fetch_tasks.append(self._fetch_performance_data_source())
+            source_names.append("performance")
+            
+            # Source 4: Processing State Data
+            fetch_tasks.append(self._fetch_processing_state_source())
+            source_names.append("processing_state")
+            
+            # Source 5: Memory and Resource Data
+            fetch_tasks.append(self._fetch_resource_data_source())
+            source_names.append("resources")
+            
+            # Execute all data fetching concurrently
+            if fetch_tasks:
+                source_results = await asyncio.gather(*fetch_tasks, return_exceptions=True)
+                
+                # Aggregate results from all sources
+                for i, result in enumerate(source_results):
+                    if isinstance(result, Exception):
+                        logger.warning(f"Failed to fetch from source {source_names[i]}: {result}")
+                        multi_source_data["sources"][source_names[i]] = {"error": str(result)}
+                    else:
+                        multi_source_data["sources"][source_names[i]] = result
+                        multi_source_data["source_count"] += 1
+                
+                # Perform data aggregation and create processing pipelines
+                multi_source_data["aggregation"] = await self._aggregate_multi_source_data(
+                    multi_source_data["sources"]
+                )
+                multi_source_data["processing_pipelines"] = await self._create_data_processing_pipelines(
+                    multi_source_data["sources"],
+                    multi_source_data["aggregation"]
+                )
+                multi_source_data["transformation_ready"] = True
+            
+        except Exception as e:
+            logger.error(f"Multi-source data integration failed: {e}")
+            multi_source_data["error"] = str(e)
+            
+        return multi_source_data
+    
+    async def _fetch_model_data_source(self) -> Dict[str, Any]:
+        """Fetch data from model configuration source."""
+        try:
+            model_data = {
+                "model_name": getattr(self.model_config, 'model', 'unknown'),
+                "max_model_len": getattr(self.model_config, 'max_model_len', None),
+                "vocab_size": getattr(self.model_config, 'vocab_size', None),
+                "hidden_size": getattr(self.model_config, 'hidden_size', None),
+                "dtype": str(getattr(self.model_config, 'dtype', None)),
+                "source_type": "model_config",
+                "fetch_timestamp": time.time()
+            }
+            return model_data
+        except Exception as e:
+            return {"error": str(e), "source_type": "model_config"}
+    
+    async def _fetch_tokenizer_data_source(self) -> Dict[str, Any]:
+        """Fetch data from tokenizer source."""
+        try:
+            if hasattr(self.engine, 'get_tokenizer'):
+                tokenizer_data = {
+                    "tokenizer_available": True,
+                    "engine_type": type(self.engine).__name__,
+                    "has_encode_method": hasattr(self.engine, 'encode'),
+                    "has_decode_method": hasattr(self.engine, 'decode'),
+                    "source_type": "tokenizer",
+                    "fetch_timestamp": time.time()
+                }
+            else:
+                tokenizer_data = {
+                    "tokenizer_available": False,
+                    "source_type": "tokenizer",
+                    "fetch_timestamp": time.time()
+                }
+            return tokenizer_data
+        except Exception as e:
+            return {"error": str(e), "source_type": "tokenizer"}
+    
+    async def _fetch_performance_data_source(self) -> Dict[str, Any]:
+        """Fetch data from performance metrics source."""
+        try:
+            perf_data = {
+                "total_requests": self._processing_stats.get("total_requests", 0),
+                "concurrent_requests": self._processing_stats.get("concurrent_requests", 0),
+                "error_count": self._processing_stats.get("error_count", 0),
+                "last_sync_time": self.last_engine_sync,
+                "engine_ready": self.engine_ready,
+                "processing_semaphore_value": self._processing_semaphore._value if self._processing_semaphore else None,
+                "source_type": "performance",
+                "fetch_timestamp": time.time()
+            }
+            return perf_data
+        except Exception as e:
+            return {"error": str(e), "source_type": "performance"}
+    
+    async def _fetch_processing_state_source(self) -> Dict[str, Any]:
+        """Fetch data from processing state source."""
+        try:
+            processing_data = {
+                "membrane_cache_size": len(self._membrane_cache) if hasattr(self, '_membrane_cache') else 0,
+                "esn_cache_size": len(self._esn_cache) if hasattr(self, '_esn_cache') else 0,
+                "bseries_cache_size": len(self._bseries_cache) if hasattr(self, '_bseries_cache') else 0,
+                "batch_manager_active": self._batch_manager is not None,
+                "concurrency_manager_active": self._concurrency_manager is not None,
+                "async_optimization_enabled": self.enable_async_optimization,
+                "source_type": "processing_state",
+                "fetch_timestamp": time.time()
+            }
+            return processing_data
+        except Exception as e:
+            return {"error": str(e), "source_type": "processing_state"}
+    
+    async def _fetch_resource_data_source(self) -> Dict[str, Any]:
+        """Fetch data from resource and memory source."""
+        try:
+            resource_data = {
+                "max_concurrent_processes": self.max_concurrent_processes,
+                "current_processing_load": {
+                    mem_id: load for mem_id, load in self._processing_loads.items()
+                } if hasattr(self, '_processing_loads') else {},
+                "available_membranes": list(self._available_membranes) if hasattr(self, '_available_membranes') else [],
+                "echo_kern_available": ECHO_KERN_AVAILABLE,
+                "numpy_available": True,  # We import numpy at module level
+                "source_type": "resources",
+                "fetch_timestamp": time.time()
+            }
+            return resource_data
+        except Exception as e:
+            return {"error": str(e), "source_type": "resources"}
+    
+    async def _aggregate_multi_source_data(self, sources: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Aggregate data from multiple sources into unified data structure.
+        
+        Args:
+            sources: Dictionary of source data from multiple components
+            
+        Returns:
+            Aggregated and processed data ready for DTESN operations
+        """
+        aggregation = {
+            "total_sources": len(sources),
+            "successful_sources": 0,
+            "failed_sources": 0,
+            "data_quality_score": 0.0,
+            "unified_metadata": {},
+            "processing_constraints": {},
+            "optimization_hints": {}
+        }
+        
+        # Count successful vs failed sources
+        for source_name, source_data in sources.items():
+            if "error" in source_data:
+                aggregation["failed_sources"] += 1
+            else:
+                aggregation["successful_sources"] += 1
+        
+        # Calculate data quality score
+        if aggregation["total_sources"] > 0:
+            aggregation["data_quality_score"] = aggregation["successful_sources"] / aggregation["total_sources"]
+        
+        # Aggregate metadata across sources
+        for source_name, source_data in sources.items():
+            if "error" not in source_data:
+                # Extract common metadata fields
+                if "fetch_timestamp" in source_data:
+                    aggregation["unified_metadata"][f"{source_name}_timestamp"] = source_data["fetch_timestamp"]
+                if source_name == "model_config" and "model_name" in source_data:
+                    aggregation["unified_metadata"]["active_model"] = source_data["model_name"]
+                if source_name == "performance":
+                    aggregation["unified_metadata"]["processing_stats"] = {
+                        "total_requests": source_data.get("total_requests", 0),
+                        "engine_ready": source_data.get("engine_ready", False)
+                    }
+        
+        # Create processing constraints based on aggregated data
+        model_source = sources.get("model_config", {})
+        if "max_model_len" in model_source and "error" not in model_source:
+            aggregation["processing_constraints"]["max_sequence_length"] = model_source["max_model_len"]
+        
+        resource_source = sources.get("resources", {})
+        if "max_concurrent_processes" in resource_source and "error" not in resource_source:
+            aggregation["processing_constraints"]["max_concurrent"] = resource_source["max_concurrent_processes"]
+        
+        # Generate optimization hints
+        perf_source = sources.get("performance", {})
+        if "error" not in perf_source:
+            if perf_source.get("concurrent_requests", 0) > 0:
+                aggregation["optimization_hints"]["high_load_detected"] = True
+            if perf_source.get("engine_ready", False):
+                aggregation["optimization_hints"]["engine_optimizations_available"] = True
+        
+        return aggregation
+    
+    async def _create_data_processing_pipelines(
+        self, 
+        sources: Dict[str, Dict[str, Any]], 
+        aggregation: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Create efficient data transformation pipelines for DTESN operations.
+        
+        Args:
+            sources: Raw source data
+            aggregation: Aggregated metadata
+            
+        Returns:
+            Configuration for data processing pipelines
+        """
+        pipelines = {
+            "transformation_pipelines": [],
+            "data_flow_config": {},
+            "optimization_config": {},
+            "pipeline_ready": False
+        }
+        
+        try:
+            # Pipeline 1: Model-aware data preprocessing
+            if "model_config" in sources and "error" not in sources["model_config"]:
+                model_pipeline = {
+                    "name": "model_aware_preprocessing",
+                    "source": "model_config",
+                    "transformations": ["normalize_to_model_constraints", "apply_vocab_limits"],
+                    "output_format": "model_compatible",
+                    "priority": 1
+                }
+                pipelines["transformation_pipelines"].append(model_pipeline)
+            
+            # Pipeline 2: Performance-optimized processing
+            if "performance" in sources and "error" not in sources["performance"]:
+                perf_pipeline = {
+                    "name": "performance_optimized_processing",
+                    "source": "performance",
+                    "transformations": ["adjust_concurrency", "optimize_batch_size"],
+                    "output_format": "performance_tuned",
+                    "priority": 2
+                }
+                pipelines["transformation_pipelines"].append(perf_pipeline)
+            
+            # Pipeline 3: Resource-aware scaling
+            if "resources" in sources and "error" not in sources["resources"]:
+                resource_pipeline = {
+                    "name": "resource_aware_scaling",
+                    "source": "resources",
+                    "transformations": ["scale_to_available_memory", "distribute_processing_load"],
+                    "output_format": "resource_optimized",
+                    "priority": 3
+                }
+                pipelines["transformation_pipelines"].append(resource_pipeline)
+            
+            # Configure data flow between pipelines
+            pipelines["data_flow_config"] = {
+                "pipeline_order": [p["name"] for p in sorted(pipelines["transformation_pipelines"], key=lambda x: x["priority"])],
+                "parallel_execution": aggregation.get("data_quality_score", 0) > 0.7,
+                "fallback_strategy": "sequential_processing",
+                "error_handling": "continue_with_available_data"
+            }
+            
+            # Configure optimizations based on aggregated data
+            pipelines["optimization_config"] = {
+                "enable_caching": aggregation.get("optimization_hints", {}).get("engine_optimizations_available", False),
+                "batch_processing": aggregation.get("processing_constraints", {}).get("max_concurrent", 1) > 1,
+                "memory_optimization": aggregation.get("processing_constraints", {}).get("max_sequence_length", 0) > 1024,
+                "concurrent_execution": len(pipelines["transformation_pipelines"]) > 1
+            }
+            
+            pipelines["pipeline_ready"] = len(pipelines["transformation_pipelines"]) > 0
+            
+        except Exception as e:
+            logger.error(f"Pipeline creation failed: {e}")
+            pipelines["error"] = str(e)
+        
+        return pipelines
 
     def _serialize_config(self, config_obj) -> Dict[str, Any]:
         """
@@ -927,7 +1289,7 @@ class DTESNProcessor:
         self, input_data: str, engine_context: Dict[str, Any]
     ) -> "np.ndarray":
         """
-        Preprocess input data with engine-aware techniques.
+        Preprocess input data with engine-aware techniques and multi-source data integration.
 
         Args:
             input_data: Raw input data
@@ -936,13 +1298,30 @@ class DTESNProcessor:
         Returns:
             Preprocessed input vector optimized for engine integration
         """
-        # Basic conversion - can be enhanced with tokenizer integration
-        input_vector = np.array([ord(c) for c in input_data[:10]]).reshape(
-            -1, 1
-        )
-        if len(input_vector) < 10:
-            input_vector = np.pad(
-                input_vector, ((0, 10 - len(input_vector)), (0, 0))
+        # Get multi-source data for enhanced preprocessing
+        multi_source_data = engine_context.get("multi_source_data", {})
+        
+        # Apply multi-source data transformations
+        if multi_source_data.get("transformation_ready", False):
+            input_vector = await self._apply_multi_source_transformations(
+                input_data, multi_source_data
+            )
+        else:
+            # Basic conversion - can be enhanced with tokenizer integration
+            input_vector = np.array([ord(c) for c in input_data[:10]]).reshape(
+                -1, 1
+            )
+            if len(input_vector) < 10:
+                input_vector = np.pad(
+                    input_vector, ((0, 10 - len(input_vector)), (0, 0))
+                )
+
+        # Apply optimizations based on aggregated source data
+        aggregation = multi_source_data.get("aggregation", {})
+        if aggregation.get("data_quality_score", 0) > 0.7:
+            # High quality data available - apply advanced optimizations
+            input_vector = await self._apply_high_quality_optimizations(
+                input_vector, aggregation
             )
 
         # Engine-aware preprocessing enhancements
@@ -953,6 +1332,103 @@ class DTESNProcessor:
                 "Engine tokenization available - could enhance preprocessing"
             )
 
+        return input_vector
+    
+    async def _apply_multi_source_transformations(
+        self, input_data: str, multi_source_data: Dict[str, Any]
+    ) -> "np.ndarray":
+        """
+        Apply data transformations based on multiple source pipelines.
+        
+        Args:
+            input_data: Raw input string
+            multi_source_data: Multi-source integration data
+            
+        Returns:
+            Transformed input vector
+        """
+        pipelines = multi_source_data.get("processing_pipelines", {})
+        pipeline_order = pipelines.get("data_flow_config", {}).get("pipeline_order", [])
+        
+        # Start with basic conversion
+        input_vector = np.array([ord(c) for c in input_data[:10]]).reshape(-1, 1)
+        if len(input_vector) < 10:
+            input_vector = np.pad(input_vector, ((0, 10 - len(input_vector)), (0, 0)))
+        
+        # Apply transformations from each pipeline in order
+        for pipeline_name in pipeline_order:
+            if pipeline_name == "model_aware_preprocessing":
+                input_vector = await self._apply_model_aware_preprocessing(
+                    input_vector, multi_source_data
+                )
+            elif pipeline_name == "performance_optimized_processing":
+                input_vector = await self._apply_performance_optimization(
+                    input_vector, multi_source_data
+                )
+            elif pipeline_name == "resource_aware_scaling":
+                input_vector = await self._apply_resource_scaling(
+                    input_vector, multi_source_data
+                )
+        
+        return input_vector
+    
+    async def _apply_model_aware_preprocessing(
+        self, input_vector: "np.ndarray", multi_source_data: Dict[str, Any]
+    ) -> "np.ndarray":
+        """Apply model-specific preprocessing transformations."""
+        model_source = multi_source_data.get("sources", {}).get("model_config", {})
+        
+        # Normalize based on model constraints
+        if "max_model_len" in model_source:
+            max_len = model_source["max_model_len"]
+            # Ensure input doesn't exceed model limits
+            if input_vector.size > max_len // 4:  # Use quarter of model capacity
+                input_vector = input_vector[:max_len // 4]
+        
+        # Apply vocabulary size constraints if available
+        if "vocab_size" in model_source and model_source["vocab_size"]:
+            vocab_size = model_source["vocab_size"]
+            # Clip values to vocabulary range
+            input_vector = np.clip(input_vector, 0, vocab_size - 1)
+        
+        return input_vector
+    
+    async def _apply_performance_optimization(
+        self, input_vector: "np.ndarray", multi_source_data: Dict[str, Any]
+    ) -> "np.ndarray":
+        """Apply performance-based optimizations."""
+        perf_source = multi_source_data.get("sources", {}).get("performance", {})
+        
+        # Adjust processing based on current load
+        if perf_source.get("concurrent_requests", 0) > 50:
+            # High load - use simplified processing
+            input_vector = input_vector[::2]  # Downsample for performance
+        
+        return input_vector
+    
+    async def _apply_resource_scaling(
+        self, input_vector: "np.ndarray", multi_source_data: Dict[str, Any]
+    ) -> "np.ndarray":
+        """Apply resource-aware scaling transformations."""
+        resource_source = multi_source_data.get("sources", {}).get("resources", {})
+        
+        # Scale based on available resources
+        max_concurrent = resource_source.get("max_concurrent_processes", 1)
+        if max_concurrent > 50:
+            # High capacity available - can handle larger inputs
+            input_vector = np.repeat(input_vector, 2, axis=0)
+        
+        return input_vector
+    
+    async def _apply_high_quality_optimizations(
+        self, input_vector: "np.ndarray", aggregation: Dict[str, Any]
+    ) -> "np.ndarray":
+        """Apply optimizations when high-quality multi-source data is available."""
+        # Apply normalization based on unified metadata
+        if aggregation.get("optimization_hints", {}).get("engine_optimizations_available"):
+            # Engine optimizations available - normalize for better performance
+            input_vector = (input_vector - np.mean(input_vector)) / (np.std(input_vector) + 1e-8)
+        
         return input_vector
 
     async def _process_membrane_with_engine_backend(
@@ -2343,9 +2819,122 @@ class DTESNProcessor:
         except Exception as e:
             logger.error(f"Failed to apply configuration changes: {e}")
             raise
+    async def _initialize_data_processing_pipeline(self):
+        """Initialize enhanced data processing pipeline (Phase 7.1.3)."""
+        try:
+            logger.info("Initializing enhanced data processing pipeline...")
+            
+            # Create data processing pipeline
+            self._data_pipeline = await create_data_processing_pipeline(self._pipeline_config)
+            
+            # Create integrated performance monitor
+            self._pipeline_monitor = await create_integrated_pipeline_monitor(
+                self._data_pipeline, 
+                enable_echo_integration=True
+            )
+            
+            logger.info("Data processing pipeline initialized successfully")
+            
+        except Exception as e:
+            logger.error(f"Failed to initialize data processing pipeline: {e}")
+            # Continue without enhanced pipeline rather than failing completely
+            self._data_pipeline = None
+            self._pipeline_monitor = None
+    
+    async def process_data_batch(
+        self, 
+        data_batch: List[str],
+        enable_parallel: bool = True
+    ) -> List[Dict[str, Any]]:
+        """
+        Process batch of data using enhanced pipeline (Phase 7.1.3).
+        
+        Args:
+            data_batch: List of input strings to process
+            enable_parallel: Whether to use parallel processing
+            
+        Returns:
+            List of DTESN processing results
+        """
+        if not self._data_pipeline:
+            # Fallback to sequential processing
+            return [await self._process_single_item(item) for item in data_batch]
+        
+        # Use enhanced pipeline processing
+        async def dtesn_transform(item: str) -> Dict[str, Any]:
+            """Transform function for pipeline processing."""
+            return await self._process_single_item(item)
+        
+        try:
+            # Convert to list comprehension for now to avoid thread pool issues
+            if enable_parallel and len(data_batch) > 1:
+                tasks = [dtesn_transform(item) for item in data_batch]
+                results = await asyncio.gather(*tasks, return_exceptions=True)
+                # Handle exceptions
+                processed_results = []
+                for i, result in enumerate(results):
+                    if isinstance(result, Exception):
+                        logger.warning(f"Processing failed for item {i}: {result}")
+                        processed_results.append({
+                            "error": str(result),
+                            "input": data_batch[i],
+                            "processed_output": {},
+                            "processing_time_ms": 0.0
+                        })
+                    else:
+                        processed_results.append(result)
+                return processed_results
+            else:
+                return [await dtesn_transform(item) for item in data_batch]
+            
+        except Exception as e:
+            logger.error(f"Pipeline batch processing failed: {e}")
+            # Fallback to sequential processing
+            return [await self._process_single_item(item) for item in data_batch]
+    
+    async def _process_single_item(self, input_data: str) -> Dict[str, Any]:
+        """Process a single input item through DTESN."""
+        try:
+            result = await self.process(input_data)
+            return result.to_dict()
+        except Exception as e:
+            logger.error(f"Single item processing failed: {e}")
+            return {
+                "error": str(e),
+                "input": input_data,
+                "processed_output": {},
+                "processing_time_ms": 0.0
+            }
+    
+    def get_pipeline_metrics(self) -> Dict[str, Any]:
+        """Get performance metrics from data processing pipeline."""
+        if not self._data_pipeline:
+            return {"pipeline_available": False}
+        
+        return {
+            "pipeline_available": True,
+            "pipeline_metrics": self._data_pipeline.get_performance_metrics(),
+            "monitoring_status": (
+                self._pipeline_monitor.get_comprehensive_status() 
+                if self._pipeline_monitor else {}
+            )
+        }
+    
+    async def shutdown_pipeline(self):
+        """Shutdown data processing pipeline resources."""
+        if self._pipeline_monitor:
+            await self._pipeline_monitor.stop_monitoring()
+            
+        if self._data_pipeline:
+            await self._data_pipeline.stop()
+            
+        logger.info("Data processing pipeline shutdown complete")
 
     async def cleanup_resources(self):
         """Clean up processing resources."""
+        # Shutdown enhanced data processing pipeline
+        await self.shutdown_pipeline()
+        
         if hasattr(self, "_thread_pool"):
             self._thread_pool.shutdown(wait=True)
             logger.info("DTESN processor thread pool shut down successfully")
