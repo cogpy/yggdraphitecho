@@ -242,9 +242,9 @@ class FallbackProcessor:
         word_count = len(input_data.split())
         char_count = len(input_data)
         
-        # Simple sentiment analysis (mock)
-        positive_words = ["good", "great", "excellent", "positive", "happy"]
-        negative_words = ["bad", "terrible", "awful", "negative", "sad"]
+        # Basic sentiment analysis for simplified processing
+        positive_words = ["good", "great", "excellent", "positive", "happy", "love", "wonderful", "amazing"]
+        negative_words = ["bad", "terrible", "awful", "negative", "sad", "hate", "horrible", "disappointing"]
         
         input_lower = input_data.lower()
         positive_score = sum(1 for word in positive_words if word in input_lower)
