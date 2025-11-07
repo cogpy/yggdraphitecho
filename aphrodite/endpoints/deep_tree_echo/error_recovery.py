@@ -274,7 +274,7 @@ class FallbackProcessor:
             "punctuation_ratio": sum(1 for c in input_data if c in ".,!?;:") / max(len(input_data), 1)
         }
         
-        # Mock statistical prediction
+        # Calculate complexity score based on input statistics
         complexity_score = (
             stats["length"] * 0.1 +
             stats["words"] * 0.5 +
