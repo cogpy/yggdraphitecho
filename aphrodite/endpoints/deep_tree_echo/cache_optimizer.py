@@ -418,8 +418,15 @@ class CacheOptimizer:
     
     async def _get_from_l2(self, key: str) -> Optional[Dict[str, Any]]:
         """Get value from L2 (Redis) cache."""
-        # Placeholder for Redis integration
-        # In production: return await self.redis_client.get(key)
+        if not self.config.l2_enabled or not self.redis_client:
+            return None
+        
+        try:
+            value = await self.redis_client.get(key)
+            if value:
+                return json.loads(value)
+        except Exception as e:
+            logger.warning(f"Redis get failed for key {key}: {e}")
         return None
     
     async def _set_to_l2(
@@ -429,15 +436,25 @@ class CacheOptimizer:
         ttl: Optional[int] = None
     ) -> None:
         """Set value in L2 (Redis) cache."""
-        # Placeholder for Redis integration
-        # In production: await self.redis_client.setex(key, ttl or self.config.l2_ttl_seconds, value)
-        pass
+        if not self.config.l2_enabled or not self.redis_client:
+            return
+        
+        try:
+            serialized_value = json.dumps(value)
+            ttl_seconds = ttl or self.config.l2_ttl_seconds
+            await self.redis_client.setex(key, ttl_seconds, serialized_value)
+        except Exception as e:
+            logger.warning(f"Redis set failed for key {key}: {e}")
     
     async def _delete_from_l2(self, key: str) -> None:
         """Delete value from L2 (Redis) cache."""
-        # Placeholder for Redis integration
-        # In production: await self.redis_client.delete(key)
-        pass
+        if not self.config.l2_enabled or not self.redis_client:
+            return
+        
+        try:
+            await self.redis_client.delete(key)
+        except Exception as e:
+            logger.warning(f"Redis delete failed for key {key}: {e}")
     
     def _update_hit_latency(self, latency_ms: float) -> None:
         """Update average hit latency metric."""

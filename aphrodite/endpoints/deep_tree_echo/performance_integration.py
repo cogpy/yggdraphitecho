@@ -30,7 +30,7 @@ except ImportError as e:
     logging.warning(f"Performance monitoring not available: {e}")
     PERFORMANCE_MONITORING_AVAILABLE = False
     
-    # Mock classes for fallback
+    # Fallback implementations when echo.kern performance monitoring is not available
     class UnifiedPerformanceMonitor:
         def __init__(self, *args, **kwargs): pass
         def start_monitoring(self): pass
