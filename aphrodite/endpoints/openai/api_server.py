@@ -104,6 +104,7 @@ except ImportError:
     DTESN_ROUTES_AVAILABLE = False
 
 # Import A/B testing middleware
+try:
 from aphrodite.endpoints.middleware.ab_testing_middleware import (
     ABTestingMiddleware, get_ab_testing_manager
 )

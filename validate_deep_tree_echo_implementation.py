@@ -174,7 +174,7 @@ class DeepTreeEchoValidator:
                 "Server-Side Routing",
                 True,
                 f"Complete SSR route implementation with {len(present_routes)} endpoints",
-                f"Routes: {', '.join([r.split('\"')[1] for r in present_routes])}"
+                "Routes: " + ', '.join([r.split('"')[1] for r in present_routes])
             ))
         else:
             self.results.append(ValidationResult(

@@ -23,6 +23,8 @@ except ImportError:
     get_cache_manager = None
     DTESNServerSideCacheManager = None
 except ImportError:
+    DTESN_CACHE_AVAILABLE = False
+except ImportError:
     from performance_monitor import UnifiedPerformanceMonitor, PerformanceAlert, AlertSeverity
 
 # Setup logging

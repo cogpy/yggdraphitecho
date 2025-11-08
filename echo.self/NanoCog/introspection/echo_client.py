@@ -193,13 +193,13 @@ class EchoSelfClient(AtomSpaceClient):
                         "reasoning_depth_assessment"
                     ]),
                     "insights": [
-                        f"Level {i} insight: {random.choice([
+                        f"Level {i} insight: " + random.choice([
                             'Enhanced attention allocation detected',
                             'Persona dimension coherence improved',
                             'Recursive reasoning depth optimized',
                             'Hypergraph pattern encoding refined',
                             'Cognitive synergy level increased'
-                        ])}"
+                        ])
                     ],
                     "quality_score": random.uniform(0.6, 0.95)
                 } for i in range(1, depth + 1)
