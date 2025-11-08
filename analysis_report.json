@@ -1,0 +1,4256 @@
+{
+  "stats": {
+    "syntax_errors": 6,
+    "print_statements": 7562,
+    "long_lines": 1031,
+    "todos": 613,
+    "missing_docstrings": 14869,
+    "missing_module_docstrings": 1013,
+    "wildcard_imports": 13,
+    "missing_init_files": 50,
+    "requirement_files": 4,
+    "has_setup_py": true,
+    "has_pyproject_toml": true
+  },
+  "issues": {
+    "syntax_errors": [
+      {
+        "file": "validate_deep_tree_echo_implementation.py",
+        "line": 178,
+        "error": "f-string expression part cannot include a backslash",
+        "text": "))"
+      },
+      {
+        "file": "aphrodite/endpoints/deep_tree_echo/dtesn_processor.py",
+        "line": 564,
+        "error": "invalid decimal literal",
+        "text": "Process input through DTESN system with enhanced 10x concurrent processing."
+      },
+      {
+        "file": "aphrodite/endpoints/deep_tree_echo/routes.py",
+        "line": 25,
+        "error": "'(' was never closed",
+        "text": "from aphrodite.endpoints.deep_tree_echo.content_negotiation import ("
+      },
+      {
+        "file": "aphrodite/endpoints/openai/api_server.py",
+        "line": 110,
+        "error": "unexpected indent",
+        "text": "logger.info(\"DTESN OpenAI routes available\")"
+      },
+      {
+        "file": "echo.kern/performance_integration.py",
+        "line": 18,
+        "error": "expected 'except' or 'finally' block",
+        "text": "try:"
+      },
+      {
+        "file": "echo.self/NanoCog/introspection/echo_client.py",
+        "line": 196,
+        "error": "unterminated string literal (detected at line 196)",
+        "text": "f\"Level {i} insight: {random.choice(["
+      }
+    ],
+    "todos": [
+      {
+        "file": "2do/llm/llm/models.py",
+        "line": 924,
+        "text": "for tool_call in self.tool_calls():  # TODO Should  be _or_raise()"
+      },
+      {
+        "file": "aphrodite/_custom_ops.py",
+        "line": 297,
+        "text": "# TODO: Remove this contiguous call when the kernel is updated to support non-contiguous input"
+      },
+      {
+        "file": "aphrodite/_ipex_ops.py",
+        "line": 242,
+        "text": "# TODO: support FP8 kv cache."
+      },
+      {
+        "file": "aphrodite/forward_context.py",
+        "line": 89,
+        "text": "# TODO: remove after making all virtual_engines share the same kv cache"
+      },
+      {
+        "file": "aphrodite/attention/layer.py",
+        "line": 151,
+        "text": "# TODO (mgoin): kv cache dtype should be specified in the FP8"
+      },
+      {
+        "file": "aphrodite/attention/layer.py",
+        "line": 361,
+        "text": "# TODO(Isotr0py): Use existing backend implementations and support FA3"
+      },
+      {
+        "file": "aphrodite/attention/selector.py",
+        "line": 105,
+        "text": "# TODO: Update the interface once V0 is removed"
+      },
+      {
+        "file": "aphrodite/attention/backends/differential_flash_attn.py",
+        "line": 145,
+        "text": "# TODO(woosuk): Move `use_cuda_graph` out since it's unrelated to attention."
+      },
+      {
+        "file": "aphrodite/attention/backends/differential_flash_attn.py",
+        "line": 430,
+        "text": "# TODO: add support for chunked prefill and prefix caching."
+      },
+      {
+        "file": "aphrodite/attention/backends/differential_flash_attn.py",
+        "line": 461,
+        "text": "# TODO(sang): Combine chunked prefill and prefix caching by"
+      },
+      {
+        "file": "aphrodite/attention/backends/dual_chunk_flash_attn.py",
+        "line": 962,
+        "text": "# TODO: support no vertical"
+      },
+      {
+        "file": "aphrodite/attention/backends/flash_attn.py",
+        "line": 142,
+        "text": "# TODO: Move `use_cuda_graph` out since it's unrelated to attention."
+      },
+      {
+        "file": "aphrodite/attention/backends/flash_attn.py",
+        "line": 438,
+        "text": "# TODO: Combine chunked prefill and prefix caching by"
+      },
+      {
+        "file": "aphrodite/attention/backends/flashinfer.py",
+        "line": 755,
+        "text": "# TODO: Combine chunked prefill and prefix caching by"
+      },
+      {
+        "file": "aphrodite/attention/backends/flashinfer.py",
+        "line": 1017,
+        "text": "# TODO: directly write to output tensor"
+      },
+      {
+        "file": "aphrodite/attention/backends/flashinfer.py",
+        "line": 1124,
+        "text": "# TODO: @pavanimajety Remove this once the switch happens"
+      },
+      {
+        "file": "aphrodite/attention/backends/flashmla.py",
+        "line": 55,
+        "text": "# TODO: cache assignment?"
+      },
+      {
+        "file": "aphrodite/attention/backends/placeholder_attn.py",
+        "line": 94,
+        "text": "# TODO: Move `use_cuda_graph` out since it's unrelated to attention."
+      },
+      {
+        "file": "aphrodite/attention/backends/rocm_aiter_mla.py",
+        "line": 171,
+        "text": "# TODO: Combine chunked prefill and prefix caching by"
+      },
+      {
+        "file": "aphrodite/attention/backends/rocm_flash_attn.py",
+        "line": 135,
+        "text": "# TODO(woosuk): Move `use_cuda_graph` out since it's unrelated to attention."
+      },
+      {
+        "file": "aphrodite/attention/backends/triton_flash_attn.py",
+        "line": 133,
+        "text": "# TODO: Move `use_cuda_graph` out since it's unrelated to attention."
+      },
+      {
+        "file": "aphrodite/attention/backends/triton_mla.py",
+        "line": 82,
+        "text": "num_kv_splits = 4  # TODO: heuristic"
+      },
+      {
+        "file": "aphrodite/attention/backends/triton_mla.py",
+        "line": 84,
+        "text": "# TODO(lucas) Allocate ahead of time"
+      },
+      {
+        "file": "aphrodite/attention/backends/utils.py",
+        "line": 178,
+        "text": "# TODO(sang): Combine chunked prefill and prefix caching by"
+      },
+      {
+        "file": "aphrodite/attention/backends/xformers.py",
+        "line": 94,
+        "text": "# FIXME: It is for flash attn."
+      },
+      {
+        "file": "aphrodite/attention/backends/xformers.py",
+        "line": 104,
+        "text": "# TODO: Move `use_cuda_graph` out since it's unrelated to attention."
+      },
+      {
+        "file": "aphrodite/attention/backends/xformers.py",
+        "line": 111,
+        "text": "# FIXME: It is for flash attn."
+      },
+      {
+        "file": "aphrodite/attention/backends/xformers.py",
+        "line": 141,
+        "text": "# FIXME: It is for flash attn."
+      },
+      {
+        "file": "aphrodite/attention/backends/xformers.py",
+        "line": 578,
+        "text": "# TODO(Hai) this triton kernel has regression issue (broke) to"
+      },
+      {
+        "file": "aphrodite/attention/backends/xformers.py",
+        "line": 671,
+        "text": "# FIXME: This is a hack."
+      },
+      {
+        "file": "aphrodite/attention/backends/xformers.py",
+        "line": 732,
+        "text": "# TODO: Too many view operations. Let's try to reduce"
+      },
+      {
+        "file": "aphrodite/attention/backends/xformers.py",
+        "line": 749,
+        "text": "# FIXME: Because xformers does not support dynamic sequence"
+      },
+      {
+        "file": "aphrodite/attention/backends/xformers.py",
+        "line": 764,
+        "text": "# TODO: Unnecessary copy. Optimize."
+      },
+      {
+        "file": "aphrodite/attention/backends/mla/common.py",
+        "line": 446,
+        "text": "# TODO: Move `use_cuda_graph` out since it's unrelated to attention."
+      },
+      {
+        "file": "aphrodite/attention/backends/mla/common.py",
+        "line": 782,
+        "text": "# TODO: Combine chunked prefill and prefix caching by"
+      },
+      {
+        "file": "aphrodite/attention/ops/flashmla.py",
+        "line": 102,
+        "text": "# TODO: Add fake functions"
+      },
+      {
+        "file": "aphrodite/attention/ops/nki_flash_attn.py",
+        "line": 350,
+        "text": "# FIXME : Use activation accumulate to accumulate over k_r_i loop ?"
+      },
+      {
+        "file": "aphrodite/attention/ops/paged_attn.py",
+        "line": 124,
+        "text": "# TODO: Tune this heuristic."
+      },
+      {
+        "file": "aphrodite/attention/ops/pallas_kv_cache_update.py",
+        "line": 82,
+        "text": "# TODO: Add dynamic check to make sure that the all the slice lengths are"
+      },
+      {
+        "file": "aphrodite/attention/ops/triton_flash_attention.py",
+        "line": 58,
+        "text": "# TODO: use tl.randint for better performance"
+      },
+      {
+        "file": "aphrodite/attention/ops/triton_flash_attention.py",
+        "line": 138,
+        "text": "# TODO: This can be optimized to only be true for the padded block."
+      },
+      {
+        "file": "aphrodite/attention/ops/triton_flash_attention.py",
+        "line": 301,
+        "text": "# TODO: This config fails with head_size not pow2 with data mismatches."
+      },
+      {
+        "file": "aphrodite/attention/ops/triton_flash_attention.py",
+        "line": 531,
+        "text": "# TODO: Should dropout and return encoded softmax be handled here?"
+      },
+      {
+        "file": "aphrodite/attention/ops/triton_flash_attention.py",
+        "line": 596,
+        "text": "# TODO: Fix encoded softmax. It currently uses just h_q in the base offset."
+      },
+      {
+        "file": "aphrodite/attention/ops/triton_flash_attention.py",
+        "line": 785,
+        "text": "# TODO: Do the boundary check optionally."
+      },
+      {
+        "file": "aphrodite/attention/ops/triton_flash_attention.py",
+        "line": 814,
+        "text": "# TODO: Change assert if we support qkl f8 and v f16"
+      },
+      {
+        "file": "aphrodite/attention/ops/triton_merge_attn_states.py",
+        "line": 23,
+        "text": "# TODO: Use CUDA kernel instead of Triton to minimize CPU overhead."
+      },
+      {
+        "file": "aphrodite/benchmarks/datasets.py",
+        "line": 132,
+        "text": "# TODO (jenniferzhao): add support for downloading data"
+      },
+      {
+        "file": "aphrodite/benchmarks/datasets.py",
+        "line": 1405,
+        "text": "# TODO Whisper-specific. Abstract interface when more models are supported."
+      },
+      {
+        "file": "aphrodite/benchmarks/endpoint_request_func.py",
+        "line": 156,
+        "text": "# TODO: Add more request functions for different API protocols."
+      },
+      {
+        "file": "aphrodite/benchmarks/throughput.py",
+        "line": 589,
+        "text": "# TODO: Count multi-modal token length."
+      },
+      {
+        "file": "aphrodite/benchmarks/lib/endpoint_request_func.py",
+        "line": 376,
+        "text": "# TODO: Add more request functions for different API protocols."
+      },
+      {
+        "file": "aphrodite/common/config.py",
+        "line": 2564,
+        "text": "# TODO: Make this configurable."
+      },
+      {
+        "file": "aphrodite/common/config.py",
+        "line": 2571,
+        "text": "# TODO: Make this configurable."
+      },
+      {
+        "file": "aphrodite/common/config.py",
+        "line": 3865,
+        "text": "# TODO: Find a model that supports rope_scaling"
+      },
+      {
+        "file": "aphrodite/common/config.py",
+        "line": 3913,
+        "text": "# TODO: Find a model that has model_max_length"
+      },
+      {
+        "file": "aphrodite/common/config.py",
+        "line": 4280,
+        "text": "# TODO(luka) better pass enabling system."
+      },
+      {
+        "file": "aphrodite/common/config.py",
+        "line": 4557,
+        "text": "# TODO(zou3519/luka): There are 2 issues with auto-functionalization V2:"
+      },
+      {
+        "file": "aphrodite/common/config.py",
+        "line": 4607,
+        "text": "# TODO: pass user-specified backend to piecewise compilation"
+      },
+      {
+        "file": "aphrodite/common/config.py",
+        "line": 4686,
+        "text": "# TODO: use default_factory once default constructing ModelConfig doesn't"
+      },
+      {
+        "file": "aphrodite/common/envs.py",
+        "line": 1071,
+        "text": "# TODO(lucas): Remove this flag once latency regression is resolved."
+      },
+      {
+        "file": "aphrodite/common/envs.py",
+        "line": 1170,
+        "text": "# TODO: hash all environment variables?"
+      },
+      {
+        "file": "aphrodite/common/sequence.py",
+        "line": 38,
+        "text": "# TODO(sang): Fix it."
+      },
+      {
+        "file": "aphrodite/common/sequence.py",
+        "line": 582,
+        "text": "# TODO This can produce incorrect hash when block size > prompt size"
+      },
+      {
+        "file": "aphrodite/common/sequence.py",
+        "line": 585,
+        "text": "# TODO: The current hashing function is O(L^2). We should optimize"
+      },
+      {
+        "file": "aphrodite/common/sequence.py",
+        "line": 1018,
+        "text": "# TODO: We should maintain this states out of the sequence group."
+      },
+      {
+        "file": "aphrodite/common/sequence.py",
+        "line": 1370,
+        "text": "# TODO(will) make this be able to handle batches with variable number of"
+      },
+      {
+        "file": "aphrodite/common/sequence.py",
+        "line": 1379,
+        "text": "# TODO(will) make this be able to handle batches with variable number of"
+      },
+      {
+        "file": "aphrodite/common/sequence.py",
+        "line": 1388,
+        "text": "# TODO(will) make this be able to handle batches with variable number of"
+      },
+      {
+        "file": "aphrodite/compilation/backends.py",
+        "line": 479,
+        "text": "# TODO: in the future, if we want to use multiple"
+      },
+      {
+        "file": "aphrodite/compilation/compiler_interface.py",
+        "line": 234,
+        "text": "# TODO(rzou): the implication is that we're not"
+      },
+      {
+        "file": "aphrodite/compilation/compiler_interface.py",
+        "line": 416,
+        "text": "# TODO(zou3519): we're going to replace this all with"
+      },
+      {
+        "file": "aphrodite/device_allocator/cumem.py",
+        "line": 266,
+        "text": "# TODO: we need to find a way to release the memory,"
+      },
+      {
+        "file": "aphrodite/distributed/utils.py",
+        "line": 464,
+        "text": "# TODO: ask for help from PyTorch team if we need the `broadcast` operation."
+      },
+      {
+        "file": "aphrodite/distributed/device_communicators/all2all.py",
+        "line": 79,
+        "text": "# TODO: port pplx_kernels to aphrodite"
+      },
+      {
+        "file": "aphrodite/distributed/device_communicators/ray_communicator.py",
+        "line": 73,
+        "text": "# TODO(rui): refactor the Ray Communicator API so that"
+      },
+      {
+        "file": "aphrodite/distributed/device_communicators/ray_communicator.py",
+        "line": 205,
+        "text": "# TODO(swang): Avoid CUDA synchronization."
+      },
+      {
+        "file": "aphrodite/distributed/device_communicators/tpu_communicator.py",
+        "line": 84,
+        "text": "# TODO: Remove the groups specification after XLA compiler can support"
+      },
+      {
+        "file": "aphrodite/distributed/eplb/eplb_state.py",
+        "line": 193,
+        "text": "# TODO(rui): make this configurable"
+      },
+      {
+        "file": "aphrodite/distributed/eplb/eplb_state.py",
+        "line": 480,
+        "text": "# TODO(bowen): Treat differently for prefill and decode nodes"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/multi_connector.py",
+        "line": 189,
+        "text": "# TODO we can probably change this to merge the dicts here,"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 309,
+        "text": "# TODO: skip the blocks that are already in the host xfer buffer."
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 534,
+        "text": "# TODO(mgoin): remove this once we have hybrid memory allocator"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 684,
+        "text": "# TODO: handle failure state of future in the"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 709,
+        "text": "# TODO(tms): Find a more robust way to detect and handle MLA"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 727,
+        "text": "# TODO (NickLucche) not compatible with hybrid allocator."
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 755,
+        "text": "# TODO(tms): self.block_len needs to be per-layer for sliding window,"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 794,
+        "text": "# TODO(mgoin): remove this once we have hybrid memory allocator"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 833,
+        "text": "# TODO: does device_id matter to DRAM?"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 904,
+        "text": "# TODO re-evaluate refreshing for scaling/recovery"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 1206,
+        "text": "# TODO(mgoin): remove this once we have hybrid memory allocator"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+        "line": 1246,
+        "text": "# TODO (NickLucche) surface xfer elapsed time"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+        "line": 42,
+        "text": "# FIXME(Jiayi): temporarily comment this out"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+        "line": 364,
+        "text": "# FIXME(Jiayi): Use `seq_group_list` to determine driver worker"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+        "line": 394,
+        "text": "# TODO(Jiayi): Maybe it's cleaner to handle all logic for"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+        "line": 472,
+        "text": "# TODO (Jiayi): commenting the following out for now"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+        "line": 490,
+        "text": "# TODO (Jiayi): can chunk prefill and aphrodite prefix"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+        "line": 558,
+        "text": "# TODO(Jiayi): Turing is not supported yet"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+        "line": 561,
+        "text": "# TODO(Jiayi): prefix caching and chunk prefill"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+        "line": 718,
+        "text": "# TODO(Jiayi): Please get rid of this in the future"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+        "line": 752,
+        "text": "# TODO(Jiayi): currently we do not skip anything if chunked prefill"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 90,
+        "text": "# FIXME: need to check whether the block ids will be changed after"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 137,
+        "text": "# TODO: Please support multiple KVCacheGroup in connector."
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 179,
+        "text": "# TODO: Need to further exclude the case of chunked prefill with 1 token."
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 306,
+        "text": "assert slot_mapping.dtype == torch.long  # TODO: this could be removed"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 490,
+        "text": "# TODO: have a pre-allocated buffer to hold the slot_mappings"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 510,
+        "text": "# TODO(Jiayi): Need to make prefix caching and blending compatible"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 627,
+        "text": "# TODO: have a pre-allocated buffer to hold the slot_mappings"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 656,
+        "text": "# TODO (Jiayi): need to make layerwise storing"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 713,
+        "text": "# TODO: have a pre-allocated buffer to hold the slot_mappings"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+        "line": 848,
+        "text": "# TODO: Align to Aphrodite block size. Should test whether it can be removed"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/p2p/p2p_nccl_engine.py",
+        "line": 494,
+        "text": "# TODO:Retrieve requests that have already sent the KV cache."
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_connector/v1/p2p/p2p_nccl_engine.py",
+        "line": 497,
+        "text": "# TODO:Retrieve requests that have already received the KV cache."
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_lookup_buffer/simple_buffer.py",
+        "line": 153,
+        "text": "# FIXME: this matching is O(n), ideally it should be O(1)"
+      },
+      {
+        "file": "aphrodite/distributed/kv_transfer/kv_lookup_buffer/simple_buffer.py",
+        "line": 231,
+        "text": "# TODO: have a explicit close signal and have a explicit way to"
+      },
+      {
+        "file": "aphrodite/endpoints/chat_utils.py",
+        "line": 210,
+        "text": "# TODO: Make fields ReadOnly once mypy supports it"
+      },
+      {
+        "file": "aphrodite/endpoints/chat_utils.py",
+        "line": 880,
+        "text": "# TODO: Let user specify how to insert multimodal tokens into prompt"
+      },
+      {
+        "file": "aphrodite/endpoints/context.py",
+        "line": 63,
+        "text": "# TODO(woosuk): Implement the following fields."
+      },
+      {
+        "file": "aphrodite/endpoints/harmony_utils.py",
+        "line": 92,
+        "text": "# TODO: Support refusal."
+      },
+      {
+        "file": "aphrodite/endpoints/llm.py",
+        "line": 537,
+        "text": "# TODO: Would be nice to be able to have multiple loras per prompt"
+      },
+      {
+        "file": "aphrodite/endpoints/llm.py",
+        "line": 639,
+        "text": "# TODO: how does beam search work together with length penalty,"
+      },
+      {
+        "file": "aphrodite/endpoints/middleware/continuous_learning_middleware.py",
+        "line": 457,
+        "text": "# TODO: Implement model rollback logic"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/api_server.py",
+        "line": 1179,
+        "text": "# FIXME: in v0 with frontend multiprocessing, the sleep command"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/api_server.py",
+        "line": 1191,
+        "text": "# FIXME: in v0 with frontend multiprocessing, the wake-up command"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/api_server.py",
+        "line": 1269,
+        "text": "# TODO: RequestType = TypeForm[BaseModel] when recognized by type checkers"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/protocol.py",
+        "line": 336,
+        "text": "# TODO: add more parameters"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/protocol.py",
+        "line": 2253,
+        "text": "## TODO (varun) : Support if set to 0, certain thresholds are met !!"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/protocol.py",
+        "line": 2502,
+        "text": "# TODO support additional sampling parameters"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/protocol.py",
+        "line": 2789,
+        "text": "# TODO: add more parameters"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_chat.py",
+        "line": 300,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_chat.py",
+        "line": 323,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_chat.py",
+        "line": 641,
+        "text": "# FIXME(woosuk): Support function calling"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_chat.py",
+        "line": 998,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_chat.py",
+        "line": 1025,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_chat.py",
+        "line": 1056,
+        "text": "# TODO(woosuk): Implement tool call for gpt-oss."
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_completions.py",
+        "line": 220,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_completions.py",
+        "line": 284,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_completions.py",
+        "line": 466,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_engine.py",
+        "line": 367,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_engine.py",
+        "line": 454,
+        "text": "# TODO: Currently this is only enabled for chat completions"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_engine.py",
+        "line": 611,
+        "text": "# TODO(#9845): remove max_tokens when field dropped from OpenAI API"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_engine.py",
+        "line": 990,
+        "text": "# TODO: uncomment this and enable tool output streaming"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_pooling.py",
+        "line": 166,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_pooling.py",
+        "line": 195,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_responses.py",
+        "line": 103,
+        "text": "# HACK: This is a hack. We should use a better store."
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_responses.py",
+        "line": 104,
+        "text": "# FIXME: If enable_store=True, this may cause a memory leak since we"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_responses.py",
+        "line": 109,
+        "text": "# HACK: This is a hack. We should use a better store."
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_responses.py",
+        "line": 110,
+        "text": "# FIXME: If enable_store=True, this may cause a memory leak since we"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_responses.py",
+        "line": 215,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_responses.py",
+        "line": 295,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_responses.py",
+        "line": 329,
+        "text": "annotations=[],  # TODO"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_responses.py",
+        "line": 331,
+        "text": "logprobs=None,  # TODO"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_score.py",
+        "line": 376,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/serving_score.py",
+        "line": 425,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/speech_to_text.py",
+        "line": 185,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/speech_to_text.py",
+        "line": 203,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/speech_to_text.py",
+        "line": 308,
+        "text": "# TODO: Use a aphrodite-specific Validation Error"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/tool_parsers/hunyuan_a13b_tool_parser.py",
+        "line": 50,
+        "text": "# TODO: not support nested json object in fc arguments."
+      },
+      {
+        "file": "aphrodite/endpoints/openai/tool_parsers/llama4_pythonic_tool_parser.py",
+        "line": 30,
+        "text": "# TODO(mdepinet): Possible future improvements:"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/tool_parsers/llama4_pythonic_tool_parser.py",
+        "line": 174,
+        "text": "# HACK: serving_chat.py inspects the internal state of tool parsers"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/tool_parsers/pythonic_tool_parser.py",
+        "line": 32,
+        "text": "# TODO(mdepinet): Possible future improvements:"
+      },
+      {
+        "file": "aphrodite/endpoints/openai/tool_parsers/pythonic_tool_parser.py",
+        "line": 162,
+        "text": "# HACK: serving_chat.py inspects the internal state of tool parsers"
+      },
+      {
+        "file": "aphrodite/engine/aphrodite_engine.py",
+        "line": 1474,
+        "text": "# TODO(will) this is a sanity check for nowto make sure that all the"
+      },
+      {
+        "file": "aphrodite/engine/aphrodite_engine.py",
+        "line": 2012,
+        "text": "# TODO: Find out how many placeholder tokens are there so we can"
+      },
+      {
+        "file": "aphrodite/engine/args_tools.py",
+        "line": 790,
+        "text": "# TODO: generalise this special case"
+      },
+      {
+        "file": "aphrodite/engine/args_tools.py",
+        "line": 1223,
+        "text": "# TODO(woosuk): Support it."
+      },
+      {
+        "file": "aphrodite/engine/args_tools.py",
+        "line": 1626,
+        "text": "# TODO: when encoder models are supported we'll have to"
+      },
+      {
+        "file": "aphrodite/engine/args_tools.py",
+        "line": 1680,
+        "text": "# TODO(woosuk): Tune the default values for other hardware."
+      },
+      {
+        "file": "aphrodite/engine/async_aphrodite.py",
+        "line": 693,
+        "text": "# TODO: use a Aphrodite specific error for failed validation"
+      },
+      {
+        "file": "aphrodite/engine/async_aphrodite.py",
+        "line": 1138,
+        "text": "# TODO(v1): Remove this class proxy when V1 goes default."
+      },
+      {
+        "file": "aphrodite/engine/protocol.py",
+        "line": 94,
+        "text": "# TODO - would be ideal to handle this more gracefully."
+      },
+      {
+        "file": "aphrodite/engine/output_processor/multi_step.py",
+        "line": 150,
+        "text": "# TODO(sang): Support lora."
+      },
+      {
+        "file": "aphrodite/executor/executor_base.py",
+        "line": 265,
+        "text": "# TODO: unify into collective_rpc"
+      },
+      {
+        "file": "aphrodite/executor/executor_base.py",
+        "line": 323,
+        "text": "# TODO: simplify and merge with collective_rpc"
+      },
+      {
+        "file": "aphrodite/executor/ray_distributed_executor.py",
+        "line": 90,
+        "text": "# TODO: Support SPMD worker for non-DAG Ray executor."
+      },
+      {
+        "file": "aphrodite/executor/ray_distributed_executor.py",
+        "line": 337,
+        "text": "# TODO: refactor platform-specific env vars"
+      },
+      {
+        "file": "aphrodite/executor/ray_distributed_executor.py",
+        "line": 695,
+        "text": "# TODO: check the health of the Ray workers"
+      },
+      {
+        "file": "aphrodite/executor/ray_utils.py",
+        "line": 84,
+        "text": "# TODO: This is needed right now because Ray Compiled Graph"
+      },
+      {
+        "file": "aphrodite/executor/ray_utils.py",
+        "line": 102,
+        "text": "# TODO: This is needed right now because Ray CG executes"
+      },
+      {
+        "file": "aphrodite/hpu_extension/gptq_hpu.py",
+        "line": 235,
+        "text": "# TODO: Support group indexing and remove the check"
+      },
+      {
+        "file": "aphrodite/hpu_extension/ops.py",
+        "line": 216,
+        "text": "# TODO: causal + attn_bias is not yet supported"
+      },
+      {
+        "file": "aphrodite/hpu_extension/ops.py",
+        "line": 442,
+        "text": "# TODO: calculate scale to match gaudi2 240 range instead of 448"
+      },
+      {
+        "file": "aphrodite/hpu_extension/bucketing/linear.py",
+        "line": 52,
+        "text": "# FIXME: The default values should be max_model_len"
+      },
+      {
+        "file": "aphrodite/inputs/data.py",
+        "line": 124,
+        "text": "# TODO: Make fields ReadOnly once mypy supports it"
+      },
+      {
+        "file": "aphrodite/logging_utils/dump_input.py",
+        "line": 45,
+        "text": "# Hacky way to make sure we can serialize the object in JSON format"
+      },
+      {
+        "file": "aphrodite/lora/layers.py",
+        "line": 224,
+        "text": "# TODO(yard1): Optimize this copy, we don't need to copy"
+      },
+      {
+        "file": "aphrodite/lora/layers.py",
+        "line": 548,
+        "text": "# TODO: Fix the slicing logic of bias."
+      },
+      {
+        "file": "aphrodite/lora/layers.py",
+        "line": 875,
+        "text": "# TODO: Implement this"
+      },
+      {
+        "file": "aphrodite/lora/layers.py",
+        "line": 926,
+        "text": "# TODO: simplify code below"
+      },
+      {
+        "file": "aphrodite/lora/layers.py",
+        "line": 1028,
+        "text": "# TODO: Verify if this condition can be further relaxed"
+      },
+      {
+        "file": "aphrodite/lora/models.py",
+        "line": 500,
+        "text": "# TODO: Remove this restriction"
+      },
+      {
+        "file": "aphrodite/lora/models.py",
+        "line": 666,
+        "text": "# HACK Temporary solution for the pool model."
+      },
+      {
+        "file": "aphrodite/lora/ops/triton_ops/lora_expand_op.py",
+        "line": 213,
+        "text": "# TODO (varun): This grid formulation maximizes parallelization at the"
+      },
+      {
+        "file": "aphrodite/lora/ops/triton_ops/lora_shrink_op.py",
+        "line": 171,
+        "text": "# TODO (varun): This grid formulation maximizes parallelization at the"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/punica_base.py",
+        "line": 333,
+        "text": "# TODO: implement it based on torch ops"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/punica_base.py",
+        "line": 368,
+        "text": "# TODO: implement it based on torch ops"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/punica_base.py",
+        "line": 390,
+        "text": "# TODO: implement it based on torch ops"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/punica_base.py",
+        "line": 427,
+        "text": "# TODO: implement it based on torch ops"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/punica_base.py",
+        "line": 455,
+        "text": "# TODO: implement it based on torch ops"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/punica_cpu.py",
+        "line": 173,
+        "text": "# TODO fuse these kernels"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/punica_tpu.py",
+        "line": 326,
+        "text": "# TODO: Should this happen inside mapping internally? If so how can we"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/punica_xpu.py",
+        "line": 128,
+        "text": "# TODO fuse these kernels"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/utils.py",
+        "line": 40,
+        "text": "# TODO see if this can be vectorized"
+      },
+      {
+        "file": "aphrodite/lora/punica_wrapper/utils.py",
+        "line": 88,
+        "text": "# TODO index can be slow. optimize"
+      },
+      {
+        "file": "aphrodite/modeling/utils.py",
+        "line": 42,
+        "text": "# TODO: Remove this hack once we have a better solution."
+      },
+      {
+        "file": "aphrodite/modeling/layers/activation.py",
+        "line": 134,
+        "text": "# TODO implement forward_xpu for MulAndSilu"
+      },
+      {
+        "file": "aphrodite/modeling/layers/activation.py",
+        "line": 316,
+        "text": "# TODO implement forward_xpu for QuickGELU"
+      },
+      {
+        "file": "aphrodite/modeling/layers/linear.py",
+        "line": 108,
+        "text": "# TODO: We might need a more flexible structure to handle"
+      },
+      {
+        "file": "aphrodite/modeling/layers/linear.py",
+        "line": 848,
+        "text": "# TODO: @dsikka - move to parameter.py"
+      },
+      {
+        "file": "aphrodite/modeling/layers/linear.py",
+        "line": 1019,
+        "text": "# TODO: @dsikka - move to parameter.py"
+      },
+      {
+        "file": "aphrodite/modeling/layers/linear.py",
+        "line": 1527,
+        "text": "# TODO(Isotr0py): handle bitsandbytes 8bit"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/batched_deep_gemm_moe.py",
+        "line": 239,
+        "text": "# FIXME (varun): We should be able to dispatch only from the leader"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/config.py",
+        "line": 43,
+        "text": "# TODO (bnell): use scalar_type instead of bools?"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/config.py",
+        "line": 68,
+        "text": "# TODO: add col major flag?"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/cutlass_moe.py",
+        "line": 212,
+        "text": "# TODO (bnell): split class batched vs. non-batched?"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/cutlass_moe.py",
+        "line": 501,
+        "text": "# TODO: this only works for topK=1, will need to update for topK>1"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/deepep_ht_prepare_finalize.py",
+        "line": 118,
+        "text": "# TODO (varun): Maybe it is better to re-compute the expert_num_tokens"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/deepep_ht_prepare_finalize.py",
+        "line": 139,
+        "text": "# TODO: this only works for topK=1, will need to update for topK>1"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/deepep_ll_prepare_finalize.py",
+        "line": 23,
+        "text": "# TODO (varun) : Optimize leverage num_tokens_per_expert counts"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/deepep_ll_prepare_finalize.py",
+        "line": 98,
+        "text": "# TODO (varun): Optimization - Use a batched version of quant"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/deepep_ll_prepare_finalize.py",
+        "line": 139,
+        "text": "# TODO: this only works for topK=1, will need to update for topK>1"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/deepep_ll_prepare_finalize.py",
+        "line": 178,
+        "text": "# TODO (varun) : Enable zero copy mode"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/fused_batched_moe.py",
+        "line": 511,
+        "text": "# TODO: this only works for topK=1, will need to update for topK>1"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/fused_batched_moe.py",
+        "line": 990,
+        "text": "# TODO (bnell): use triton utility from batched deep gemm."
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/fused_moe.py",
+        "line": 905,
+        "text": "gating_output_float = gating_output.float()  # TODO(woosuk): Optimize this."
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/fused_moe.py",
+        "line": 1324,
+        "text": "# TODO (bnell): replace this with modular op.  Can get rid of inplace/outplace"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/layer.py",
+        "line": 778,
+        "text": "# TODO (bnell): This is a hack to get test_mixtral_moe to work"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/layer.py",
+        "line": 809,
+        "text": "# TODO: Add support for additional quantization methods."
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/layer.py",
+        "line": 1088,
+        "text": "# TODO (mgoin): check self.quant_method.quant_config.quant_format"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/layer.py",
+        "line": 1181,
+        "text": "# TODO @dsikka: ModelOpt should follow the proper MoE loading pattern"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/layer.py",
+        "line": 1239,
+        "text": "# TODO @dsikka: once hardened, refactor to use Aphrodite Parameters"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/layer.py",
+        "line": 1399,
+        "text": "# TODO: maybe optimize this by using specified kernels,"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/layer.py",
+        "line": 1415,
+        "text": "# TODO(bowen): When using `FusedMoEModularKernel`, this"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/layer.py",
+        "line": 1498,
+        "text": "# TODO: Once the OOM issue for the TPU backend is resolved, we will"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/modular_kernel.py",
+        "line": 142,
+        "text": "# TODO: pass FusedMoEParallelConfig in as ctor parameter?"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/modular_kernel.py",
+        "line": 283,
+        "text": "# TODO (bnell): make this return a CHUNK_SIZE or None instead?"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/pplx_prepare_finalize.py",
+        "line": 117,
+        "text": "# TODO: this only works for topK=1, will need to update for topK>1"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/pplx_prepare_finalize.py",
+        "line": 144,
+        "text": "# TODO (bnell): use group_broadcast instead?"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/pplx_prepare_finalize.py",
+        "line": 226,
+        "text": "# TODO (bnell): fails in test_pplx_moe.py, figure out what's going on"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/prepare_finalize.py",
+        "line": 45,
+        "text": "# TODO: this only works for topK=1, will need to update for topK>1"
+      },
+      {
+        "file": "aphrodite/modeling/layers/fused_moe/utils.py",
+        "line": 119,
+        "text": "# TODO(luka): use QuantFP8 custom op"
+      },
+      {
+        "file": "aphrodite/modeling/layers/rotary_embedding/base.py",
+        "line": 135,
+        "text": "# TODO(sarckk): add support for optional key in"
+      },
+      {
+        "file": "aphrodite/modeling/layers/rotary_embedding/mrope.py",
+        "line": 406,
+        "text": "# TODO(fyabc): refactor and share more code with"
+      },
+      {
+        "file": "aphrodite/modeling/model_loader/bitsandbytes_loader.py",
+        "line": 423,
+        "text": "# TODO: support FusedMoE with prequant and 8bit."
+      },
+      {
+        "file": "aphrodite/modeling/model_loader/bitsandbytes_loader.py",
+        "line": 656,
+        "text": "# TODO: Change this lazy import to normal import"
+      },
+      {
+        "file": "aphrodite/modeling/model_loader/gguf_loader.py",
+        "line": 59,
+        "text": "# hack: ggufs have a different name than transformers"
+      },
+      {
+        "file": "aphrodite/modeling/model_loader/neuron.py",
+        "line": 215,
+        "text": "# TODO: Add Paged attention config to the default neuron arguments."
+      },
+      {
+        "file": "aphrodite/modeling/model_loader/sharded_state_loader.py",
+        "line": 117,
+        "text": "# TODO: support un-sharded checkpoints too"
+      },
+      {
+        "file": "aphrodite/modeling/model_loader/tensorizer.py",
+        "line": 494,
+        "text": "# TODO: Do we need to consider old-style model class?"
+      },
+      {
+        "file": "aphrodite/modeling/model_loader/utils.py",
+        "line": 117,
+        "text": "# TODO(lucas): see if there is a way to unify the signatures"
+      },
+      {
+        "file": "aphrodite/modeling/model_loader/utils.py",
+        "line": 170,
+        "text": "# FIXME(woosuk): This is a temporary hack."
+      },
+      {
+        "file": "aphrodite/modeling/model_loader/weight_utils.py",
+        "line": 144,
+        "text": "# TODO(woosuk): Move this to other place."
+      },
+      {
+        "file": "aphrodite/modeling/models/adapters.py",
+        "line": 65,
+        "text": "# TODO: Support uninitialized params tracking"
+      },
+      {
+        "file": "aphrodite/modeling/models/bert_with_rope.py",
+        "line": 500,
+        "text": "# Hack method learned from aphrodite/model_executor/models/glm.py"
+      },
+      {
+        "file": "aphrodite/modeling/models/blip2.py",
+        "line": 536,
+        "text": "# TODO: Optionally initializes this for supporting embeddings."
+      },
+      {
+        "file": "aphrodite/modeling/models/config.py",
+        "line": 261,
+        "text": "# FIXME(woosuk): When using full cuda graph with FA3, the max"
+      },
+      {
+        "file": "aphrodite/modeling/models/deepseek_vl2.py",
+        "line": 427,
+        "text": "# TODO: refactor vision model through timm wrapper from transformers"
+      },
+      {
+        "file": "aphrodite/modeling/models/ernie45.py",
+        "line": 32,
+        "text": "# Hack Llama model to fit HF format Ernie4.5 dense implementation"
+      },
+      {
+        "file": "aphrodite/modeling/models/gemma3.py",
+        "line": 145,
+        "text": "# TODO(woosuk): Add reference to the original HF implementation."
+      },
+      {
+        "file": "aphrodite/modeling/models/gemma3.py",
+        "line": 220,
+        "text": "# TODO(woosuk): Optimize by implementing custom attention kernels."
+      },
+      {
+        "file": "aphrodite/modeling/models/glm4_1v.py",
+        "line": 1075,
+        "text": "# FIXME(Isotr0py): Activate the below logic after we can disable"
+      },
+      {
+        "file": "aphrodite/modeling/models/gpt_bigcode.py",
+        "line": 260,
+        "text": "# TODO (@robertgshaw2-neuralmagic): move to fp8 linear method"
+      },
+      {
+        "file": "aphrodite/modeling/models/gpt_oss.py",
+        "line": 311,
+        "text": "# FIXME(woosuk): Remove this after testing."
+      },
+      {
+        "file": "aphrodite/modeling/models/granite_speech.py",
+        "line": 691,
+        "text": "# TODO (Alex) - Validate that it's okay to zero pad like this;"
+      },
+      {
+        "file": "aphrodite/modeling/models/granite_speech.py",
+        "line": 714,
+        "text": "# TODO (Alex) - support embedding inputs"
+      },
+      {
+        "file": "aphrodite/modeling/models/h2ovl.py",
+        "line": 436,
+        "text": "# TODO: Use image size information in dictionary embedding inputs"
+      },
+      {
+        "file": "aphrodite/modeling/models/hunyuan_v1.py",
+        "line": 331,
+        "text": "k_tmp = torch.empty_like(k)  # Todo: reduant rotary embedding"
+      },
+      {
+        "file": "aphrodite/modeling/models/interfaces.py",
+        "line": 82,
+        "text": "# TODO(ywang96): Remove this overload once v0 is deprecated"
+      },
+      {
+        "file": "aphrodite/modeling/models/interfaces.py",
+        "line": 92,
+        "text": "# TODO: Remove this overload once v0 is deprecated"
+      },
+      {
+        "file": "aphrodite/modeling/models/interfaces.py",
+        "line": 106,
+        "text": "# TODO: Remove attn_metadata once v0 is deprecated"
+      },
+      {
+        "file": "aphrodite/modeling/models/internvl.py",
+        "line": 810,
+        "text": "# TODO: Use image size information in dictionary embedding inputs"
+      },
+      {
+        "file": "aphrodite/modeling/models/jamba.py",
+        "line": 586,
+        "text": "# TODO: The original reward weights have float32 accuracy data, we"
+      },
+      {
+        "file": "aphrodite/modeling/models/kimi_vl.py",
+        "line": 140,
+        "text": "# TODO: support embeds too"
+      },
+      {
+        "file": "aphrodite/modeling/models/llama4.py",
+        "line": 442,
+        "text": "# TODO: add EP support for non fused weights"
+      },
+      {
+        "file": "aphrodite/modeling/models/llama4.py",
+        "line": 538,
+        "text": "# TODO: ModelOpt should implement get_cache_scale() such that"
+      },
+      {
+        "file": "aphrodite/modeling/models/llava.py",
+        "line": 523,
+        "text": "# TODO: Optionally initializes this for supporting embeddings."
+      },
+      {
+        "file": "aphrodite/modeling/models/llava_next.py",
+        "line": 246,
+        "text": "# TODO: Optionally initializes this for supporting embeddings."
+      },
+      {
+        "file": "aphrodite/modeling/models/llava_next_video.py",
+        "line": 225,
+        "text": "# TODO: Support Conv2d pooling layer, need to load weights"
+      },
+      {
+        "file": "aphrodite/modeling/models/llava_next_video.py",
+        "line": 398,
+        "text": "# TODO: support multiple videos per input"
+      },
+      {
+        "file": "aphrodite/modeling/models/llava_onevision.py",
+        "line": 855,
+        "text": "# TODO support other pooling types config"
+      },
+      {
+        "file": "aphrodite/modeling/models/minicpmv.py",
+        "line": 209,
+        "text": "# TODO: Remove this after the HF repos are updated"
+      },
+      {
+        "file": "aphrodite/modeling/models/minicpmv.py",
+        "line": 1017,
+        "text": "# TODO: refactor vision model through timm wrapper from transformers"
+      },
+      {
+        "file": "aphrodite/modeling/models/minimax_vl_01.py",
+        "line": 176,
+        "text": "# TODO: Optionally initializes this for supporting embeddings."
+      },
+      {
+        "file": "aphrodite/modeling/models/mistral3.py",
+        "line": 429,
+        "text": "# TODO: Optionally initializes this for supporting embeddings."
+      },
+      {
+        "file": "aphrodite/modeling/models/mixtral_quant.py",
+        "line": 85,
+        "text": "# TODO: Use aphrodite's SiluAndMul"
+      },
+      {
+        "file": "aphrodite/modeling/models/mllama.py",
+        "line": 83,
+        "text": "# TODO: support LlamaImageEmbeddingInputs"
+      },
+      {
+        "file": "aphrodite/modeling/models/mllama.py",
+        "line": 463,
+        "text": "# TODO: support other attention backends for attention in vision model"
+      },
+      {
+        "file": "aphrodite/modeling/models/mllama.py",
+        "line": 511,
+        "text": "# TODO: remove padding in image encoder"
+      },
+      {
+        "file": "aphrodite/modeling/models/mllama.py",
+        "line": 943,
+        "text": "# TODO (NickLucche) replace with custom attn bias and use standard attn"
+      },
+      {
+        "file": "aphrodite/modeling/models/mllama.py",
+        "line": 1104,
+        "text": "# TODO: force LlamaDecoderLayer to config.attention_bias=False"
+      },
+      {
+        "file": "aphrodite/modeling/models/mllama4.py",
+        "line": 617,
+        "text": "# TODO tile height/width do not necessarily need to match"
+      },
+      {
+        "file": "aphrodite/modeling/models/mllama4.py",
+        "line": 768,
+        "text": "# TODO: confirm handling for variable lengths"
+      },
+      {
+        "file": "aphrodite/modeling/models/mlp_speculator.py",
+        "line": 179,
+        "text": "# TODO: not yet supporting top_k_tokens_per_head"
+      },
+      {
+        "file": "aphrodite/modeling/models/molmo.py",
+        "line": 62,
+        "text": "# TODO: hard-coded for now. Consider making it configurable."
+      },
+      {
+        "file": "aphrodite/modeling/models/nvlm_d.py",
+        "line": 116,
+        "text": "# TODO: Use image size information in dictionary embedding inputs"
+      },
+      {
+        "file": "aphrodite/modeling/models/ovis2.py",
+        "line": 257,
+        "text": "# TODO(Isotr0py): PP support"
+      },
+      {
+        "file": "aphrodite/modeling/models/phi3v.py",
+        "line": 543,
+        "text": "# TODO: Optionally initializes this for supporting input embeddings."
+      },
+      {
+        "file": "aphrodite/modeling/models/phi4_multimodal.py",
+        "line": 1063,
+        "text": "# TODO(Isotr0py): support embedding inputs"
+      },
+      {
+        "file": "aphrodite/modeling/models/phi4_multimodal.py",
+        "line": 1139,
+        "text": "# TODO: Optionally initializes these for supporting input embeddings."
+      },
+      {
+        "file": "aphrodite/modeling/models/phi4mm.py",
+        "line": 834,
+        "text": "# TODO(Isotr0py): support embedding inputs"
+      },
+      {
+        "file": "aphrodite/modeling/models/phi4mm_audio.py",
+        "line": 989,
+        "text": "norm_first=normalize_before,  # TODO need to verify"
+      },
+      {
+        "file": "aphrodite/modeling/models/phi4mm_audio.py",
+        "line": 1144,
+        "text": "# TODO: audio sequence compression - Qformer"
+      },
+      {
+        "file": "aphrodite/modeling/models/phi4mm_utils.py",
+        "line": 144,
+        "text": "# TODO: Abdel, this can be improved using GLU module"
+      },
+      {
+        "file": "aphrodite/modeling/models/prithvi_geospatial_mae.py",
+        "line": 122,
+        "text": "# TODO (christian-pinto): enable support for multi patch requests"
+      },
+      {
+        "file": "aphrodite/modeling/models/qwen2.py",
+        "line": 285,
+        "text": "# TODO (@robertgshaw2): see if this can be moved out"
+      },
+      {
+        "file": "aphrodite/modeling/models/qwen2_5_omni_thinker.py",
+        "line": 800,
+        "text": "# TODO (ywang96): support overlapping modalitiy embeddings so that"
+      },
+      {
+        "file": "aphrodite/modeling/models/registry.py",
+        "line": 69,
+        "text": "#TODO(ywang96): Support multimodal gemma3n"
+      },
+      {
+        "file": "aphrodite/modeling/models/registry.py",
+        "line": 263,
+        "text": "# # TODO(woosuk): Re-enable this once the MLP Speculator is supported in V1."
+      },
+      {
+        "file": "aphrodite/modeling/models/roberta.py",
+        "line": 266,
+        "text": "# TODO: remove \"seq_lens_tensor\" after V0 is removed"
+      },
+      {
+        "file": "aphrodite/modeling/models/siglip.py",
+        "line": 338,
+        "text": "# TODO(ChristopherCho): Implement vLLM version of MultiheadAttention"
+      },
+      {
+        "file": "aphrodite/modeling/models/siglip.py",
+        "line": 438,
+        "text": "# TODO: add this back when pooled_output is used in inference."
+      },
+      {
+        "file": "aphrodite/modeling/models/skyworkr1v.py",
+        "line": 565,
+        "text": "# TODO: Use image size information in dictionary embedding inputs"
+      },
+      {
+        "file": "aphrodite/modeling/models/transformers.py",
+        "line": 411,
+        "text": "]  # TODO transformers will have a util to get it"
+      },
+      {
+        "file": "aphrodite/modeling/models/transformers.py",
+        "line": 444,
+        "text": "# TODO: @raushan, use the public `model.set_attn_implementation()`"
+      },
+      {
+        "file": "aphrodite/modeling/models/ultravox.py",
+        "line": 572,
+        "text": "# TODO(ywang96): remove this block after v0 is deprecated."
+      },
+      {
+        "file": "aphrodite/modeling/models/vision.py",
+        "line": 69,
+        "text": "# TODO(Isotr0py): Remove `support_fa` after support FA for all ViTs attn."
+      },
+      {
+        "file": "aphrodite/modeling/models/whisper.py",
+        "line": 623,
+        "text": "# HACK: Transformers 4.53.2 has issue with whisper tokenizer to"
+      },
+      {
+        "file": "aphrodite/modeling/models/whisper.py",
+        "line": 765,
+        "text": "# TODO language should be optional and can be guessed."
+      },
+      {
+        "file": "aphrodite/modeling/models/whisper.py",
+        "line": 870,
+        "text": "# TODO: This method does not obey the interface for SupportsMultiModal."
+      },
+      {
+        "file": "aphrodite/modeling/models/whisper.py",
+        "line": 880,
+        "text": "# TODO: This method just returns the decoder sequence embeddings since"
+      },
+      {
+        "file": "aphrodite/monitoring/alerting_system.py",
+        "line": 176,
+        "text": "# TODO: Implement webhook delivery"
+      },
+      {
+        "file": "aphrodite/monitoring/backend_monitor.py",
+        "line": 336,
+        "text": "# TODO: Integrate with actual Aphrodite Engine metrics"
+      },
+      {
+        "file": "aphrodite/monitoring/backend_monitor.py",
+        "line": 343,
+        "text": "# TODO: Integrate with actual request tracking"
+      },
+      {
+        "file": "aphrodite/monitoring/backend_monitor.py",
+        "line": 354,
+        "text": "# TODO: Integrate with scheduler metrics"
+      },
+      {
+        "file": "aphrodite/monitoring/backend_monitor.py",
+        "line": 363,
+        "text": "# TODO: Integrate with GPU monitoring"
+      },
+      {
+        "file": "aphrodite/monitoring/backend_monitor.py",
+        "line": 372,
+        "text": "# TODO: Integrate with actual Echo components"
+      },
+      {
+        "file": "aphrodite/monitoring/backend_monitor.py",
+        "line": 383,
+        "text": "# TODO: Implement based on actual metrics"
+      },
+      {
+        "file": "aphrodite/monitoring/metrics_collector.py",
+        "line": 127,
+        "text": "# TODO: Integrate with actual AAR components"
+      },
+      {
+        "file": "aphrodite/monitoring/metrics_collector.py",
+        "line": 142,
+        "text": "# TODO: Integrate with actual DTESN kernel"
+      },
+      {
+        "file": "aphrodite/monitoring/metrics_collector.py",
+        "line": 157,
+        "text": "# TODO: Integrate with actual Echo-Self evolution engine"
+      },
+      {
+        "file": "aphrodite/monitoring/metrics_collector.py",
+        "line": 212,
+        "text": "# TODO: Integrate with actual Aphrodite Engine stats"
+      },
+      {
+        "file": "aphrodite/multimodal/inputs.py",
+        "line": 694,
+        "text": "# TODO: Remove these once all models have been migrated"
+      },
+      {
+        "file": "aphrodite/multimodal/processing.py",
+        "line": 656,
+        "text": "# TODO: Is it worth it to optimize this by stripping the"
+      },
+      {
+        "file": "aphrodite/multimodal/utils.py",
+        "line": 402,
+        "text": "# FIXME(Isotr0py): Modality of mm_input from legacy pipeline is empty,"
+      },
+      {
+        "file": "aphrodite/platforms/cpu.py",
+        "line": 75,
+        "text": "# TODO: change this condition to check if the platform support bf16"
+      },
+      {
+        "file": "aphrodite/platforms/cuda.py",
+        "line": 148,
+        "text": "# TODO(lucas): handle this more gracefully"
+      },
+      {
+        "file": "aphrodite/platforms/cuda.py",
+        "line": 227,
+        "text": "# TODO(lucas): refactor to be more concise"
+      },
+      {
+        "file": "aphrodite/platforms/rocm.py",
+        "line": 180,
+        "text": "# TODO: Add support for other VL models in their model class."
+      },
+      {
+        "file": "aphrodite/platforms/xpu.py",
+        "line": 88,
+        "text": "# FIXME: Temporarily forcing eager mode"
+      },
+      {
+        "file": "aphrodite/platforms/xpu.py",
+        "line": 119,
+        "text": "# FIXME(kunshang):"
+      },
+      {
+        "file": "aphrodite/processing/block_manager.py",
+        "line": 107,
+        "text": "# FIXME: Here we assume that all sequences in the group share"
+      },
+      {
+        "file": "aphrodite/processing/scheduler.py",
+        "line": 1801,
+        "text": "# FIXME: This makes our scheduling policy a bit bizarre."
+      },
+      {
+        "file": "aphrodite/processing/scheduler.py",
+        "line": 1805,
+        "text": "# TODO: Support recomputation for sequence groups with multiple"
+      },
+      {
+        "file": "aphrodite/processing/scheduler.py",
+        "line": 1874,
+        "text": "# FIXME: Abort the sequence group instead of aborting the"
+      },
+      {
+        "file": "aphrodite/processing/scheduler.py",
+        "line": 1976,
+        "text": "# TODO: Actually is this still correct for multi-step?"
+      },
+      {
+        "file": "aphrodite/processing/block/prefix_caching_block.py",
+        "line": 1062,
+        "text": "# TODO: This hack could be removed once we mark blocks as"
+      },
+      {
+        "file": "aphrodite/quantization/awq_marlin.py",
+        "line": 256,
+        "text": "# TODO: Update this docs"
+      },
+      {
+        "file": "aphrodite/quantization/base_config.py",
+        "line": 160,
+        "text": "# TODO (@kylesayrs): add implementations for all subclasses"
+      },
+      {
+        "file": "aphrodite/quantization/fp8.py",
+        "line": 340,
+        "text": "# TODO(rob): refactor block quant into separate class."
+      },
+      {
+        "file": "aphrodite/quantization/fp8.py",
+        "line": 691,
+        "text": "# TODO (rob): refactor block quant into separate class."
+      },
+      {
+        "file": "aphrodite/quantization/gguf.py",
+        "line": 87,
+        "text": "# TODO(Isotr0py): Currently, we don't have MMQ kernel for I-Matrix quantization."
+      },
+      {
+        "file": "aphrodite/quantization/gguf.py",
+        "line": 101,
+        "text": "# HACK: when doing chunked prefill we don't generate output tokens"
+      },
+      {
+        "file": "aphrodite/quantization/input_quant_fp8.py",
+        "line": 94,
+        "text": "# TODO(luka): benchmark torch._scaled_mm to hopefully remove padding"
+      },
+      {
+        "file": "aphrodite/quantization/mxfp4.py",
+        "line": 86,
+        "text": "# FIXME (zyongye): ship after torch and safetensors support mxfp4"
+      },
+      {
+        "file": "aphrodite/quantization/mxfp4.py",
+        "line": 238,
+        "text": "epilogue_tile_m = 128  # FIXME: this depends on the kernel internals"
+      },
+      {
+        "file": "aphrodite/quantization/schema.py",
+        "line": 23,
+        "text": "# TODO: Consider pulling this and its validation methods out into its"
+      },
+      {
+        "file": "aphrodite/quantization/schema.py",
+        "line": 68,
+        "text": "# TODO: Generalize and extend with more fields"
+      },
+      {
+        "file": "aphrodite/quantization/torchao.py",
+        "line": 47,
+        "text": "# TODO: remove after the torch dependency is updated to 2.8"
+      },
+      {
+        "file": "aphrodite/quantization/compressed_tensors/compressed_tensors.py",
+        "line": 103,
+        "text": "# TODO (@robertgshaw2): support module names"
+      },
+      {
+        "file": "aphrodite/quantization/compressed_tensors/compressed_tensors.py",
+        "line": 492,
+        "text": "# TODO (@robertgshaw): add compressed-tensors as dep"
+      },
+      {
+        "file": "aphrodite/quantization/compressed_tensors/compressed_tensors_moe.py",
+        "line": 61,
+        "text": "# TODO: @dsikka: refactor this to use schemes as other kernels"
+      },
+      {
+        "file": "aphrodite/quantization/compressed_tensors/compressed_tensors_moe.py",
+        "line": 978,
+        "text": "# TODO: @dsikka: refactor this to use schemes as other kernels"
+      },
+      {
+        "file": "aphrodite/quantization/compressed_tensors/compressed_tensors_moe.py",
+        "line": 1280,
+        "text": "# TODO: @dsikka: refactor this to use schemes as other kernels"
+      },
+      {
+        "file": "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8.py",
+        "line": 116,
+        "text": "# TODO: update create_xxx_parameter functions to return"
+      },
+      {
+        "file": "aphrodite/quantization/gguf_utils/constants.py",
+        "line": 663,
+        "text": "# TODO"
+      },
+      {
+        "file": "aphrodite/quantization/gguf_utils/constants.py",
+        "line": 790,
+        "text": "# TODO: need help with 64-bit types in Python"
+      },
+      {
+        "file": "aphrodite/quantization/gguf_utils/tensor_mapping.py",
+        "line": 355,
+        "text": "# TODO: make this configurable"
+      },
+      {
+        "file": "aphrodite/quantization/kernels/mixed_precision/bitblas.py",
+        "line": 144,
+        "text": "# TODO: remove this requirement from bitblas (allow optional tensors)"
+      },
+      {
+        "file": "aphrodite/quantization/kernels/mixed_precision/marlin.py",
+        "line": 61,
+        "text": "# TODO: remove this requirement from marlin (allow optional tensors)"
+      },
+      {
+        "file": "aphrodite/quantization/quark/schemes/quark_w8a8_fp8.py",
+        "line": 123,
+        "text": "# TODO: update create_xxx_parameter functions to return"
+      },
+      {
+        "file": "aphrodite/quantization/utils/bitblas_utils.py",
+        "line": 44,
+        "text": "# TODO: once fp8_bitblas is merged into \"gptq_bitblas\" we should be able"
+      },
+      {
+        "file": "aphrodite/quantization/utils/flashinfer_fp4_moe.py",
+        "line": 114,
+        "text": "inplace=False,  # TODO(shuw): fix later, now output is high prec"
+      },
+      {
+        "file": "aphrodite/quantization/utils/fp6_utils.py",
+        "line": 189,
+        "text": "# TODO document this better"
+      },
+      {
+        "file": "aphrodite/quantization/utils/fp6_utils.py",
+        "line": 220,
+        "text": "# TODO: can the branch floating point comparisons below be done without"
+      },
+      {
+        "file": "aphrodite/quantization/utils/fp6_utils.py",
+        "line": 278,
+        "text": "# TODO(future): check if LUT for everything is faster than bit shifting,"
+      },
+      {
+        "file": "aphrodite/quantization/utils/fp8_utils.py",
+        "line": 117,
+        "text": "# TODO fix ROCm->Triton custom path:"
+      },
+      {
+        "file": "aphrodite/quantization/utils/fp8_utils.py",
+        "line": 165,
+        "text": "# TODO: update this after switching to public sm90 block scale gemm"
+      },
+      {
+        "file": "aphrodite/quantization/utils/fp8_utils.py",
+        "line": 390,
+        "text": "# TODO(wentao): refactor this"
+      },
+      {
+        "file": "aphrodite/quantization/utils/fp8_utils.py",
+        "line": 682,
+        "text": "# TODO(wentao): remove this function when DeepGEMM exposes this function"
+      },
+      {
+        "file": "aphrodite/quantization/utils/fp8_utils.py",
+        "line": 704,
+        "text": "# TODO(wentao): remove this function when DeepGEMM exposes this function"
+      },
+      {
+        "file": "aphrodite/quantization/utils/marlin_utils.py",
+        "line": 30,
+        "text": "#  TODO: we may want to move this into the C++ so its closer to the actual impl"
+      },
+      {
+        "file": "aphrodite/quantization/utils/w8a8_utils.py",
+        "line": 292,
+        "text": "# TODO(luka): follow similar pattern for marlin and block-fp8-linear"
+      },
+      {
+        "file": "aphrodite/quantization/utils/w8a8_utils.py",
+        "line": 349,
+        "text": "# TODO(luka) remove this path if not used anymore"
+      },
+      {
+        "file": "aphrodite/quantization/utils/w8a8_utils.py",
+        "line": 362,
+        "text": "# TODO(luka) do this dispatch during init (after ScaledMM refactor)"
+      },
+      {
+        "file": "aphrodite/third_party/pynvml.py",
+        "line": 1345,
+        "text": "#     # TODO handle the error"
+      },
+      {
+        "file": "aphrodite/transformers_utils/configs/arctic.py",
+        "line": 40,
+        "text": "with the defaults will yield a similar configuration to that of the #TODO(rsamdani): add what model has the default config.."
+      },
+      {
+        "file": "aphrodite/transformers_utils/configs/falcon.py",
+        "line": 74,
+        "text": "# Hack for falcon-40b"
+      },
+      {
+        "file": "aphrodite/transformers_utils/configs/nemotron_vl.py",
+        "line": 49,
+        "text": "self.template = template  # TODO move out of here and into the tokenizer"
+      },
+      {
+        "file": "aphrodite/transformers_utils/configs/nemotron_vl.py",
+        "line": 51,
+        "text": "self.image_tag_type = image_tag_type # TODO: into the tokenizer too?"
+      },
+      {
+        "file": "aphrodite/transformers_utils/configs/speculators/base.py",
+        "line": 32,
+        "text": "# TODO: @dsikka - use speculators pydantic model to validate"
+      },
+      {
+        "file": "aphrodite/transformers_utils/tokenizers/mistral.py",
+        "line": 52,
+        "text": "# TODO: remove when pydantic v2.11 is released"
+      },
+      {
+        "file": "aphrodite/transformers_utils/tokenizers/mistral.py",
+        "line": 484,
+        "text": "# TODO(Patrick) - potentially allow special tokens to not be skipped"
+      },
+      {
+        "file": "aphrodite/utils/__init__.py",
+        "line": 303,
+        "text": "# Todo: add warning to inform that del pinned item"
+      },
+      {
+        "file": "aphrodite/utils/__init__.py",
+        "line": 937,
+        "text": "# TODO: We can not check for running processes with network"
+      },
+      {
+        "file": "aphrodite/utils/__init__.py",
+        "line": 1146,
+        "text": "# TODO: Add more requirements for UVA if needed."
+      },
+      {
+        "file": "aphrodite/utils/__init__.py",
+        "line": 1323,
+        "text": "# TODO: This function can be removed if transformer_modules classes are"
+      },
+      {
+        "file": "aphrodite/utils/deep_gemm.py",
+        "line": 130,
+        "text": "# TODO(wentao): optimize this function, using triton or cuda kernel"
+      },
+      {
+        "file": "aphrodite/v1/serial_utils.py",
+        "line": 230,
+        "text": "# TODO - This check can become `isinstance(bufs, bytestr)`"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/flash_attn.py",
+        "line": 191,
+        "text": "# TODO(woosuk): Support larger cudagraph sizes."
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/flash_attn.py",
+        "line": 727,
+        "text": "# TODO: Support sliding window."
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/flashinfer.py",
+        "line": 587,
+        "text": "# TODO: The cascade wrapper currently does not support setting"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/flex_attention.py",
+        "line": 136,
+        "text": "# TODO Confirm - Seems like block 0 is always empty so we reset it manually"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/flex_attention.py",
+        "line": 450,
+        "text": "# TODO: Explicit configs for each GPU?"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/pallas.py",
+        "line": 98,
+        "text": "# TODO: This is a temporary fix for vmem OOM."
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/mla/cutlass_mla.py",
+        "line": 104,
+        "text": "# TODO: Currently, num_kv_splits is limited to 16 to avoid hanging"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/mla/cutlass_mla.py",
+        "line": 168,
+        "text": "# TODO(kaixih@nvidia): support fp8"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/mla/cutlass_mla.py",
+        "line": 214,
+        "text": "# TODO: Check if we really need it"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/mla/cutlass_mla.py",
+        "line": 226,
+        "text": "# TODO: Currently we leave it here only for backup in case something is"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/mla/cutlass_mla.py",
+        "line": 266,
+        "text": "# TODO: Remove the old cutlass MLA kernel after more extensive"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/mla/rocm_aiter_mla.py",
+        "line": 230,
+        "text": "# TODO: Find the best value for MTP"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/mla/triton_mla.py",
+        "line": 141,
+        "text": "num_kv_splits = 4  # TODO: heuristic"
+      },
+      {
+        "file": "aphrodite/v1/attention/backends/mla/triton_mla.py",
+        "line": 143,
+        "text": "# TODO(lucas) Allocate ahead of time"
+      },
+      {
+        "file": "aphrodite/v1/core/block_pool.py",
+        "line": 255,
+        "text": "# FIXME (Chen): Not sure whether we should return `hash_value`"
+      },
+      {
+        "file": "aphrodite/v1/core/encoder_cache_manager.py",
+        "line": 191,
+        "text": "# TODO: handle encoder-decoder models once we support them."
+      },
+      {
+        "file": "aphrodite/v1/core/kv_cache_manager.py",
+        "line": 88,
+        "text": "# FIXME: make prefix cache stats conditional on log_stats"
+      },
+      {
+        "file": "aphrodite/v1/core/kv_cache_utils.py",
+        "line": 939,
+        "text": "# FIXME(Chen): At the moment of writing this code (2025-06-02), all"
+      },
+      {
+        "file": "aphrodite/v1/core/single_type_kv_cache_manager.py",
+        "line": 333,
+        "text": "# TODO: reduce i by sliding_window_contiguous_blocks when cache miss, to"
+      },
+      {
+        "file": "aphrodite/v1/core/sched/async_scheduler.py",
+        "line": 21,
+        "text": "# TODO: Support speculative decoding."
+      },
+      {
+        "file": "aphrodite/v1/engine/async_llm.py",
+        "line": 282,
+        "text": "# TODO: we should support multiple prompts in one call, as you"
+      },
+      {
+        "file": "aphrodite/v1/engine/async_llm.py",
+        "line": 420,
+        "text": "# TODO(rob): make into a coroutine and launch it in"
+      },
+      {
+        "file": "aphrodite/v1/engine/async_llm.py",
+        "line": 660,
+        "text": "# TODO(rob): fix this after talking with Ray team."
+      },
+      {
+        "file": "aphrodite/v1/engine/core.py",
+        "line": 236,
+        "text": "# TODO: The scheduler doesn't really need to know the"
+      },
+      {
+        "file": "aphrodite/v1/engine/core.py",
+        "line": 315,
+        "text": "# TODO(comaniac): Ideally we should peek the first batch in the"
+      },
+      {
+        "file": "aphrodite/v1/engine/core_client.py",
+        "line": 66,
+        "text": "# TODO: support this for debugging purposes."
+      },
+      {
+        "file": "aphrodite/v1/engine/core_client.py",
+        "line": 1096,
+        "text": "# TODO use P2C alg for larger DP sizes"
+      },
+      {
+        "file": "aphrodite/v1/engine/detokenizer.py",
+        "line": 108,
+        "text": "# TODO(woosuk): This method becomes very inefficient when the number of"
+      },
+      {
+        "file": "aphrodite/v1/engine/processor.py",
+        "line": 196,
+        "text": "# TODO: ideally we would have the LLTokenizer here as Lark syntax"
+      },
+      {
+        "file": "aphrodite/v1/engine/processor.py",
+        "line": 236,
+        "text": "# TODO(woosuk): Support pooling models."
+      },
+      {
+        "file": "aphrodite/v1/engine/processor.py",
+        "line": 237,
+        "text": "# TODO(woosuk): Support encoder-decoder models."
+      },
+      {
+        "file": "aphrodite/v1/engine/processor.py",
+        "line": 274,
+        "text": "# TODO: Impl encoder-decoder"
+      },
+      {
+        "file": "aphrodite/v1/engine/processor.py",
+        "line": 281,
+        "text": "# TODO: can we avoid cloning here in multiproc case?"
+      },
+      {
+        "file": "aphrodite/v1/engine/processor.py",
+        "line": 428,
+        "text": "# TODO: Find out how many placeholder tokens are there so we can"
+      },
+      {
+        "file": "aphrodite/v1/engine/utils.py",
+        "line": 238,
+        "text": "# TODO(rui): validate passed-in placement groups"
+      },
+      {
+        "file": "aphrodite/v1/engine/utils.py",
+        "line": 317,
+        "text": "# TODO(rui): support allocating a single DP rank"
+      },
+      {
+        "file": "aphrodite/v1/executor/abstract.py",
+        "line": 48,
+        "text": "# TODO: make v1 scheduling deterministic"
+      },
+      {
+        "file": "aphrodite/v1/executor/multiproc_executor.py",
+        "line": 363,
+        "text": "# TODO: move `init_worker` to executor level as a collective rpc call"
+      },
+      {
+        "file": "aphrodite/v1/executor/multiproc_executor.py",
+        "line": 553,
+        "text": "# TODO(rob): handle case where the MQ itself breaks."
+      },
+      {
+        "file": "aphrodite/v1/metrics/loggers.py",
+        "line": 58,
+        "text": "# TODO: Make the interval configurable."
+      },
+      {
+        "file": "aphrodite/v1/metrics/loggers.py",
+        "line": 288,
+        "text": "# TODO: in 0.10, only enable if show_hidden_metrics=True"
+      },
+      {
+        "file": "aphrodite/v1/metrics/loggers.py",
+        "line": 301,
+        "text": "# TODO: in 0.10, only enable if show_hidden_metrics=True"
+      },
+      {
+        "file": "aphrodite/v1/metrics/loggers.py",
+        "line": 312,
+        "text": "# TODO: in 0.10, only enable if show_hidden_metrics=True"
+      },
+      {
+        "file": "aphrodite/v1/metrics/loggers.py",
+        "line": 404,
+        "text": "# TODO: This metric might be incorrect in case of using multiple"
+      },
+      {
+        "file": "aphrodite/v1/metrics/loggers.py",
+        "line": 521,
+        "text": "# TODO: This metric might be incorrect in case of using multiple"
+      },
+      {
+        "file": "aphrodite/v1/sample/rejection_sampler.py",
+        "line": 438,
+        "text": "# FIXME: Because is_greedy_ptr is not None at profiling run,"
+      },
+      {
+        "file": "aphrodite/v1/sample/sampler.py",
+        "line": 56,
+        "text": "# TODO: provide option for logprobs post sampling."
+      },
+      {
+        "file": "aphrodite/v1/sample/ops/__init__.py",
+        "line": 167,
+        "text": "# TODO: this implementation is extremely inefficient."
+      },
+      {
+        "file": "aphrodite/v1/sample/ops/topk_topp_sampler.py",
+        "line": 38,
+        "text": "# FIXME: Currently, we have errors when using"
+      },
+      {
+        "file": "aphrodite/v1/sample/ops/topk_topp_sampler.py",
+        "line": 271,
+        "text": "# TODO: This can be slow because we handle each request"
+      },
+      {
+        "file": "aphrodite/v1/sample/tpu/metadata.py",
+        "line": 38,
+        "text": "# TODO No penalties for now"
+      },
+      {
+        "file": "aphrodite/v1/sample/tpu/metadata.py",
+        "line": 115,
+        "text": "# TODO enable more and avoid returning None values"
+      },
+      {
+        "file": "aphrodite/v1/spec_decode/eagle.py",
+        "line": 156,
+        "text": "# FIXME: need to consider multiple kv_cache_groups"
+      },
+      {
+        "file": "aphrodite/v1/spec_decode/eagle.py",
+        "line": 225,
+        "text": "# TODO: Currently, MTP module released by deepseek only has"
+      },
+      {
+        "file": "aphrodite/v1/spec_decode/eagle.py",
+        "line": 693,
+        "text": "# FIXME(woosuk): The logic here is duplicated with the main sampling code."
+      },
+      {
+        "file": "aphrodite/v1/spec_decode/eagle.py",
+        "line": 716,
+        "text": "# TODO(woosuk): Consider seeds."
+      },
+      {
+        "file": "aphrodite/v1/spec_decode/ngram_proposer.py",
+        "line": 60,
+        "text": "# TODO: Optimize this."
+      },
+      {
+        "file": "aphrodite/v1/structured_output/__init__.py",
+        "line": 123,
+        "text": "# TODO: we still need to handle xgrammar compilation failures,"
+      },
+      {
+        "file": "aphrodite/v1/structured_output/backend_guidance.py",
+        "line": 121,
+        "text": "# TODO - Add jump decoding support in the future:"
+      },
+      {
+        "file": "aphrodite/v1/structured_output/backend_outlines.py",
+        "line": 32,
+        "text": "# Hack to get around pre-commit regex module rule"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_input_batch.py",
+        "line": 86,
+        "text": "# TODO: This buffer could be too large if max_model_len is big."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_input_batch.py",
+        "line": 437,
+        "text": "# TODO(andy): logits processor list should be extensible via engine"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_input_batch.py",
+        "line": 444,
+        "text": "# TODO convert this to LogitsProcessor"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_input_batch.py",
+        "line": 823,
+        "text": "# TODO(lucas): optimize this by only copying valid indices"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 221,
+        "text": "# TODO(woosuk): Provide an option to tune the max cudagraph batch size."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 742,
+        "text": "# TODO: Support prompt logprobs."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 879,
+        "text": "# Hack for now to fix chunked local attention + no hybrid kv cache"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1104,
+        "text": "# TODO: Optimize the CPU -> GPU copy."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1148,
+        "text": "# FIXME(ywang96): This is a hacky way to deal with multiple modalities"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1405,
+        "text": "# TODO(tms) : There are many cases where padding is enabled for"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1525,
+        "text": "# TODO(woosuk): Avoid the copy. Optimize."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1586,
+        "text": "# TODO: Support overlapping mirco-batches"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1657,
+        "text": "# TODO(woosuk): The following loop can be slow since it iterates over"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1795,
+        "text": "# TODO(woosuk): Refactor the loop."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1817,
+        "text": "# TODO(woosuk): Support M-RoPE."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1826,
+        "text": "# TODO(woosuk): Refactor this."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1839,
+        "text": "# TODO(woosuk): Support M-RoPE."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 1867,
+        "text": "# TODO(woosuk): Optimize."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 2474,
+        "text": "# TODO: handle encoder-decoder models once we support them."
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_model_runner.py",
+        "line": 2999,
+        "text": "# TODO: Support other attention modules, e.g., cross-attention"
+      },
+      {
+        "file": "aphrodite/v1/worker/gpu_worker.py",
+        "line": 203,
+        "text": "# FIXME(youkaichao & ywang96): Use TorchDispatchMode instead of memory pool"
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_input_batch.py",
+        "line": 40,
+        "text": "# TODO(woosuk): This buffer could be too large if max_model_len is big."
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_input_batch.py",
+        "line": 394,
+        "text": "# TODO(lucas): optimize this by only copying valid indices"
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 194,
+        "text": "# TODO: Support M-RoPE (e.g, Qwen2-VL)"
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 783,
+        "text": "# TODO: Support prompt logprobs."
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 855,
+        "text": "# FIXME(ywang96): This is a hacky way to deal with multiple modalities"
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 918,
+        "text": "# TODO unroll loop and assume/enforce --disable_chunked_mm_input"
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 1112,
+        "text": "# TODO: Keep in sync with gpu_model_runner.py, in particular"
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 1158,
+        "text": "# TODO: TPU config may need extra validation"
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 1532,
+        "text": "# TODO: handle encoder-decoder models once we support them."
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 1645,
+        "text": "# TODO: Handle kv cache duplication under SPMD mode."
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 1704,
+        "text": "# TODO: Under SPMD mode, sample_from_logits has correctness issue."
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_model_runner.py",
+        "line": 2005,
+        "text": "# TODO: The integer index leads to a recompilation, but converting it"
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_worker.py",
+        "line": 135,
+        "text": "# TODO (NickLucche) On gsm we compile 80+ graphs."
+      },
+      {
+        "file": "aphrodite/v1/worker/tpu_worker.py",
+        "line": 204,
+        "text": "# TODO: use xm.get_memory_info for SPMD once it's supported in"
+      },
+      {
+        "file": "aphrodite/v1/worker/utils.py",
+        "line": 89,
+        "text": "# TODO: handle encoder-decoder models once we support them."
+      },
+      {
+        "file": "aphrodite/v1/worker/xpu_model_runner.py",
+        "line": 21,
+        "text": "# FIXME: To be verified."
+      },
+      {
+        "file": "aphrodite/v1/worker/xpu_worker.py",
+        "line": 70,
+        "text": "# FIXME: memory_allocated() doesn't count non-torch allocations,"
+      },
+      {
+        "file": "aphrodite/worker/model_runner.py",
+        "line": 133,
+        "text": "# TODO: What happens when we depickle this object?"
+      },
+      {
+        "file": "aphrodite/worker/model_runner.py",
+        "line": 622,
+        "text": "# TODO(sang): This is a hack to make sliding window work with"
+      },
+      {
+        "file": "aphrodite/worker/model_runner.py",
+        "line": 1643,
+        "text": "# TODO(andoorve): We can remove this once all"
+      },
+      {
+        "file": "aphrodite/worker/multi_step_worker.py",
+        "line": 128,
+        "text": "# TODO(will) we could reuse the sampled token ids tensor from"
+      },
+      {
+        "file": "aphrodite/worker/multi_step_worker.py",
+        "line": 175,
+        "text": "# TODO: Can cache the worker input and model input for the"
+      },
+      {
+        "file": "aphrodite/worker/multi_step_worker.py",
+        "line": 178,
+        "text": "# TODO: possible to also cache and reuse the cached worker"
+      },
+      {
+        "file": "aphrodite/worker/pooling_model_runner.py",
+        "line": 73,
+        "text": "# TODO: Figure out if cuda_graph is of any use for these models and"
+      },
+      {
+        "file": "echo-self/core/evolution_engine.py",
+        "line": 258,
+        "text": "elapsed_time=0.0  # TODO: Add timing"
+      },
+      {
+        "file": "echo-self/integration/aphrodite_adaptive.py",
+        "line": 476,
+        "text": "# TODO: Apply configuration changes to running Aphrodite Engine"
+      },
+      {
+        "file": "echo.kern/performance_integration.py",
+        "line": 199,
+        "text": "# TODO: Integrate with actual Aphrodite metrics API"
+      },
+      {
+        "file": "echo.kern/performance_integration.py",
+        "line": 218,
+        "text": "# TODO: Integrate with actual GPU monitoring (nvidia-ml-py or similar)"
+      },
+      {
+        "file": "echo.kern/performance_integration.py",
+        "line": 234,
+        "text": "# TODO: Integrate with actual Aphrodite request tracking"
+      },
+      {
+        "file": "echo.kern/performance_integration.py",
+        "line": 257,
+        "text": "# TODO: Integrate with actual DTESN profiling framework"
+      },
+      {
+        "file": "echo.kern/performance_integration.py",
+        "line": 297,
+        "text": "# TODO: Integrate with actual Echo-Self monitoring system"
+      },
+      {
+        "file": "echo.kern/performance_integration.py",
+        "line": 378,
+        "text": "# TODO: Add integration with external alert systems"
+      },
+      {
+        "file": "echo.kern/performance_monitor.py",
+        "line": 250,
+        "text": "# TODO: Integrate with actual Aphrodite metrics API"
+      },
+      {
+        "file": "echo.kern/performance_monitor.py",
+        "line": 266,
+        "text": "# TODO: Integrate with actual DTESN profiling framework"
+      },
+      {
+        "file": "echo.kern/performance_monitor.py",
+        "line": 281,
+        "text": "# TODO: Integrate with actual Echo-Self monitoring"
+      },
+      {
+        "file": "echo.kern/performance_monitor.py",
+        "line": 296,
+        "text": "# TODO: Integrate with actual embodied agent sensors"
+      },
+      {
+        "file": "echo.kern/phase_3_3_3_self_monitoring.py",
+        "line": 255,
+        "text": "# TODO: Connect to actual agent metrics"
+      },
+      {
+        "file": "echo.kern/phase_3_3_3_self_monitoring.py",
+        "line": 285,
+        "text": "# TODO: Connect to actual embodied agent sensors"
+      },
+      {
+        "file": "echo.kern/phase_3_3_3_self_monitoring.py",
+        "line": 478,
+        "text": "# TODO: Implement escalation mechanism"
+      },
+      {
+        "file": "echo_self/integration/aphrodite_adaptive.py",
+        "line": 444,
+        "text": "# TODO: Apply configuration changes to running Aphrodite Engine"
+      },
+      {
+        "file": "examples/fp8/extract_scales.py",
+        "line": 296,
+        "text": "# TODO: Expand this with activation and weights scaling factors when"
+      },
+      {
+        "file": "examples/fp8/extract_scales.py",
+        "line": 350,
+        "text": "# TODO: Change this once additional scaling factors are enabled"
+      },
+      {
+        "file": "examples/offline_inference/neuron_inference.py",
+        "line": 28,
+        "text": "# TODO: Support paged-attention in transformers-neuronx."
+      },
+      {
+        "file": "examples/offline_inference/neuron_int8_quantization.py",
+        "line": 29,
+        "text": "# TODO(liangfu): Support paged-attention in transformers-neuronx."
+      },
+      {
+        "file": "kernels/quantization/machete/generate.py",
+        "line": 569,
+        "text": "# TODO (LucasWilkinson): Further tuning required"
+      },
+      {
+        "file": "kernels/quantization/machete/generate.py",
+        "line": 573,
+        "text": "# TODO (LucasWilkinson): Investigate further"
+      },
+      {
+        "file": "kernels/quantization/machete/generate.py",
+        "line": 581,
+        "text": "# TODO (LucasWilkinson): Investigate further"
+      },
+      {
+        "file": "kernels/quantization/machete/generate.py",
+        "line": 592,
+        "text": "# TODO (LucasWilkinson): Investigate further"
+      },
+      {
+        "file": "tests/conftest.py",
+        "line": 423,
+        "text": "# HACK - not all processors take sampling_rate; we should"
+      },
+      {
+        "file": "tests/basic_correctness/test_cumem.py",
+        "line": 147,
+        "text": "# FIXME(youkaichao & ywang96): Fix memory buffer issue with sleep mode"
+      },
+      {
+        "file": "tests/benchmarks/kernels/moe.py",
+        "line": 122,
+        "text": "# TODO: Increase the search space and use a performance model to"
+      },
+      {
+        "file": "tests/compile/test_full_graph.py",
+        "line": 35,
+        "text": "# TODO: figure out why this fails."
+      },
+      {
+        "file": "tests/compile/test_full_graph.py",
+        "line": 99,
+        "text": "# TODO(luka) add other supported compilation config scenarios here"
+      },
+      {
+        "file": "tests/compile/test_functionalization.py",
+        "line": 72,
+        "text": "# TODO mark inputs dynamic? (currently torch.compile is triggered 4x)"
+      },
+      {
+        "file": "tests/core/block/test_block_manager.py",
+        "line": 423,
+        "text": "# TODO(cade/kaiyang): add comprehensive tests for swapping at allocator level."
+      },
+      {
+        "file": "tests/core/block/test_block_table.py",
+        "line": 561,
+        "text": "# TODO(cade) ensure equality when num_lookahead_slots > 0."
+      },
+      {
+        "file": "tests/core/block/test_prefix_caching_block.py",
+        "line": 883,
+        "text": "# TODO(rickyx): This behaviour for prefill sequence is a hack until"
+      },
+      {
+        "file": "tests/detokenizer/test_stop_strings.py",
+        "line": 131,
+        "text": "# FIXME: this does not respect include_in_output=False"
+      },
+      {
+        "file": "tests/distributed/test_pipeline_parallel.py",
+        "line": 201,
+        "text": "# FIXME: Cannot load tokenizer in latest transformers version."
+      },
+      {
+        "file": "tests/distributed/test_pipeline_parallel.py",
+        "line": 205,
+        "text": "# TODO: Implement PP"
+      },
+      {
+        "file": "tests/distributed/test_pipeline_parallel.py",
+        "line": 236,
+        "text": "# TODO: Implement PP"
+      },
+      {
+        "file": "tests/distributed/test_sequence_parallel.py",
+        "line": 261,
+        "text": "# TODO support other models"
+      },
+      {
+        "file": "tests/entrypoints/test_chat_utils.py",
+        "line": 1471,
+        "text": "# TODO(Julien): upon model release change to a tokenizer already configured."
+      },
+      {
+        "file": "tests/entrypoints/llm/test_accuracy.py",
+        "line": 56,
+        "text": "# TODO: [AlexM] Fix it with new CI/CD tests"
+      },
+      {
+        "file": "tests/entrypoints/openai/test_translation_validation.py",
+        "line": 36,
+        "text": "# TODO remove once language detection is implemented"
+      },
+      {
+        "file": "tests/entrypoints/openai/correctness/test_transcription_api_correctness.py",
+        "line": 152,
+        "text": "# TODO refactor to use `ASRDataset`"
+      },
+      {
+        "file": "tests/entrypoints/openai/tool_parsers/test_hunyuan_a13b_tool_parser.py",
+        "line": 20,
+        "text": "# TODO: add reason prefix and suffix."
+      },
+      {
+        "file": "tests/kernels/test_activation.py",
+        "line": 131,
+        "text": "# TODO: enable this test after fixing the performance issue"
+      },
+      {
+        "file": "tests/kernels/test_attention.py",
+        "line": 362,
+        "text": "# TODO: Add tests for USE_ALIBI=True."
+      },
+      {
+        "file": "tests/kernels/test_machete_gemm.py",
+        "line": 47,
+        "text": "# TODO: in future PR refactor this and `is_quant_method_supported` in the kernel"
+      },
+      {
+        "file": "tests/kernels/test_prefix_prefill.py",
+        "line": 443,
+        "text": "# FIXME: Because xformers does not support dynamic sequence"
+      },
+      {
+        "file": "tests/kernels/attention/test_attention_selector.py",
+        "line": 179,
+        "text": "# TODO: When testing for v1, pipe in `use_v1` as an argument to"
+      },
+      {
+        "file": "tests/kernels/attention/test_attention_selector.py",
+        "line": 245,
+        "text": "# TODO: support fallback on V1!"
+      },
+      {
+        "file": "tests/kernels/attention/test_encoder_decoder_attn.py",
+        "line": 652,
+        "text": "# TODO - Update the way we construct the query so that it"
+      },
+      {
+        "file": "tests/kernels/attention/test_encoder_decoder_attn.py",
+        "line": 698,
+        "text": "# TODO - Update the way we construct the query so that it"
+      },
+      {
+        "file": "tests/kernels/attention/test_encoder_decoder_attn.py",
+        "line": 763,
+        "text": "# TODO - Update the way we construct the query so that it"
+      },
+      {
+        "file": "tests/kernels/attention/test_flashmla.py",
+        "line": 39,
+        "text": "# TODO: parametrize using pytest"
+      },
+      {
+        "file": "tests/kernels/attention/test_prefix_prefill.py",
+        "line": 476,
+        "text": "# FIXME(DefTruth): Because xformers does not support dynamic sequence"
+      },
+      {
+        "file": "tests/kernels/core/test_opcheck.py",
+        "line": 16,
+        "text": "# TODO: Add this back, currently fails with"
+      },
+      {
+        "file": "tests/kernels/quantization/test_machete_mm.py",
+        "line": 24,
+        "text": "# TODO: in future PR refactor this and `is_quant_method_supported` in the kernel"
+      },
+      {
+        "file": "tests/kernels/quantization/test_machete_mm.py",
+        "line": 119,
+        "text": "# TODO: in future PR refactor this and `is_quant_method_supported` in the kernel"
+      },
+      {
+        "file": "tests/kernels/quantization/test_marlin_gemm.py",
+        "line": 267,
+        "text": "# TODO: find better way to test this?"
+      },
+      {
+        "file": "tests/kv_transfer/test_lookup_buffer.py",
+        "line": 12,
+        "text": "# TODO: the test depends on a lot of fields in the current implementation."
+      },
+      {
+        "file": "tests/lora/test_quant_model.py",
+        "line": 121,
+        "text": "# HACK: GPTQ lora outputs are just incredibly unstable."
+      },
+      {
+        "file": "tests/models/registry.py",
+        "line": 206,
+        "text": "# TODO: Remove is_available_online once their config.json is fixed"
+      },
+      {
+        "file": "tests/models/registry.py",
+        "line": 503,
+        "text": "# TODO(woosuk): Re-enable this once the MLP Speculator is supported in V1."
+      },
+      {
+        "file": "tests/models/test_registry.py",
+        "line": 75,
+        "text": "# TODO(woosuk): Re-enable this once the MLP Speculator is supported"
+      },
+      {
+        "file": "tests/models/decoder_only/language/test_big_models.py",
+        "line": 27,
+        "text": "#TODO: remove this after CPU float16 support ready"
+      },
+      {
+        "file": "tests/models/decoder_only/language/test_gguf.py",
+        "line": 20,
+        "text": "# FIXME: Move this to confest"
+      },
+      {
+        "file": "tests/models/decoder_only/language/test_granite.py",
+        "line": 32,
+        "text": "# TODO: Sliding window should be tested separately."
+      },
+      {
+        "file": "tests/models/decoder_only/language/test_mistral.py",
+        "line": 81,
+        "text": "# TODO: Sliding window should be tested separately."
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_internvl.py",
+        "line": 168,
+        "text": "# TODO: Check whether using original CLIPVisionModel can improve"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_internvl.py",
+        "line": 236,
+        "text": "# TODO: Check whether using original CLIPVisionModel can improve"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_llava.py",
+        "line": 26,
+        "text": "# TODO: Get this model to produce meaningful output in Aphrodite"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_llava.py",
+        "line": 209,
+        "text": "# TODO: Check whether using original CLIPVisionModel can improve"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_llava_image_embeds.py",
+        "line": 118,
+        "text": "# TODO: Check whether using original CLIPVisionModel can improve"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_llava_next.py",
+        "line": 164,
+        "text": "# TODO: Check whether using original CLIPVisionModel can improve"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_llava_next_video.py",
+        "line": 148,
+        "text": "# TODO: Check whether using original CLIPVisionModel can improve"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_llava_onevision.py",
+        "line": 102,
+        "text": "# TODO: Check whether using original CLIPVisionModel can improve"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_llava_onevision.py",
+        "line": 217,
+        "text": "# TODO: Check whether using original CLIPVisionModel can improve"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_paligemma.py",
+        "line": 25,
+        "text": "# FIXME (mattwong, gshtrasb, hongxiayan)"
+      },
+      {
+        "file": "tests/models/decoder_only/vision_language/test_phi3v.py",
+        "line": 57,
+        "text": "# FIXME (mattwong, gshtrasb, hongxiayan)"
+      },
+      {
+        "file": "tests/models/language/generation/test_granite.py",
+        "line": 6,
+        "text": "# TODO(sang): Sliding window should be tested separately."
+      },
+      {
+        "file": "tests/models/language/generation/test_mistral.py",
+        "line": 173,
+        "text": "# TODO(sang): Sliding window should be tested separately."
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 29,
+        "text": "# FIXME (mattwong, gshtrasb, hongxiayan)"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 107,
+        "text": "# TODO: Revert to \"auto\" when CPU backend can use torch > 2.6"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 190,
+        "text": "# FIXME(Isotr0py): Enable this test after"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 293,
+        "text": "# FIXME: https://github.com/huggingface/transformers/pull/38510"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 338,
+        "text": "# FIXME(Isotr0py): This model is broken in Transformers v4.54.1, we"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 437,
+        "text": "# FIXME: Config cannot be loaded in transformers 4.52"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 549,
+        "text": "# FIXME: https://huggingface.co/openbmb/MiniCPM-V-2_6/discussions/55"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 562,
+        "text": "# FIXME: https://huggingface.co/openbmb/MiniCPM-V-2_6/discussions/55"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 575,
+        "text": "# FIXME: https://huggingface.co/openbmb/MiniCPM-V-2_6/discussions/55"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_common.py",
+        "line": 669,
+        "text": "# FIXME: https://github.com/huggingface/transformers/issues/38358"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_florence2.py",
+        "line": 100,
+        "text": "# FIXME: https://github.com/huggingface/transformers/issues/38358"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_phi4_multimodal.py",
+        "line": 40,
+        "text": "# FIXME (mattwong, gshtrasb, hongxiayan)"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_phi4mm.py",
+        "line": 63,
+        "text": "# FIXME (mattwong, gshtrasb, hongxiayan)"
+      },
+      {
+        "file": "tests/models/multimodal/generation/test_phi4mm.py",
+        "line": 123,
+        "text": "# FIXME: https://huggingface.co/microsoft/Phi-4-multimodal-instruct/discussions/75"
+      },
+      {
+        "file": "tests/models/multimodal/generation/vlm_utils/model_utils.py",
+        "line": 331,
+        "text": "# FIXME: https://github.com/huggingface/transformers/issues/38333"
+      },
+      {
+        "file": "tests/models/multimodal/generation/vlm_utils/types.py",
+        "line": 153,
+        "text": "# Hack for updating a prompt to take into a local path; currently only used"
+      },
+      {
+        "file": "tests/models/quantization/test_awq.py",
+        "line": 76,
+        "text": "# TODO: Check whether using original CLIPVisionModel can improve"
+      },
+      {
+        "file": "tests/models/quantization/test_awq.py",
+        "line": 112,
+        "text": "# TODO: fixure out why and re-enable this on V1."
+      },
+      {
+        "file": "tests/samplers/test_beam_search.py",
+        "line": 18,
+        "text": "# FIXME(zhuohan): The test can not pass if we:"
+      },
+      {
+        "file": "tests/samplers/test_beam_search.py",
+        "line": 28,
+        "text": "@pytest.mark.skip_v1  # FIXME: This fails on V1 right now."
+      },
+      {
+        "file": "tests/spec_decode/e2e/conftest.py",
+        "line": 225,
+        "text": "# FIXME: ci fails to log acceptance rate."
+      },
+      {
+        "file": "tests/spec_decode/e2e/test_integration_dist_tp4.py",
+        "line": 34,
+        "text": "#TODO(wooyeon): add spec_draft_dp=2 case"
+      },
+      {
+        "file": "tests/v1/test_stats.py",
+        "line": 298,
+        "text": "# TODO(rickyx): Add model forward/execute time."
+      },
+      {
+        "file": "tests/v1/engine/test_async_llm.py",
+        "line": 87,
+        "text": "# TODO(rickyx): Remove monkeypatch once we have a better way to test V1"
+      },
+      {
+        "file": "tests/v1/entrypoints/llm/test_struct_output_generate.py",
+        "line": 35,
+        "text": "#FIXME: This test is flaky on CI thus disabled"
+      },
+      {
+        "file": "tests/v1/sample/test_logprobs.py",
+        "line": 39,
+        "text": "#TODO: enable this once we support it for"
+      },
+      {
+        "file": "tests/v1/sample/test_logprobs_e2e.py",
+        "line": 11,
+        "text": "# FIXME(rob): enable prefix caching once supported."
+      },
+      {
+        "file": "tests/v1/tpu/test_basic.py",
+        "line": 18,
+        "text": "# TODO: Enable this models with v6e"
+      },
+      {
+        "file": "tests/v1/tpu/test_basic.py",
+        "line": 26,
+        "text": "# TODO: Enable when CI/CD will have a multi-tpu instance"
+      },
+      {
+        "file": "tests/v1/tpu/test_perf.py",
+        "line": 33,
+        "text": "# TODO: Cannot run a series of tests because:"
+      }
+    ],
+    "missing_module_docstrings": [
+      "env.py",
+      "setup.py",
+      "use_existing_torch.py",
+      "2do/llm-functions/agents/demo/tools.py",
+      "2do/llm-functions/scripts/build-declarations.py",
+      "2do/llm-functions/scripts/run-agent.py",
+      "2do/llm-functions/scripts/run-tool.py",
+      "2do/llm-functions/tools/demo_py.py",
+      "2do/llm-functions/tools/execute_py_code.py",
+      "2do/llm/docs/conf.py",
+      "2do/llm/docs/plugins/llm-markov/llm_markov.py",
+      "2do/llm/llm/__init__.py",
+      "2do/llm/llm/__main__.py",
+      "2do/llm/llm/cli.py",
+      "2do/llm/llm/embeddings.py",
+      "2do/llm/llm/embeddings_migrations.py",
+      "2do/llm/llm/errors.py",
+      "2do/llm/llm/hookspecs.py",
+      "2do/llm/llm/migrations.py",
+      "2do/llm/llm/models.py",
+      "2do/llm/llm/plugins.py",
+      "2do/llm/llm/templates.py",
+      "2do/llm/llm/tools.py",
+      "2do/llm/llm/utils.py",
+      "2do/llm/llm/default_plugins/__init__.py",
+      "2do/llm/llm/default_plugins/default_tools.py",
+      "2do/llm/llm/default_plugins/openai_models.py",
+      "2do/llm/tests/conftest.py",
+      "aar_core/orchestration/__init__.py",
+      "aphrodite/_custom_ops.py",
+      "aphrodite/_ipex_ops.py",
+      "aphrodite/collect_env.py",
+      "aphrodite/connections.py",
+      "aphrodite/constants.py",
+      "aphrodite/forward_context.py",
+      "aphrodite/scalar_type.py",
+      "aphrodite/tasks.py",
+      "aphrodite/tracing.py",
+      "aphrodite/version.py",
+      "aphrodite/aar_core/gateway.py",
+      "aphrodite/aar_core/functions/registry.py",
+      "aphrodite/adapter_commons/__init__.py",
+      "aphrodite/adapter_commons/layers.py",
+      "aphrodite/adapter_commons/models.py",
+      "aphrodite/adapter_commons/request.py",
+      "aphrodite/adapter_commons/utils.py",
+      "aphrodite/adapter_commons/worker_manager.py",
+      "aphrodite/aphrodite_flash_attn/__init__.py",
+      "aphrodite/aphrodite_flash_attn/flash_attn_interface.py",
+      "aphrodite/aphrodite_flash_attn/layers/__init__.py",
+      "aphrodite/aphrodite_flash_attn/layers/rotary.py",
+      "aphrodite/aphrodite_flash_attn/ops/triton/__init__.py",
+      "aphrodite/aphrodite_flash_attn/ops/triton/rotary.py",
+      "aphrodite/assets/__init__.py",
+      "aphrodite/assets/audio.py",
+      "aphrodite/assets/base.py",
+      "aphrodite/assets/image.py",
+      "aphrodite/assets/video.py",
+      "aphrodite/attention/__init__.py",
+      "aphrodite/attention/selector.py",
+      "aphrodite/attention/backends/__init__.py",
+      "aphrodite/attention/backends/abstract.py",
+      "aphrodite/attention/backends/flashinfer.py",
+      "aphrodite/attention/backends/flashmla.py",
+      "aphrodite/attention/backends/openvino.py",
+      "aphrodite/attention/backends/placeholder_attn.py",
+      "aphrodite/attention/backends/rocm_aiter_mla.py",
+      "aphrodite/attention/backends/triton_mla.py",
+      "aphrodite/attention/backends/mla/__init__.py",
+      "aphrodite/attention/ops/__init__.py",
+      "aphrodite/attention/ops/aphrodite_flash_attn.py",
+      "aphrodite/attention/ops/chunked_prefill_paged_decode.py",
+      "aphrodite/attention/ops/flashmla.py",
+      "aphrodite/attention/ops/merge_attn_states.py",
+      "aphrodite/attention/ops/nki_flash_attn.py",
+      "aphrodite/attention/ops/paged_attn.py",
+      "aphrodite/attention/ops/pallas_kv_cache_update.py",
+      "aphrodite/attention/ops/prefix_prefill.py",
+      "aphrodite/attention/ops/rocm_aiter_mla.py",
+      "aphrodite/attention/ops/rocm_aiter_paged_attn.py",
+      "aphrodite/attention/ops/triton_merge_attn_states.py",
+      "aphrodite/attention/ops/triton_unified_attention.py",
+      "aphrodite/attention/utils/__init__.py",
+      "aphrodite/attention/utils/fa_utils.py",
+      "aphrodite/attention/utils/kv_sharing_utils.py",
+      "aphrodite/benchmarks/__init__.py",
+      "aphrodite/benchmarks/utils.py",
+      "aphrodite/benchmarks/lib/utils.py",
+      "aphrodite/common/__init__.py",
+      "aphrodite/common/beam_search.py",
+      "aphrodite/common/config.py",
+      "aphrodite/common/connections.py",
+      "aphrodite/common/env_override.py",
+      "aphrodite/common/envs.py",
+      "aphrodite/common/grammar.py",
+      "aphrodite/common/logits_processor.py",
+      "aphrodite/common/outputs.py",
+      "aphrodite/common/pooling_params.py",
+      "aphrodite/compilation/__init__.py",
+      "aphrodite/compilation/activation_quant_fusion.py",
+      "aphrodite/compilation/aphrodite_inductor_pass.py",
+      "aphrodite/compilation/backends.py",
+      "aphrodite/compilation/base_piecewise_backend.py",
+      "aphrodite/compilation/collective_fusion.py",
+      "aphrodite/compilation/compile_context.py",
+      "aphrodite/compilation/compiler_interface.py",
+      "aphrodite/compilation/counter.py",
+      "aphrodite/compilation/cuda_piecewise_backend.py",
+      "aphrodite/compilation/decorators.py",
+      "aphrodite/compilation/fix_functionalization.py",
+      "aphrodite/compilation/fusion.py",
+      "aphrodite/compilation/fusion_attn.py",
+      "aphrodite/compilation/fx_utils.py",
+      "aphrodite/compilation/inductor_pass.py",
+      "aphrodite/compilation/levels.py",
+      "aphrodite/compilation/monitor.py",
+      "aphrodite/compilation/multi_output_match.py",
+      "aphrodite/compilation/noop_elimination.py",
+      "aphrodite/compilation/pass_manager.py",
+      "aphrodite/compilation/sequence_parallelism.py",
+      "aphrodite/compilation/torch25_custom_graph_pass.py",
+      "aphrodite/compilation/wrapper.py",
+      "aphrodite/device_allocator/__init__.py",
+      "aphrodite/device_allocator/cumem.py",
+      "aphrodite/distributed/__init__.py",
+      "aphrodite/distributed/communication_op.py",
+      "aphrodite/distributed/kv_events.py",
+      "aphrodite/distributed/tpu_distributed_utils.py",
+      "aphrodite/distributed/utils.py",
+      "aphrodite/distributed/device_communicators/__init__.py",
+      "aphrodite/distributed/device_communicators/all2all.py",
+      "aphrodite/distributed/device_communicators/base_device_communicator.py",
+      "aphrodite/distributed/device_communicators/cpu_communicator.py",
+      "aphrodite/distributed/device_communicators/cuda_communicator.py",
+      "aphrodite/distributed/device_communicators/custom_all_reduce.py",
+      "aphrodite/distributed/device_communicators/custom_all_reduce_utils.py",
+      "aphrodite/distributed/device_communicators/neuron_communicator.py",
+      "aphrodite/distributed/device_communicators/pynccl.py",
+      "aphrodite/distributed/device_communicators/pynccl_wrapper.py",
+      "aphrodite/distributed/device_communicators/quick_all_reduce.py",
+      "aphrodite/distributed/device_communicators/ray_communicator.py",
+      "aphrodite/distributed/device_communicators/shm_broadcast.py",
+      "aphrodite/distributed/device_communicators/tpu_communicator.py",
+      "aphrodite/distributed/device_communicators/xpu_communicator.py",
+      "aphrodite/distributed/kv_transfer/__init__.py",
+      "aphrodite/distributed/kv_transfer/kv_transfer_state.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/__init__.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/factory.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/__init__.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_connector.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/multi_connector.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/nixl_connector.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/shared_storage_connector.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/__init__.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_adapter.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/aphrodite_v1_adapter.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/lmcache_integration/utils.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/p2p/__init__.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/p2p/p2p_nccl_connector.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/p2p/p2p_nccl_engine.py",
+      "aphrodite/distributed/kv_transfer/kv_connector/v1/p2p/tensor_memory_pool.py",
+      "aphrodite/distributed/kv_transfer/kv_lookup_buffer/__init__.py",
+      "aphrodite/distributed/kv_transfer/kv_pipe/__init__.py",
+      "aphrodite/distributed/kv_transfer/kv_pipe/mooncake_pipe.py",
+      "aphrodite/endpoints/__init__.py",
+      "aphrodite/endpoints/chat_utils.py",
+      "aphrodite/endpoints/context.py",
+      "aphrodite/endpoints/harmony_utils.py",
+      "aphrodite/endpoints/llm.py",
+      "aphrodite/endpoints/logger.py",
+      "aphrodite/endpoints/score_utils.py",
+      "aphrodite/endpoints/ssl.py",
+      "aphrodite/endpoints/tool.py",
+      "aphrodite/endpoints/tool_server.py",
+      "aphrodite/endpoints/utils.py",
+      "aphrodite/endpoints/cli/__init__.py",
+      "aphrodite/endpoints/cli/collect_env.py",
+      "aphrodite/endpoints/cli/openai.py",
+      "aphrodite/endpoints/cli/run.py",
+      "aphrodite/endpoints/cli/run_batch.py",
+      "aphrodite/endpoints/cli/types.py",
+      "aphrodite/endpoints/cli/benchmark/__init__.py",
+      "aphrodite/endpoints/cli/benchmark/base.py",
+      "aphrodite/endpoints/cli/benchmark/latency.py",
+      "aphrodite/endpoints/cli/benchmark/main.py",
+      "aphrodite/endpoints/cli/benchmark/serve.py",
+      "aphrodite/endpoints/cli/benchmark/throughput.py",
+      "aphrodite/endpoints/kobold/__init__.py",
+      "aphrodite/endpoints/kobold/api_server.py",
+      "aphrodite/endpoints/kobold/protocol.py",
+      "aphrodite/endpoints/openai/__init__.py",
+      "aphrodite/endpoints/openai/logits_processors.py",
+      "aphrodite/endpoints/openai/protocol.py",
+      "aphrodite/endpoints/openai/run_batch.py",
+      "aphrodite/endpoints/openai/serving_chat.py",
+      "aphrodite/endpoints/openai/serving_classification.py",
+      "aphrodite/endpoints/openai/serving_completions.py",
+      "aphrodite/endpoints/openai/serving_embedding.py",
+      "aphrodite/endpoints/openai/serving_engine.py",
+      "aphrodite/endpoints/openai/serving_messages.py",
+      "aphrodite/endpoints/openai/serving_models.py",
+      "aphrodite/endpoints/openai/serving_pooling.py",
+      "aphrodite/endpoints/openai/serving_responses.py",
+      "aphrodite/endpoints/openai/serving_score.py",
+      "aphrodite/endpoints/openai/serving_tokenization.py",
+      "aphrodite/endpoints/openai/serving_transcription.py",
+      "aphrodite/endpoints/openai/speech_to_text.py",
+      "aphrodite/endpoints/openai/tool_parsers/__init__.py",
+      "aphrodite/endpoints/openai/tool_parsers/abstract_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/benchmark.py",
+      "aphrodite/endpoints/openai/tool_parsers/deepseekv3_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/glm4_moe_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/granite_20b_fc_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/granite_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/hermes_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/hunyuan_a13b_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/internlm2_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/jamba_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/kimi_k2_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/llama4_pythonic_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/llama_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/minimax_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/mistral_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/phi4mini_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/pythonic_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/qwen3coder_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/step3_tool_parser.py",
+      "aphrodite/endpoints/openai/tool_parsers/utils.py",
+      "aphrodite/endpoints/openai/tool_parsers/xlam_tool_parser.py",
+      "aphrodite/engine/__init__.py",
+      "aphrodite/engine/aphrodite_engine.py",
+      "aphrodite/engine/args_tools.py",
+      "aphrodite/engine/async_aphrodite.py",
+      "aphrodite/engine/async_timeout.py",
+      "aphrodite/engine/deep_tree_config.py",
+      "aphrodite/engine/deep_tree_model_runner.py",
+      "aphrodite/engine/metrics.py",
+      "aphrodite/engine/protocol.py",
+      "aphrodite/engine/multiprocessing/__init__.py",
+      "aphrodite/engine/multiprocessing/client.py",
+      "aphrodite/engine/multiprocessing/engine.py",
+      "aphrodite/engine/output_processor/__init__.py",
+      "aphrodite/engine/output_processor/interfaces.py",
+      "aphrodite/engine/output_processor/multi_step.py",
+      "aphrodite/engine/output_processor/single_step.py",
+      "aphrodite/engine/output_processor/stop_checker.py",
+      "aphrodite/engine/output_processor/util.py",
+      "aphrodite/executor/__init__.py",
+      "aphrodite/executor/executor_base.py",
+      "aphrodite/executor/mp_distributed_executor.py",
+      "aphrodite/executor/msgspec_utils.py",
+      "aphrodite/executor/multiproc_worker_utils.py",
+      "aphrodite/executor/ray_distributed_executor.py",
+      "aphrodite/executor/ray_utils.py",
+      "aphrodite/executor/uniproc_executor.py",
+      "aphrodite/hpu_extension/__init__.py",
+      "aphrodite/hpu_extension/awq_hpu.py",
+      "aphrodite/hpu_extension/cache_ops.py",
+      "aphrodite/hpu_extension/environment.py",
+      "aphrodite/hpu_extension/flags.py",
+      "aphrodite/hpu_extension/gptq_hpu.py",
+      "aphrodite/hpu_extension/kernels.py",
+      "aphrodite/hpu_extension/ops.py",
+      "aphrodite/hpu_extension/profiler.py",
+      "aphrodite/hpu_extension/scales.py",
+      "aphrodite/hpu_extension/utils.py",
+      "aphrodite/hpu_extension/bucketing/__init__.py",
+      "aphrodite/hpu_extension/bucketing/common.py",
+      "aphrodite/hpu_extension/bucketing/exponential.py",
+      "aphrodite/hpu_extension/bucketing/linear.py",
+      "aphrodite/inputs/__init__.py",
+      "aphrodite/inputs/data.py",
+      "aphrodite/inputs/parse.py",
+      "aphrodite/inputs/preprocess.py",
+      "aphrodite/inputs/registry.py",
+      "aphrodite/kv_quant/__init__.py",
+      "aphrodite/kv_quant/calib_dataloader.py",
+      "aphrodite/kv_quant/calibrate.py",
+      "aphrodite/kv_quant/calibration.py",
+      "aphrodite/kv_quant/export_kv_params.py",
+      "aphrodite/kv_quant/observer.py",
+      "aphrodite/kv_quant/utils.py",
+      "aphrodite/logging_utils/__init__.py",
+      "aphrodite/logging_utils/dump_input.py",
+      "aphrodite/logging_utils/formatter.py",
+      "aphrodite/lora/__init__.py",
+      "aphrodite/lora/fully_sharded_layers.py",
+      "aphrodite/lora/layers.py",
+      "aphrodite/lora/lora.py",
+      "aphrodite/lora/models.py",
+      "aphrodite/lora/peft_helper.py",
+      "aphrodite/lora/request.py",
+      "aphrodite/lora/resolver.py",
+      "aphrodite/lora/utils.py",
+      "aphrodite/lora/worker_manager.py",
+      "aphrodite/lora/ops/__init__.py",
+      "aphrodite/lora/ops/ipex_ops/__init__.py",
+      "aphrodite/lora/ops/ipex_ops/lora_ops.py",
+      "aphrodite/lora/ops/torch_ops/__init__.py",
+      "aphrodite/lora/ops/torch_ops/lora_ops.py",
+      "aphrodite/lora/ops/triton_ops/__init__.py",
+      "aphrodite/lora/ops/triton_ops/utils.py",
+      "aphrodite/lora/ops/xla_ops/__init__.py",
+      "aphrodite/lora/ops/xla_ops/lora_ops.py",
+      "aphrodite/lora/punica_wrapper/__init__.py",
+      "aphrodite/lora/punica_wrapper/punica_cpu.py",
+      "aphrodite/lora/punica_wrapper/punica_selector.py",
+      "aphrodite/lora/punica_wrapper/punica_tpu.py",
+      "aphrodite/lora/punica_wrapper/utils.py",
+      "aphrodite/modeling/__init__.py",
+      "aphrodite/modeling/_custom_op.py",
+      "aphrodite/modeling/parameter.py",
+      "aphrodite/modeling/pooling_metadata.py",
+      "aphrodite/modeling/sampling_metadata.py",
+      "aphrodite/modeling/layers/__init__.py",
+      "aphrodite/modeling/layers/lightning_attn.py",
+      "aphrodite/modeling/layers/linear.py",
+      "aphrodite/modeling/layers/pooler.py",
+      "aphrodite/modeling/layers/vocab_parallel_embedding.py",
+      "aphrodite/modeling/layers/fused_moe/__init__.py",
+      "aphrodite/modeling/layers/fused_moe/batched_deep_gemm_moe.py",
+      "aphrodite/modeling/layers/fused_moe/batched_triton_or_deep_gemm_moe.py",
+      "aphrodite/modeling/layers/fused_moe/config.py",
+      "aphrodite/modeling/layers/fused_moe/cpu_fused_moe.py",
+      "aphrodite/modeling/layers/fused_moe/deep_gemm_moe.py",
+      "aphrodite/modeling/layers/fused_moe/deepep_ht_prepare_finalize.py",
+      "aphrodite/modeling/layers/fused_moe/deepep_ll_prepare_finalize.py",
+      "aphrodite/modeling/layers/fused_moe/flashinfer_cutlass_moe.py",
+      "aphrodite/modeling/layers/fused_moe/flashinfer_cutlass_prepare_finalize.py",
+      "aphrodite/modeling/layers/fused_moe/layer.py",
+      "aphrodite/modeling/layers/fused_moe/modular_kernel.py",
+      "aphrodite/modeling/layers/fused_moe/moe_align_block_size.py",
+      "aphrodite/modeling/layers/fused_moe/moe_pallas.py",
+      "aphrodite/modeling/layers/fused_moe/moe_permute_unpermute.py",
+      "aphrodite/modeling/layers/fused_moe/moe_torch_iterative.py",
+      "aphrodite/modeling/layers/fused_moe/pplx_prepare_finalize.py",
+      "aphrodite/modeling/layers/fused_moe/prepare_finalize.py",
+      "aphrodite/modeling/layers/fused_moe/rocm_aiter_fused_moe.py",
+      "aphrodite/modeling/layers/fused_moe/topk_weight_and_reduce.py",
+      "aphrodite/modeling/layers/fused_moe/triton_deep_gemm_moe.py",
+      "aphrodite/modeling/layers/fused_moe/utils.py",
+      "aphrodite/modeling/layers/mamba/__init__.py",
+      "aphrodite/modeling/layers/mamba/abstract.py",
+      "aphrodite/modeling/layers/mamba/mamba2_metadata.py",
+      "aphrodite/modeling/layers/mamba/mamba_mixer.py",
+      "aphrodite/modeling/layers/mamba/mamba_mixer2.py",
+      "aphrodite/modeling/layers/mamba/mamba_utils.py",
+      "aphrodite/modeling/layers/mamba/ops/__init__.py",
+      "aphrodite/modeling/layers/mamba/ops/causal_conv1d.py",
+      "aphrodite/modeling/layers/mamba/ops/layernorm_gated.py",
+      "aphrodite/modeling/layers/mamba/ops/mamba_ssm.py",
+      "aphrodite/modeling/layers/mamba/ops/ssd_bmm.py",
+      "aphrodite/modeling/layers/mamba/ops/ssd_chunk_scan.py",
+      "aphrodite/modeling/layers/mamba/ops/ssd_chunk_state.py",
+      "aphrodite/modeling/layers/mamba/ops/ssd_combined.py",
+      "aphrodite/modeling/layers/mamba/ops/ssd_state_passing.py",
+      "aphrodite/modeling/layers/ops/__init__.py",
+      "aphrodite/modeling/layers/ops/activation.py",
+      "aphrodite/modeling/layers/ops/layernorm.py",
+      "aphrodite/modeling/layers/ops/utils.py",
+      "aphrodite/modeling/layers/rotary_embedding/common.py",
+      "aphrodite/modeling/layers/rotary_embedding/deepseek_scaling_rope.py",
+      "aphrodite/modeling/layers/rotary_embedding/dual_chunk_rope.py",
+      "aphrodite/modeling/layers/rotary_embedding/dynamic_ntk_alpha_rope.py",
+      "aphrodite/modeling/layers/rotary_embedding/dynamic_ntk_scaling_rope.py",
+      "aphrodite/modeling/layers/rotary_embedding/linear_scaling_rope.py",
+      "aphrodite/modeling/layers/rotary_embedding/llama3_rope.py",
+      "aphrodite/modeling/layers/rotary_embedding/llama4_vision_rope.py",
+      "aphrodite/modeling/layers/rotary_embedding/mrope.py",
+      "aphrodite/modeling/layers/rotary_embedding/ntk_scaling_rope.py",
+      "aphrodite/modeling/layers/rotary_embedding/phi3_long_rope_scaled_rope.py",
+      "aphrodite/modeling/layers/rotary_embedding/yarn_scaling_rope.py",
+      "aphrodite/modeling/model_loader/__init__.py",
+      "aphrodite/modeling/model_loader/base_loader.py",
+      "aphrodite/modeling/model_loader/bitsandbytes_loader.py",
+      "aphrodite/modeling/model_loader/default_loader.py",
+      "aphrodite/modeling/model_loader/dummy_loader.py",
+      "aphrodite/modeling/model_loader/gguf_loader.py",
+      "aphrodite/modeling/model_loader/runai_streamer_loader.py",
+      "aphrodite/modeling/model_loader/sharded_state_loader.py",
+      "aphrodite/modeling/model_loader/tensorizer.py",
+      "aphrodite/modeling/model_loader/tensorizer_loader.py",
+      "aphrodite/modeling/model_loader/tpu.py",
+      "aphrodite/modeling/models/__init__.py",
+      "aphrodite/modeling/models/adapters.py",
+      "aphrodite/modeling/models/aimv2.py",
+      "aphrodite/modeling/models/arcee.py",
+      "aphrodite/modeling/models/aria.py",
+      "aphrodite/modeling/models/aya_vision.py",
+      "aphrodite/modeling/models/bert.py",
+      "aphrodite/modeling/models/bert_with_rope.py",
+      "aphrodite/modeling/models/blip2.py",
+      "aphrodite/modeling/models/chameleon.py",
+      "aphrodite/modeling/models/config.py",
+      "aphrodite/modeling/models/constant_size_cache.py",
+      "aphrodite/modeling/models/dbrx.py",
+      "aphrodite/modeling/models/deepseek_mtp.py",
+      "aphrodite/modeling/models/florence2.py",
+      "aphrodite/modeling/models/gemma2.py",
+      "aphrodite/modeling/models/gemma3.py",
+      "aphrodite/modeling/models/gemma3_mm.py",
+      "aphrodite/modeling/models/gemma3n.py",
+      "aphrodite/modeling/models/gpt_oss.py",
+      "aphrodite/modeling/models/gritlm.py",
+      "aphrodite/modeling/models/h2ovl.py",
+      "aphrodite/modeling/models/hyperclovax_vision.py",
+      "aphrodite/modeling/models/interfaces.py",
+      "aphrodite/modeling/models/interfaces_base.py",
+      "aphrodite/modeling/models/intern_vit.py",
+      "aphrodite/modeling/models/internlm2.py",
+      "aphrodite/modeling/models/internlm2_ve.py",
+      "aphrodite/modeling/models/interns1.py",
+      "aphrodite/modeling/models/interns1_vit.py",
+      "aphrodite/modeling/models/internvl.py",
+      "aphrodite/modeling/models/jina_vl.py",
+      "aphrodite/modeling/models/keye.py",
+      "aphrodite/modeling/models/kimi_vl.py",
+      "aphrodite/modeling/models/llama4_eagle.py",
+      "aphrodite/modeling/models/llama_eagle.py",
+      "aphrodite/modeling/models/llama_eagle3.py",
+      "aphrodite/modeling/models/llava.py",
+      "aphrodite/modeling/models/llava_next.py",
+      "aphrodite/modeling/models/llava_next_video.py",
+      "aphrodite/modeling/models/llava_onevision.py",
+      "aphrodite/modeling/models/mamba_cache.py",
+      "aphrodite/modeling/models/medusa.py",
+      "aphrodite/modeling/models/minimax_vl_01.py",
+      "aphrodite/modeling/models/mistral3.py",
+      "aphrodite/modeling/models/mllama4.py",
+      "aphrodite/modeling/models/mlp_speculator.py",
+      "aphrodite/modeling/models/modernbert.py",
+      "aphrodite/modeling/models/module_mapping.py",
+      "aphrodite/modeling/models/molmo.py",
+      "aphrodite/modeling/models/moonvit.py",
+      "aphrodite/modeling/models/mpt.py",
+      "aphrodite/modeling/models/nemotron_vl.py",
+      "aphrodite/modeling/models/nvlm_d.py",
+      "aphrodite/modeling/models/paligemma.py",
+      "aphrodite/modeling/models/phi3v.py",
+      "aphrodite/modeling/models/phi4_multimodal.py",
+      "aphrodite/modeling/models/phi4flash.py",
+      "aphrodite/modeling/models/phi4mm.py",
+      "aphrodite/modeling/models/phi4mm_audio.py",
+      "aphrodite/modeling/models/phi4mm_utils.py",
+      "aphrodite/modeling/models/pixtral.py",
+      "aphrodite/modeling/models/roberta.py",
+      "aphrodite/modeling/models/skyworkr1v.py",
+      "aphrodite/modeling/models/smolvlm.py",
+      "aphrodite/modeling/models/step3_vl.py",
+      "aphrodite/modeling/models/tarsier.py",
+      "aphrodite/modeling/models/telechat2.py",
+      "aphrodite/modeling/models/teleflm.py",
+      "aphrodite/modeling/models/utils.py",
+      "aphrodite/modeling/models/vision.py",
+      "aphrodite/modeling/models/voxtral.py",
+      "aphrodite/modeling/models/whisper.py",
+      "aphrodite/multimodal/__init__.py",
+      "aphrodite/multimodal/audio.py",
+      "aphrodite/multimodal/base.py",
+      "aphrodite/multimodal/hasher.py",
+      "aphrodite/multimodal/image.py",
+      "aphrodite/multimodal/inputs.py",
+      "aphrodite/multimodal/parse.py",
+      "aphrodite/multimodal/processing.py",
+      "aphrodite/multimodal/profiling.py",
+      "aphrodite/multimodal/registry.py",
+      "aphrodite/multimodal/utils.py",
+      "aphrodite/multimodal/video.py",
+      "aphrodite/platforms/__init__.py",
+      "aphrodite/platforms/cpu.py",
+      "aphrodite/platforms/interface.py",
+      "aphrodite/platforms/neuron.py",
+      "aphrodite/platforms/rocm.py",
+      "aphrodite/platforms/tpu.py",
+      "aphrodite/platforms/xpu.py",
+      "aphrodite/plugins/__init__.py",
+      "aphrodite/plugins/lora_resolvers/__init__.py",
+      "aphrodite/plugins/lora_resolvers/filesystem_resolver.py",
+      "aphrodite/processing/__init__.py",
+      "aphrodite/processing/evictor.py",
+      "aphrodite/processing/interfaces.py",
+      "aphrodite/processing/scheduler.py",
+      "aphrodite/processing/block/__init__.py",
+      "aphrodite/processing/block/block_table.py",
+      "aphrodite/processing/block/common.py",
+      "aphrodite/processing/block/cpu_gpu_block_allocator.py",
+      "aphrodite/processing/block/interfaces.py",
+      "aphrodite/processing/block/naive_block.py",
+      "aphrodite/profiler/__init__.py",
+      "aphrodite/profiler/layerwise_profile.py",
+      "aphrodite/profiler/utils.py",
+      "aphrodite/prompt_adapter/__init__.py",
+      "aphrodite/prompt_adapter/layers.py",
+      "aphrodite/prompt_adapter/models.py",
+      "aphrodite/prompt_adapter/request.py",
+      "aphrodite/prompt_adapter/utils.py",
+      "aphrodite/prompt_adapter/worker_manager.py",
+      "aphrodite/quantization/__init__.py",
+      "aphrodite/quantization/aqlm.py",
+      "aphrodite/quantization/auto_round.py",
+      "aphrodite/quantization/autoquant.py",
+      "aphrodite/quantization/awq.py",
+      "aphrodite/quantization/awq_marlin.py",
+      "aphrodite/quantization/awq_triton.py",
+      "aphrodite/quantization/base_config.py",
+      "aphrodite/quantization/bitblas.py",
+      "aphrodite/quantization/bitsandbytes.py",
+      "aphrodite/quantization/deepgemm.py",
+      "aphrodite/quantization/deepspeedfp.py",
+      "aphrodite/quantization/eetq.py",
+      "aphrodite/quantization/exl2.py",
+      "aphrodite/quantization/experts_int8.py",
+      "aphrodite/quantization/fbgemm_fp8.py",
+      "aphrodite/quantization/fp6.py",
+      "aphrodite/quantization/fp8.py",
+      "aphrodite/quantization/gguf.py",
+      "aphrodite/quantization/gptq.py",
+      "aphrodite/quantization/gptq_bitblas.py",
+      "aphrodite/quantization/gptq_marlin.py",
+      "aphrodite/quantization/gptq_marlin_24.py",
+      "aphrodite/quantization/hqq_marlin.py",
+      "aphrodite/quantization/inc.py",
+      "aphrodite/quantization/input_quant_fp8.py",
+      "aphrodite/quantization/ipex_quant.py",
+      "aphrodite/quantization/kv_cache.py",
+      "aphrodite/quantization/marlin.py",
+      "aphrodite/quantization/modelopt.py",
+      "aphrodite/quantization/moe_wna16.py",
+      "aphrodite/quantization/mxfp4.py",
+      "aphrodite/quantization/neuron_quant.py",
+      "aphrodite/quantization/ptpc_fp8.py",
+      "aphrodite/quantization/qqq.py",
+      "aphrodite/quantization/quip.py",
+      "aphrodite/quantization/quip_utils.py",
+      "aphrodite/quantization/rtn.py",
+      "aphrodite/quantization/squeezellm.py",
+      "aphrodite/quantization/torchao.py",
+      "aphrodite/quantization/tpu_int8.py",
+      "aphrodite/quantization/vptq.py",
+      "aphrodite/quantization/compressed_tensors/__init__.py",
+      "aphrodite/quantization/compressed_tensors/compressed_tensors.py",
+      "aphrodite/quantization/compressed_tensors/compressed_tensors_moe.py",
+      "aphrodite/quantization/compressed_tensors/triton_scaled_mm.py",
+      "aphrodite/quantization/compressed_tensors/utils.py",
+      "aphrodite/quantization/compressed_tensors/schemes/__init__.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_24.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_scheme.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_w4a16_24.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_w4a16_nvfp4.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_w4a4_nvfp4.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_w4a8_int.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_w8a16_fp8.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_fp8.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_w8a8_int8.py",
+      "aphrodite/quantization/compressed_tensors/schemes/compressed_tensors_wNa16.py",
+      "aphrodite/quantization/gguf_utils/__init__.py",
+      "aphrodite/quantization/gguf_utils/constants.py",
+      "aphrodite/quantization/gguf_utils/gguf_reader.py",
+      "aphrodite/quantization/gguf_utils/tensor_mapping.py",
+      "aphrodite/quantization/kernels/__init__.py",
+      "aphrodite/quantization/kernels/mixed_precision/MPLinearKernel.py",
+      "aphrodite/quantization/kernels/mixed_precision/__init__.py",
+      "aphrodite/quantization/kernels/mixed_precision/allspark.py",
+      "aphrodite/quantization/kernels/mixed_precision/bitblas.py",
+      "aphrodite/quantization/kernels/mixed_precision/conch.py",
+      "aphrodite/quantization/kernels/mixed_precision/dynamic_4bit.py",
+      "aphrodite/quantization/kernels/mixed_precision/exllama.py",
+      "aphrodite/quantization/kernels/mixed_precision/machete.py",
+      "aphrodite/quantization/kernels/mixed_precision/marlin.py",
+      "aphrodite/quantization/kernels/scaled_mm/ScaledMMLinearKernel.py",
+      "aphrodite/quantization/kernels/scaled_mm/__init__.py",
+      "aphrodite/quantization/kernels/scaled_mm/aiter.py",
+      "aphrodite/quantization/kernels/scaled_mm/cutlass.py",
+      "aphrodite/quantization/kernels/scaled_mm/triton.py",
+      "aphrodite/quantization/kernels/scaled_mm/xla.py",
+      "aphrodite/quantization/quark/__init__.py",
+      "aphrodite/quantization/quark/quark.py",
+      "aphrodite/quantization/quark/quark_moe.py",
+      "aphrodite/quantization/quark/utils.py",
+      "aphrodite/quantization/quark/schemes/__init__.py",
+      "aphrodite/quantization/quark/schemes/quark_scheme.py",
+      "aphrodite/quantization/quark/schemes/quark_w4a4_mxfp4.py",
+      "aphrodite/quantization/quark/schemes/quark_w8a8_fp8.py",
+      "aphrodite/quantization/quark/schemes/quark_w8a8_int8.py",
+      "aphrodite/quantization/utils/__init__.py",
+      "aphrodite/quantization/utils/allspark_utils.py",
+      "aphrodite/quantization/utils/bitblas_utils.py",
+      "aphrodite/quantization/utils/flashinfer_utils.py",
+      "aphrodite/quantization/utils/fp6_utils.py",
+      "aphrodite/quantization/utils/fp8_utils.py",
+      "aphrodite/quantization/utils/gptq_utils.py",
+      "aphrodite/quantization/utils/int8_utils.py",
+      "aphrodite/quantization/utils/layer_utils.py",
+      "aphrodite/quantization/utils/machete_utils.py",
+      "aphrodite/quantization/utils/marlin_utils.py",
+      "aphrodite/quantization/utils/marlin_utils_fp4.py",
+      "aphrodite/quantization/utils/marlin_utils_fp8.py",
+      "aphrodite/quantization/utils/marlin_utils_test_qqq.py",
+      "aphrodite/quantization/utils/mxfp4_utils.py",
+      "aphrodite/quantization/utils/nvfp4_emulation_utils.py",
+      "aphrodite/quantization/utils/nvfp4_moe_support.py",
+      "aphrodite/quantization/utils/w8a8_utils.py",
+      "aphrodite/ray/__init__.py",
+      "aphrodite/ray/lazy_utils.py",
+      "aphrodite/ray/ray_env.py",
+      "aphrodite/reasoning/__init__.py",
+      "aphrodite/reasoning/abs_reasoning_parsers.py",
+      "aphrodite/reasoning/deepseek_r1_reasoning_parser.py",
+      "aphrodite/reasoning/glm4_moe_reasoning_parser.py",
+      "aphrodite/reasoning/gptoss_reasoning_parser.py",
+      "aphrodite/reasoning/granite_reasoning_parser.py",
+      "aphrodite/reasoning/hunyuan_a13b_reasoning_parser.py",
+      "aphrodite/reasoning/mistral_reasoning_parser.py",
+      "aphrodite/reasoning/qwen3_reasoning_parser.py",
+      "aphrodite/reasoning/step3_reasoning_parser.py",
+      "aphrodite/server/__init__.py",
+      "aphrodite/server/launch.py",
+      "aphrodite/third_party/__init__.py",
+      "aphrodite/third_party/pynvml.py",
+      "aphrodite/transformers_utils/__init__.py",
+      "aphrodite/transformers_utils/config.py",
+      "aphrodite/transformers_utils/detokenizer.py",
+      "aphrodite/transformers_utils/detokenizer_utils.py",
+      "aphrodite/transformers_utils/dynamic_module.py",
+      "aphrodite/transformers_utils/processor.py",
+      "aphrodite/transformers_utils/s3_utils.py",
+      "aphrodite/transformers_utils/tokenizer.py",
+      "aphrodite/transformers_utils/tokenizer_base.py",
+      "aphrodite/transformers_utils/tokenizer_group.py",
+      "aphrodite/transformers_utils/utils.py",
+      "aphrodite/transformers_utils/chat_templates/__init__.py",
+      "aphrodite/transformers_utils/chat_templates/registry.py",
+      "aphrodite/transformers_utils/configs/chatglm.py",
+      "aphrodite/transformers_utils/configs/cohere2.py",
+      "aphrodite/transformers_utils/configs/deepseek_vl2.py",
+      "aphrodite/transformers_utils/configs/eagle.py",
+      "aphrodite/transformers_utils/configs/h2ovl.py",
+      "aphrodite/transformers_utils/configs/internvl.py",
+      "aphrodite/transformers_utils/configs/kimi_vl.py",
+      "aphrodite/transformers_utils/configs/medusa.py",
+      "aphrodite/transformers_utils/configs/mistral.py",
+      "aphrodite/transformers_utils/configs/mllama.py",
+      "aphrodite/transformers_utils/configs/mlp_speculator.py",
+      "aphrodite/transformers_utils/configs/moonvit.py",
+      "aphrodite/transformers_utils/configs/nemotron_vl.py",
+      "aphrodite/transformers_utils/configs/nvlm_d.py",
+      "aphrodite/transformers_utils/configs/ovis.py",
+      "aphrodite/transformers_utils/configs/ovis2.py",
+      "aphrodite/transformers_utils/configs/skyworkr1v.py",
+      "aphrodite/transformers_utils/configs/step3_vl.py",
+      "aphrodite/transformers_utils/configs/ultravox.py",
+      "aphrodite/transformers_utils/configs/speculators/__init__.py",
+      "aphrodite/transformers_utils/configs/speculators/algos.py",
+      "aphrodite/transformers_utils/configs/speculators/base.py",
+      "aphrodite/transformers_utils/processors/deepseek_vl2.py",
+      "aphrodite/transformers_utils/processors/ovis.py",
+      "aphrodite/transformers_utils/processors/ovis2.py",
+      "aphrodite/transformers_utils/tokenizers/__init__.py",
+      "aphrodite/transformers_utils/tokenizers/baichuan.py",
+      "aphrodite/transformers_utils/tokenizers/mistral.py",
+      "aphrodite/triton_utils/__init__.py",
+      "aphrodite/triton_utils/importing.py",
+      "aphrodite/usage/__init__.py",
+      "aphrodite/usage/usage_lib.py",
+      "aphrodite/utils/__init__.py",
+      "aphrodite/utils/tensor_schema.py",
+      "aphrodite/v1/__init__.py",
+      "aphrodite/v1/kv_cache_interface.py",
+      "aphrodite/v1/outputs.py",
+      "aphrodite/v1/request.py",
+      "aphrodite/v1/serial_utils.py",
+      "aphrodite/v1/utils.py",
+      "aphrodite/v1/attention/__init__.py",
+      "aphrodite/v1/attention/backends/__init__.py",
+      "aphrodite/v1/attention/backends/cpu_attn.py",
+      "aphrodite/v1/attention/backends/mamba1_attn.py",
+      "aphrodite/v1/attention/backends/mamba_attn.py",
+      "aphrodite/v1/attention/backends/mamba_selectors.py",
+      "aphrodite/v1/attention/backends/pallas.py",
+      "aphrodite/v1/attention/backends/utils.py",
+      "aphrodite/v1/attention/backends/mla/__init__.py",
+      "aphrodite/v1/attention/backends/mla/cutlass_mla.py",
+      "aphrodite/v1/attention/backends/mla/flashmla.py",
+      "aphrodite/v1/attention/backends/mla/rocm_aiter_mla.py",
+      "aphrodite/v1/attention/backends/mla/triton_mla.py",
+      "aphrodite/v1/core/__init__.py",
+      "aphrodite/v1/core/block_pool.py",
+      "aphrodite/v1/core/encoder_cache_manager.py",
+      "aphrodite/v1/core/kv_cache_coordinator.py",
+      "aphrodite/v1/core/kv_cache_manager.py",
+      "aphrodite/v1/core/single_type_kv_cache_manager.py",
+      "aphrodite/v1/core/sched/__init__.py",
+      "aphrodite/v1/core/sched/async_scheduler.py",
+      "aphrodite/v1/core/sched/interface.py",
+      "aphrodite/v1/core/sched/output.py",
+      "aphrodite/v1/core/sched/request_queue.py",
+      "aphrodite/v1/core/sched/scheduler.py",
+      "aphrodite/v1/core/sched/utils.py",
+      "aphrodite/v1/engine/__init__.py",
+      "aphrodite/v1/engine/async_llm.py",
+      "aphrodite/v1/engine/coordinator.py",
+      "aphrodite/v1/engine/core.py",
+      "aphrodite/v1/engine/core_client.py",
+      "aphrodite/v1/engine/detokenizer.py",
+      "aphrodite/v1/engine/exceptions.py",
+      "aphrodite/v1/engine/llm_engine.py",
+      "aphrodite/v1/engine/logprobs.py",
+      "aphrodite/v1/engine/mm_input_cache.py",
+      "aphrodite/v1/engine/output_processor.py",
+      "aphrodite/v1/engine/parallel_sampling.py",
+      "aphrodite/v1/engine/processor.py",
+      "aphrodite/v1/engine/utils.py",
+      "aphrodite/v1/executor/__init__.py",
+      "aphrodite/v1/executor/abstract.py",
+      "aphrodite/v1/executor/multiproc_executor.py",
+      "aphrodite/v1/executor/ray_distributed_executor.py",
+      "aphrodite/v1/metrics/__init__.py",
+      "aphrodite/v1/metrics/loggers.py",
+      "aphrodite/v1/metrics/prometheus.py",
+      "aphrodite/v1/metrics/ray_wrappers.py",
+      "aphrodite/v1/metrics/reader.py",
+      "aphrodite/v1/metrics/stats.py",
+      "aphrodite/v1/pool/__init__.py",
+      "aphrodite/v1/pool/metadata.py",
+      "aphrodite/v1/sample/__init__.py",
+      "aphrodite/v1/sample/logits_processor.py",
+      "aphrodite/v1/sample/metadata.py",
+      "aphrodite/v1/sample/rejection_sampler.py",
+      "aphrodite/v1/sample/ops/__init__.py",
+      "aphrodite/v1/sample/ops/bad_words.py",
+      "aphrodite/v1/sample/ops/dry.py",
+      "aphrodite/v1/sample/ops/epsilon_cutoff.py",
+      "aphrodite/v1/sample/ops/eta_cutoff.py",
+      "aphrodite/v1/sample/ops/min_p.py",
+      "aphrodite/v1/sample/ops/no_repeat_ngram.py",
+      "aphrodite/v1/sample/ops/penalties.py",
+      "aphrodite/v1/sample/ops/quadratic.py",
+      "aphrodite/v1/sample/ops/skew.py",
+      "aphrodite/v1/sample/ops/temperatures.py",
+      "aphrodite/v1/sample/ops/tfs.py",
+      "aphrodite/v1/sample/ops/top_a.py",
+      "aphrodite/v1/sample/ops/top_nsigma.py",
+      "aphrodite/v1/sample/ops/topk_topp_sampler.py",
+      "aphrodite/v1/sample/ops/typical_p.py",
+      "aphrodite/v1/sample/ops/xtc.py",
+      "aphrodite/v1/sample/tpu/__init__.py",
+      "aphrodite/v1/sample/tpu/metadata.py",
+      "aphrodite/v1/spec_decode/__init__.py",
+      "aphrodite/v1/spec_decode/eagle.py",
+      "aphrodite/v1/spec_decode/medusa.py",
+      "aphrodite/v1/spec_decode/metadata.py",
+      "aphrodite/v1/spec_decode/metrics.py",
+      "aphrodite/v1/spec_decode/ngram_proposer.py",
+      "aphrodite/v1/spec_decode/utils.py",
+      "aphrodite/v1/structured_output/__init__.py",
+      "aphrodite/v1/structured_output/backend_guidance.py",
+      "aphrodite/v1/structured_output/backend_outlines.py",
+      "aphrodite/v1/structured_output/backend_types.py",
+      "aphrodite/v1/structured_output/backend_xgrammar.py",
+      "aphrodite/v1/structured_output/request.py",
+      "aphrodite/v1/structured_output/utils.py",
+      "aphrodite/v1/worker/__init__.py",
+      "aphrodite/v1/worker/block_table.py",
+      "aphrodite/v1/worker/cpu_model_runner.py",
+      "aphrodite/v1/worker/cpu_worker.py",
+      "aphrodite/v1/worker/gpu_input_batch.py",
+      "aphrodite/v1/worker/gpu_model_runner.py",
+      "aphrodite/v1/worker/tpu_input_batch.py",
+      "aphrodite/v1/worker/tpu_model_runner.py",
+      "aphrodite/v1/worker/utils.py",
+      "aphrodite/v1/worker/worker_base.py",
+      "aphrodite/v1/worker/xpu_model_runner.py",
+      "aphrodite/v1/worker/xpu_worker.py",
+      "aphrodite/worker/__init__.py",
+      "aphrodite/worker/enc_dec_model_runner.py",
+      "aphrodite/worker/model_runner.py",
+      "aphrodite/worker/model_runner_base.py",
+      "aphrodite/worker/multi_step_model_runner.py",
+      "aphrodite/worker/multi_step_neuron_model_runner.py",
+      "aphrodite/worker/multi_step_neuronx_distributed_model_runner.py",
+      "aphrodite/worker/multi_step_worker.py",
+      "aphrodite/worker/neuron_model_runner.py",
+      "aphrodite/worker/neuronx_distributed_model_runner.py",
+      "aphrodite/worker/pooling_model_runner.py",
+      "aphrodite/worker/worker_base.py",
+      "cmake/hipify.py",
+      "core/__init__.py",
+      "core/cognitive_grammar/__init__.py",
+      "core/dtesn/__init__.py",
+      "core/integration/__init__.py",
+      "core/membrane_computing/__init__.py",
+      "echo.dash/activity_regulation.py",
+      "echo.dash/activity_stream.py",
+      "echo.dash/adaptive_heartbeat.py",
+      "echo.dash/ai_integration.py",
+      "echo.dash/antikythera.py",
+      "echo.dash/browser_interface.py",
+      "echo.dash/chat_interface.py",
+      "echo.dash/chat_session_manager.py",
+      "echo.dash/cognitive_architecture.py",
+      "echo.dash/cronbot.py",
+      "echo.dash/deep_tree_echo.py",
+      "echo.dash/emergency_protocols.py",
+      "echo.dash/fix_locale_gui.py",
+      "echo.dash/gui_dashboard.py",
+      "echo.dash/launch_dashboards.py",
+      "echo.dash/launch_gui.py",
+      "echo.dash/launch_gui_standalone.py",
+      "echo.dash/ml_system.py",
+      "echo.dash/monitor.py",
+      "echo.dash/monitor_interface.py",
+      "echo.dash/network_config.py",
+      "echo.dash/pattern languages.py",
+      "echo.dash/personality_system.py",
+      "echo.dash/selenium_interface.py",
+      "echo.dash/sensory_motor.py",
+      "echo.dash/sensory_motor_simple.py",
+      "echo.dash/stream.py",
+      "echo.dash/swarmprotocol.py",
+      "echo.dash/temporal.py",
+      "echo.dash/terminal_controller.py",
+      "echo.dash/tooltip.py",
+      "echo.dash/archive/legacy/deep_tree_echo-v1.py",
+      "echo.dash/archive/legacy/deep_tree_echo-v2.py",
+      "echo.dream/app.py",
+      "echo.dream/database.py",
+      "echo.dream/main.py",
+      "echo.files/echo-ml_system.py",
+      "echo.files/echopilot.py",
+      "echo.kern/deep_tree_echo.py",
+      "echo.sys/prompt_kernel/inventory.py",
+      "echo_self/adaptive_architecture/__init__.py",
+      "echo_self/core/__init__.py",
+      "examples/aphrodite_engine_example.py",
+      "examples/api_client.py",
+      "examples/gradio_server.py",
+      "examples/offline_profile.py",
+      "examples/tensorize_aphrodite_model.py",
+      "examples/xqa_attn.py",
+      "examples/fp8/extract_scales.py",
+      "examples/marlin/convert.py",
+      "examples/offline_inference/arctic_inference.py",
+      "examples/offline_inference/cached_prefix_inference.py",
+      "examples/offline_inference/chat_inference.py",
+      "examples/offline_inference/embedding_inference.py",
+      "examples/offline_inference/gguf_inference.py",
+      "examples/offline_inference/mlpspeculator_inference.py",
+      "examples/offline_inference/neuron_inference.py",
+      "examples/offline_inference/neuron_int8_quantization.py",
+      "examples/offline_inference/offline_inference.py",
+      "examples/offline_inference/soft_prompt_inference.py",
+      "examples/offline_inference/tpu_inference.py",
+      "examples/openai_api/chat_completion.py",
+      "examples/openai_api/completion.py",
+      "examples/openai_api/embedding.py",
+      "hypergraph/__init__.py",
+      "hypergraph/models/__init__.py",
+      "hypergraph/services/__init__.py",
+      "hypergraph/visualization/__init__.py",
+      "kernels/cutlass_extensions/aphrodite_cutlass_library_extension.py",
+      "kernels/hadamard/generator.py",
+      "kernels/moe/marlin_moe_wna16/generate_kernels.py",
+      "kernels/punica/bgmv/generator.py",
+      "kernels/quantization/gptq_marlin/generate_kernels.py",
+      "kernels/quantization/machete/generate.py",
+      "scripts/inventory_prompts.py",
+      "tests/__init__.py",
+      "tests/build_cython.py",
+      "tests/conftest.py",
+      "tests/utils.py",
+      "tests/aphrodite_test_utils/setup.py",
+      "tests/aphrodite_test_utils/aphrodite_test_utils/blame.py",
+      "tests/aphrodite_test_utils/aphrodite_test_utils/monitor.py",
+      "tests/async_engine/__init__.py",
+      "tests/async_engine/conftest.py",
+      "tests/backend_services/__init__.py",
+      "tests/backend_services/infrastructure/__init__.py",
+      "tests/backend_services/integration/__init__.py",
+      "tests/basic_correctness/__init__.py",
+      "tests/benchmarks/__init__.py",
+      "tests/benchmarks/attention.py",
+      "tests/benchmarks/backend_request_func.py",
+      "tests/benchmarks/cutlass_benchmarks/w8a8_benchmarks.py",
+      "tests/benchmarks/cutlass_benchmarks/weight_shapes.py",
+      "tests/benchmarks/kernels/aqlm.py",
+      "tests/benchmarks/kernels/benchmark_machete.py",
+      "tests/benchmarks/kernels/benchmark_shapes.py",
+      "tests/benchmarks/kernels/graph_machete_bench.py",
+      "tests/benchmarks/kernels/marlin.py",
+      "tests/benchmarks/kernels/moe.py",
+      "tests/benchmarks/kernels/paged_attention.py",
+      "tests/benchmarks/kernels/rope.py",
+      "tests/benchmarks/kernels/weight_shapes.py",
+      "tests/benchmarks/overheads/hashing.py",
+      "tests/benchmarks/overheads/prefix_caching.py",
+      "tests/compile/__init__.py",
+      "tests/compile/backend.py",
+      "tests/compile/conftest.py",
+      "tests/compile/piecewise/__init__.py",
+      "tests/core/__init__.py",
+      "tests/core/conftest.py",
+      "tests/core/utils.py",
+      "tests/core/block/__init__.py",
+      "tests/core/block/conftest.py",
+      "tests/core/block/e2e/__init__.py",
+      "tests/core/block/e2e/conftest.py",
+      "tests/detokenizer/__init__.py",
+      "tests/detokenizer/conftest.py",
+      "tests/distributed/__init__.py",
+      "tests/distributed/conftest.py",
+      "tests/encoder_decoder/__init__.py",
+      "tests/endpoints/__init__.py",
+      "tests/endpoints/deep_tree_echo/__init__.py",
+      "tests/engine/__init__.py",
+      "tests/engine/conftest.py",
+      "tests/engine/output_processor/__init__.py",
+      "tests/entrypoints/__init__.py",
+      "tests/entrypoints/conftest.py",
+      "tests/entrypoints/llm/__init__.py",
+      "tests/entrypoints/middleware/__init__.py",
+      "tests/entrypoints/offline_mode/__init__.py",
+      "tests/entrypoints/openai/__init__.py",
+      "tests/entrypoints/openai/correctness/__init__.py",
+      "tests/entrypoints/openai/tool_parsers/__init__.py",
+      "tests/entrypoints/openai/tool_parsers/utils.py",
+      "tests/fastsafetensors_loader/__init__.py",
+      "tests/kernels/__init__.py",
+      "tests/kernels/allclose_default.py",
+      "tests/kernels/conftest.py",
+      "tests/kernels/quant_utils.py",
+      "tests/kernels/attention/conftest.py",
+      "tests/lora/__init__.py",
+      "tests/lora/conftest.py",
+      "tests/lora/utils.py",
+      "tests/lora/data/__init__.py",
+      "tests/metrics/__init__.py",
+      "tests/mistral_tool_use/__init__.py",
+      "tests/mistral_tool_use/conftest.py",
+      "tests/mistral_tool_use/utils.py",
+      "tests/model_executor/__init__.py",
+      "tests/model_executor/conftest.py",
+      "tests/model_executor/weight_utils.py",
+      "tests/models/__init__.py",
+      "tests/models/registry.py",
+      "tests/models/utils.py",
+      "tests/models/decoder_only/__init__.py",
+      "tests/models/decoder_only/audio_language/__init__.py",
+      "tests/models/decoder_only/language/__init__.py",
+      "tests/models/decoder_only/vision_language/__init__.py",
+      "tests/models/embedding/__init__.py",
+      "tests/models/embedding/utils.py",
+      "tests/models/embedding/language/__init__.py",
+      "tests/models/encoder_decoder/__init__.py",
+      "tests/models/encoder_decoder/language/__init__.py",
+      "tests/models/encoder_decoder/vision_language/__init__.py",
+      "tests/models/language/__init__.py",
+      "tests/models/language/generation/__init__.py",
+      "tests/models/language/pooling/__init__.py",
+      "tests/models/language/pooling/embed_utils.py",
+      "tests/models/language/pooling/mteb_utils.py",
+      "tests/models/multimodal/__init__.py",
+      "tests/models/multimodal/generation/__init__.py",
+      "tests/models/multimodal/generation/vlm_utils/__init__.py",
+      "tests/models/multimodal/pooling/__init__.py",
+      "tests/models/multimodal/processing/__init__.py",
+      "tests/models/quantization/__init__.py",
+      "tests/monitoring/__init__.py",
+      "tests/mq_llm_engine/__init__.py",
+      "tests/mq_llm_engine/conftest.py",
+      "tests/mq_llm_engine/utils.py",
+      "tests/multi_step/__init__.py",
+      "tests/multimodal/__init__.py",
+      "tests/multimodal/utils.py",
+      "tests/plugins_tests/conftest.py",
+      "tests/prefix_caching/__init__.py",
+      "tests/quantization/__init__.py",
+      "tests/quantization/utils.py",
+      "tests/reasoning/__init__.py",
+      "tests/reasoning/utils.py",
+      "tests/runai_model_streamer_test/__init__.py",
+      "tests/samplers/__init__.py",
+      "tests/spec_decode/__init__.py",
+      "tests/spec_decode/conftest.py",
+      "tests/spec_decode/utils.py",
+      "tests/spec_decode/e2e/__init__.py",
+      "tests/spec_decode/e2e/conftest.py",
+      "tests/standalone_tests/lazy_imports.py",
+      "tests/tensorizer_loader/__init__.py",
+      "tests/tensorizer_loader/conftest.py",
+      "tests/tokenization/__init__.py",
+      "tests/tool_use/__init__.py",
+      "tests/tool_use/conftest.py",
+      "tests/tool_use/utils.py",
+      "tests/tpu/__init__.py",
+      "tests/tracing/__init__.py",
+      "tests/v1/__init__.py",
+      "tests/v1/e2e/__init__.py",
+      "tests/v1/engine/__init__.py",
+      "tests/v1/engine/conftest.py",
+      "tests/v1/engine/utils.py",
+      "tests/v1/entrypoints/__init__.py",
+      "tests/v1/entrypoints/conftest.py",
+      "tests/v1/entrypoints/llm/__init__.py",
+      "tests/v1/sample/__init__.py",
+      "tests/v1/sample/utils.py",
+      "tests/v1/structured_output/__init__.py",
+      "tests/v1/tpu/__init__.py",
+      "tests/v1/tpu/worker/__init__.py",
+      "tests/v1/worker/__init__.py",
+      "tests/worker/__init__.py",
+      "tests/worker/conftest.py",
+      "tools/profiler/print_layerwise_table.py",
+      "tools/profiler/visualize_layerwise_profile.py"
+    ],
+    "wildcard_imports": [
+      {
+        "file": "aphrodite/distributed/__init__.py",
+        "line": 1,
+        "text": "from .communication_op import *"
+      },
+      {
+        "file": "aphrodite/distributed/__init__.py",
+        "line": 2,
+        "text": "from .parallel_state import *"
+      },
+      {
+        "file": "aphrodite/distributed/__init__.py",
+        "line": 3,
+        "text": "from .utils import *"
+      },
+      {
+        "file": "aphrodite/distributed/eplb/__init__.py",
+        "line": 5,
+        "text": "from .eplb_state import *"
+      },
+      {
+        "file": "aphrodite/distributed/eplb/__init__.py",
+        "line": 6,
+        "text": "from .rebalance_algo import *"
+      },
+      {
+        "file": "aphrodite/quantization/gguf_utils/__init__.py",
+        "line": 1,
+        "text": "from .constants import *"
+      },
+      {
+        "file": "aphrodite/quantization/gguf_utils/__init__.py",
+        "line": 2,
+        "text": "from .gguf_reader import *"
+      },
+      {
+        "file": "aphrodite/quantization/gguf_utils/__init__.py",
+        "line": 3,
+        "text": "from .tensor_mapping import *"
+      },
+      {
+        "file": "aphrodite/third_party/pynvml.py",
+        "line": 37,
+        "text": "from ctypes import *"
+      },
+      {
+        "file": "kernels/cutlass_extensions/aphrodite_cutlass_library_extension.py",
+        "line": 4,
+        "text": "from cutlass_library import *"
+      },
+      {
+        "file": "tests/benchmarks/kernels/moe.py",
+        "line": 13,
+        "text": "from aphrodite.modeling.layers.fused_moe.fused_moe import *"
+      },
+      {
+        "file": "tests/kernels/test_encoder_decoder_attn.py",
+        "line": 21,
+        "text": "from tests.kernels.utils import *"
+      },
+      {
+        "file": "tests/kernels/attention/test_encoder_decoder_attn.py",
+        "line": 15,
+        "text": "from tests.kernels.utils import *"
+      }
+    ],
+    "missing_init_files": [
+      "cmake",
+      "cognitive_architectures",
+      "echo.dash",
+      "echo.dream",
+      "echo.files",
+      "echo.self",
+      "2do/llm-functions/agents/demo",
+      "2do/llm/docs",
+      "2do/llm/docs/plugins/llm-markov",
+      "echo.dash/archive/legacy",
+      "echo.kern/kernel/dtesn",
+      "echo.kern/tools/testing",
+      "echo.self/NanoCog/config",
+      "examples/fp8",
+      "examples/marlin",
+      "examples/offline_inference",
+      "examples/openai_api",
+      "examples/fp8/quantizer",
+      "kernels/cutlass_extensions",
+      "kernels/hadamard",
+      "kernels/moe/marlin_moe_wna16",
+      "kernels/punica/bgmv",
+      "kernels/quantization/gptq_marlin",
+      "kernels/quantization/machete",
+      "tests/aar",
+      "tests/aphrodite_test_utils",
+      "tests/kv_transfer",
+      "tests/plugins_tests",
+      "tests/prompt_adapter",
+      "tests/standalone_tests",
+      "tests/weight_loading",
+      "tests/benchmarks/cutlass_benchmarks",
+      "tests/benchmarks/kernels",
+      "tests/benchmarks/overheads",
+      "tests/entrypoints/security",
+      "tests/kernels/attention",
+      "tests/kernels/core",
+      "tests/kernels/mamba",
+      "tests/kernels/moe",
+      "tests/kernels/quantization",
+      "tests/v1/core",
+      "tests/v1/shutdown",
+      "tests/v1/spec_decode",
+      "tests/v1/entrypoints/openai",
+      "tools/profiler",
+      "yggdrasil_integration/bridge",
+      "yggdrasil_integration/core",
+      "yggdrasil_integration/fusion",
+      "yggdrasil_integration/membranes",
+      "yggdrasil_integration/transformer"
+    ]
+  }
+}
