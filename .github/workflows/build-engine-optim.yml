@@ -58,7 +58,7 @@ jobs:
   # Code Quality Gates - Fast feedback loop
   code-quality:
     name: 🔍 Code Quality Gates
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m
     outputs:
       should-build: ${{ steps.changes.outputs.should-build }}
     steps:
@@ -394,7 +394,7 @@ jobs:
   # Echo Systems Integration Test
   echo-integration:
     name: 🌳 Echo Systems Integration
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m
     needs: code-quality
     if: needs.code-quality.outputs.should-build == 'true'
     
@@ -440,7 +440,7 @@ jobs:
   # Build Summary and Notification
   build-summary:
     name: 📊 Build Summary
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m
     needs: [code-quality, build-matrix, echo-integration]
     if: always()
     
