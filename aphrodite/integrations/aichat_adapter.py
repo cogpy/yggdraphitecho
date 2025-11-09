@@ -12,7 +12,7 @@ from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from aar_core.agents import Agent, AgentCapabilities, AgentStatus
+from core.aar.agents import Agent, AgentCapabilities, AgentStatus
 
 logger = logging.getLogger(__name__)
 

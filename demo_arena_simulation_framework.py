@@ -13,7 +13,7 @@ validating all acceptance criteria:
 import asyncio
 import numpy as np
 import time
-from aar_core.arena.simulation_engine import (
+from core.aar.arena.simulation_engine import (
     SimulationEngine, ArenaType, ArenaConfig, 
     ArenaPhysics, ArenaEnvironment
 )

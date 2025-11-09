@@ -79,7 +79,7 @@ async def test_aar_aphrodite_integration():
     print("🎭 Testing AAR + Aphrodite integration...")
     
     try:
-        from aar_core.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
+        from core.aar.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
         
         # Create AAR orchestrator
         config = AARConfig(
@@ -112,7 +112,7 @@ async def test_full_deep_tree_echo_fusion():
     
     try:
         from echo_self.core.evolution_engine import EchoSelfEvolutionEngine, EvolutionConfig
-        from aar_core.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
+        from core.aar.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
         
         # Create evolution engine
         evolution_config = EvolutionConfig(

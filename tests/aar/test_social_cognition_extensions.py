@@ -8,19 +8,19 @@ problem solving components that implement Task 2.3.2 requirements.
 import pytest
 import time
 
-from aar_core.agents.social_cognition_manager import (
+from core.aar.agents.social_cognition_manager import (
     SocialCognitionManager, 
     SharedCognitionType, 
     CognitionSharingMode
 )
-from aar_core.relations.communication_protocols import (
+from core.aar.relations.communication_protocols import (
     CommunicationProtocols, 
     Message, 
     MessageType, 
     ProtocolType, 
     MessagePriority
 )
-from aar_core.orchestration.collaborative_solver import (
+from core.aar.orchestration.collaborative_solver import (
     CollaborativeProblemSolver, 
     ProblemDefinition, 
     ProblemType, 

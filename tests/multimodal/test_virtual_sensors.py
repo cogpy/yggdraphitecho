@@ -15,7 +15,7 @@ import os
 # Add project root to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
-from aar_core.embodied.hardware_abstraction import (
+from core.aar.embodied.hardware_abstraction import (
     SensorType, VisionSensor, AuditorySensor, TactileSensor,
     MultiModalSensorManager, SensorReading
 )

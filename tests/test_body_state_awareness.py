@@ -21,7 +21,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 # Test imports with fallbacks for missing dependencies
 try:
-    from aar_core.embodied.body_state_awareness import (
+    from core.aar.embodied.body_state_awareness import (
         BodyStateAwarenessSystem, BodyStateType, BodyStateReading, 
         InternalBodyState
     )

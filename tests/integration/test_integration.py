@@ -15,7 +15,7 @@ sys.path.append(str(repo_root))
 
 # Import components (use underscore names to avoid conflicts)
 from echo_self.core.evolution_engine import EchoSelfEvolutionEngine, EvolutionConfig
-from aar_core.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
+from core.aar.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -106,7 +106,7 @@ async def test_module_imports():
         assert echo_self.get_integration_status() is not None
         
         # Test AAR imports (use underscore name)
-        import aar_core
+        import core.aar
         assert aar_core.get_default_config() is not None
         
         print("✅ Module import tests passed")

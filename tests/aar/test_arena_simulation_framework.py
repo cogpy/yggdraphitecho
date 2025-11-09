@@ -12,7 +12,7 @@ This test suite validates:
 
 import pytest
 import numpy as np
-from aar_core.arena.simulation_engine import (
+from core.aar.arena.simulation_engine import (
     SimulationEngine, ArenaType, ArenaConfig, 
     ArenaPhysics, ArenaEnvironment
 )

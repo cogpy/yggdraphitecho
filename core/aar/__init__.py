@@ -1,7 +1,18 @@
 """
-Agent-Arena-Relation (AAR) Core Orchestration System
+Agent-Arena-Relation (AAR) Core - Core Implementation
+
+Location: core/aar/ (moved from root aar_core/ for consistency)
 
 Multi-agent orchestration and simulation framework for Deep Tree Echo.
+
+This is the core AAR implementation providing:
+- Multi-agent orchestration and coordination
+- Arena simulation and environment coupling  
+- Embodied AI with hardware abstraction
+- Relation graph and communication protocols
+
+For Aphrodite-specific AAR integration (API gateway, function registry),
+see aphrodite/aar_core/
 """
 
 __version__ = "0.1.0"

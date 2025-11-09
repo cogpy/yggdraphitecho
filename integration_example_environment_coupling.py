@@ -187,7 +187,7 @@ class EnvironmentCouplingIntegrationExample:
             self.arena.add_agent(agent_id, config)
         
         # In a real integration, this would use the actual coupling system:
-        # from aar_core.environment import initialize_aar_environment_coupling
+        # from core.aar.environment import initialize_aar_environment_coupling
         # success = await initialize_aar_environment_coupling(
         #     arena_interface=self.arena,
         #     agent_interfaces={aid: AgentInterface(self.arena.agents[aid]) 

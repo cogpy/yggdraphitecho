@@ -23,10 +23,10 @@ from collections import defaultdict
 
 # Import existing AAR components
 try:
-    from aar_core.orchestration.collaborative_solver import (
+    from core.aar.orchestration.collaborative_solver import (
         CollaborativeProblemSolver, ProblemDefinition, ProblemType, SolutionStrategy
     )
-    from aar_core.agents.agent_manager import AgentManager
+    from core.aar.agents.agent_manager import AgentManager
     AAR_AVAILABLE = True
 except ImportError:
     AAR_AVAILABLE = False

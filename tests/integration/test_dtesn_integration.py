@@ -12,7 +12,7 @@ import os
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-from aar_core.embodied.hardware_abstraction import (
+from core.aar.embodied.hardware_abstraction import (
     VisionSensor, AuditorySensor, TactileSensor,
     MultiModalSensorManager, SensorType
 )
@@ -107,7 +107,7 @@ def test_sensor_compatibility():
     print("=" * 32)
     
     # Test with existing VirtualSensor interface
-    from aar_core.embodied.hardware_abstraction import VirtualSensor
+    from core.aar.embodied.hardware_abstraction import VirtualSensor
     
     # Create sensors using base interface
     vision = VisionSensor("compat_camera")
@@ -130,7 +130,7 @@ def test_sensor_compatibility():
     
     # Test hardware integration compatibility
     try:
-        from aar_core.embodied.hardware_integration import EmbodiedHardwareManager
+        from core.aar.embodied.hardware_integration import EmbodiedHardwareManager
         
         # Hardware manager requires virtual_body, so we'll just test import and interface
         print("✓ Hardware integration interface available")

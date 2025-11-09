@@ -10,9 +10,9 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 import uuid
 
-from aar_core.agents import AgentManager
-from aar_core.arena import SimulationEngine
-from aar_core.orchestration import CoreOrchestrator
+from core.aar.agents import AgentManager
+from core.aar.arena import SimulationEngine
+from core.aar.orchestration import CoreOrchestrator
 from echo.sys.prompt_kernel import PromptStore
 
 logger = logging.getLogger(__name__)

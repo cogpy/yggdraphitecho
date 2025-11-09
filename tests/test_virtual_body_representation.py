@@ -13,8 +13,8 @@ This test suite validates:
 import pytest
 import numpy as np
 
-from aar_core.embodied import VirtualBody, EmbodiedAgent, ProprioceptiveSystem, BodyJoint, JointType, JointLimits
-from aar_core.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
+from core.aar.embodied import VirtualBody, EmbodiedAgent, ProprioceptiveSystem, BodyJoint, JointType, JointLimits
+from core.aar.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
 
 
 class TestVirtualBodyRepresentation:

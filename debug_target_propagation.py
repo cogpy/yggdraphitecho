@@ -3,7 +3,7 @@
 Debug exactly what targets are being sent to PID controller
 """
 
-from aar_core.embodied import (
+from core.aar.embodied import (
     EmbodiedAgent, HierarchicalMotorController, 
     MotorGoal, MotorGoalType
 )
@@ -65,7 +65,7 @@ def debug_target_propagation():
             
             # Step 4: Check what gets sent to embodied agent
             print("\nTesting what gets sent to embodied agent:")
-            from aar_core.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
+            from core.aar.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
             physics = ArenaPhysics()
             environment = ArenaEnvironment()
             

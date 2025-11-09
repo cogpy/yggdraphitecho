@@ -15,7 +15,7 @@ import time
 import pytest
 import logging
 
-from aar_core.agents.agent_manager import AgentManager, AgentCapabilities, AgentStatus
+from core.aar.agents.agent_manager import AgentManager, AgentCapabilities, AgentStatus
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

@@ -3,7 +3,7 @@ import asyncio
 from aphrodite.engine.model_runner import ModelRunner
 from echo_self.meta_learning.meta_optimizer import MetaLearningOptimizer
 from echo_self.core.evolution_engine import EchoSelfEvolutionEngine
-from aar_core.orchestration.core_orchestrator import AAROrchestrator
+from core.aar.orchestration.core_orchestrator import AAROrchestrator
 
 class DeepTreeModelRunner(ModelRunner):
     """Enhanced ModelRunner with Deep Tree Echo cognitive capabilities."""

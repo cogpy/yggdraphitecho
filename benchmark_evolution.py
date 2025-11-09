@@ -17,7 +17,7 @@ sys.path.append(str(repo_root))
 
 # Import components
 from echo_self.core.evolution_engine import EchoSelfEvolutionEngine, EvolutionConfig
-from aar_core.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
+from core.aar.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
 
 # Set up logging
 logging.basicConfig(level=logging.WARNING)  # Reduce noise for benchmarks

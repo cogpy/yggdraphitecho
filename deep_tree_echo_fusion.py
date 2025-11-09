@@ -22,7 +22,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 # Handle both absolute and relative imports
 try:
     from echo_self.core.evolution_engine import EchoSelfEvolutionEngine, EvolutionConfig
-    from aar_core.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
+    from core.aar.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
     from echo_self.integration.dtesn_bridge import DTESNBridge
     ECHO_SELF_AVAILABLE = True
 except ImportError as e:

@@ -14,10 +14,10 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')  # Use non-interactive backend
 
-from aar_core.embodied import (
+from core.aar.embodied import (
     EmbodiedAgent, HierarchicalMotorController, MotorGoal, MotorGoalType
 )
-from aar_core.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
+from core.aar.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
 
 
 def test_high_level_goal_planning():

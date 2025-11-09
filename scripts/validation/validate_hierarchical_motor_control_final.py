@@ -13,11 +13,11 @@ at the architectural level.
 
 import numpy as np
 
-from aar_core.embodied import (
+from core.aar.embodied import (
     EmbodiedAgent, HierarchicalMotorController, 
     MotorGoal, MotorGoalType
 )
-from aar_core.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
+from core.aar.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
 
 def demonstrate_hierarchical_architecture():
     """Demonstrate the complete hierarchical motor control architecture"""

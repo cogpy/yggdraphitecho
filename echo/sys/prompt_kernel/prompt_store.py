@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from inventory import compute_sha256
+from .inventory import compute_sha256
 
 
 class PromptAsset:

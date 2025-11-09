@@ -18,7 +18,7 @@ import numpy as np
 # Add project root to path
 sys.path.insert(0, '/home/runner/work/aphroditecho/aphroditecho')
 
-from aar_core.embodied import (
+from core.aar.embodied import (
     EmbodiedHardwareManager,
     VirtualBody,
     VirtualSensor, SensorType

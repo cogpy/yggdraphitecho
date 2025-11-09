@@ -8,8 +8,8 @@ showcasing multiple agents interacting in a simulated environment with relations
 import asyncio
 import logging
 import time
-from aar_core import AARCoreOrchestrator
-from aar_core.orchestration.core_orchestrator import AARConfig
+from core.aar import AARCoreOrchestrator
+from core.aar.orchestration.core_orchestrator import AARConfig
 
 # Configure logging to see system operations
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

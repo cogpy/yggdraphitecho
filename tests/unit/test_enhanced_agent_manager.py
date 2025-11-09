@@ -7,8 +7,8 @@ Tests the enhanced capabilities including optimization, load balancing, and adva
 import asyncio
 import time
 import logging
-from aar_core.agents.agent_manager import AgentManager, AgentCapabilities
-from aar_core.agents.agent_performance_optimizer import OptimizationStrategy
+from core.aar.agents.agent_manager import AgentManager, AgentCapabilities
+from core.aar.agents.agent_performance_optimizer import OptimizationStrategy
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

@@ -4,7 +4,7 @@ Detailed trajectory timing diagnosis
 """
 
 import time
-from aar_core.embodied import (
+from core.aar.embodied import (
     EmbodiedAgent, HierarchicalMotorController
 )
 

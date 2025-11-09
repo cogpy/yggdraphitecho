@@ -23,7 +23,7 @@ except ImportError:
     LLM_AVAILABLE = False
     logging.warning("llm component not available - adapter will run in compatibility mode")
 
-from aar_core.agents import Agent, AgentCapabilities, AgentStatus
+from core.aar.agents import Agent, AgentCapabilities, AgentStatus
 from ..function_registry import FunctionRegistry, FunctionSpec, ParameterSpec, SafetyClass
 
 logger = logging.getLogger(__name__)

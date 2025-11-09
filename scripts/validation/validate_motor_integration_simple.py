@@ -3,8 +3,8 @@
 Simple test to debug the motor control integration issue
 """
 
-from aar_core.embodied import EmbodiedAgent, HierarchicalMotorController, MotorGoal, MotorGoalType
-from aar_core.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
+from core.aar.embodied import EmbodiedAgent, HierarchicalMotorController, MotorGoal, MotorGoalType
+from core.aar.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
 
 def test_simple_motor_control():
     """Test basic motor control without hierarchical system first"""

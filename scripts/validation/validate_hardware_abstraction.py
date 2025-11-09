@@ -19,7 +19,7 @@ from typing import Dict, Any
 sys.path.insert(0, '/home/runner/work/aphroditecho/aphroditecho')
 
 try:
-    from aar_core.embodied import (
+    from core.aar.embodied import (
         EmbodiedHardwareManager,
         VirtualBody,
         VirtualSensor, VirtualActuator,

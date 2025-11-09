@@ -10,8 +10,8 @@ import time
 import pytest
 
 # Import AAR components
-from aar_core import AARCoreOrchestrator
-from aar_core.orchestration.core_orchestrator import AARConfig
+from core.aar import AARCoreOrchestrator
+from core.aar.orchestration.core_orchestrator import AARConfig
 
 
 class TestAAROrchestrationSystem:

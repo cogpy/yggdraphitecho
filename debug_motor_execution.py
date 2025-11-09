@@ -3,7 +3,7 @@
 Diagnostic test for trajectory execution
 """
 
-from aar_core.embodied import (
+from core.aar.embodied import (
     EmbodiedAgent, HierarchicalMotorController, 
     MidLevelTrajectoryGenerator
 )
@@ -62,7 +62,7 @@ def debug_motor_executor():
     controller = HierarchicalMotorController(agent)
     
     # Simple manual trajectory
-    from aar_core.embodied.hierarchical_motor_control import Trajectory
+    from core.aar.embodied.hierarchical_motor_control import Trajectory
     
     # Create a simple trajectory from current position to target
     current_shoulder = agent.get_joint_state('right_shoulder')['angle']
@@ -109,7 +109,7 @@ def debug_motor_executor():
     print(f"✓ Trajectory execution started: {success}")
     
     # Run a few execution steps
-    from aar_core.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
+    from core.aar.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
     physics = ArenaPhysics()
     environment = ArenaEnvironment()
     

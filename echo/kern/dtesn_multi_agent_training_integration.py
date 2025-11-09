@@ -36,8 +36,8 @@ except ImportError:
 try:
     # Try importing AAR components with various path attempts
     try:
-        from aar_core.orchestration.core_orchestrator import AARCoreOrchestrator
-        from aar_core.agents.agent_manager import AgentManager
+        from core.aar.orchestration.core_orchestrator import AARCoreOrchestrator
+        from core.aar.agents.agent_manager import AgentManager
     except ImportError:
         # Try alternative paths
         import sys

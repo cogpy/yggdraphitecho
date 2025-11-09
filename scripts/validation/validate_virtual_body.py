@@ -7,8 +7,8 @@ Tests the acceptance criteria: "Agents have consistent body representation"
 
 import numpy as np
 import time
-from aar_core.embodied import VirtualBody, EmbodiedAgent, ProprioceptiveSystem
-from aar_core.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
+from core.aar.embodied import VirtualBody, EmbodiedAgent, ProprioceptiveSystem
+from core.aar.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
 
 
 def test_3d_body_model_with_articulated_joints():

@@ -74,7 +74,7 @@ async def demonstrate_aar_orchestration():
     print("🎭 AGENT-ARENA-RELATION (AAR) CORE ORCHESTRATION")
     print("=" * 60)
     
-    from aar_core.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
+    from core.aar.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
     
     # Create AAR orchestrator with advanced configuration
     config = AARConfig(
@@ -128,7 +128,7 @@ async def demonstrate_deep_tree_echo_fusion():
     print("=" * 60)
     
     from echo_self.core.evolution_engine import EchoSelfEvolutionEngine, EvolutionConfig
-    from aar_core.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
+    from core.aar.orchestration.core_orchestrator import AARCoreOrchestrator, AARConfig
     from echo_self.core.interfaces import SimpleIndividual
     
     # Create integrated system

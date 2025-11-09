@@ -7,8 +7,8 @@ system implemented for Task 2.1.1.
 """
 
 import numpy as np
-from aar_core.embodied import EmbodiedAgent
-from aar_core.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
+from core.aar.embodied import EmbodiedAgent
+from core.aar.arena.simulation_engine import ArenaPhysics, ArenaEnvironment
 
 
 def main():
