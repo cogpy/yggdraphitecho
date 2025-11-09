@@ -1,0 +1,462 @@
+{
+  "summary": {
+    "total_files": 2460,
+    "large_files": 1060,
+    "poorly_documented": 1557,
+    "files_with_many_todos": 16,
+    "files_with_too_many_imports": 42
+  },
+  "issues": {
+    "large_directories": [
+      {
+        "directory": ".",
+        "file_count": 78
+      },
+      {
+        "directory": "2do/llm/tests",
+        "file_count": 21
+      },
+      {
+        "directory": "aphrodite/compilation",
+        "file_count": 24
+      },
+      {
+        "directory": "aphrodite/endpoints/deep_tree_echo",
+        "file_count": 27
+      },
+      {
+        "directory": "aphrodite/endpoints/openai",
+        "file_count": 29
+      },
+      {
+        "directory": "aphrodite/endpoints/openai/tool_parsers",
+        "file_count": 22
+      },
+      {
+        "directory": "aphrodite/modeling/layers/fused_moe",
+        "file_count": 27
+      },
+      {
+        "directory": "aphrodite/modeling/models",
+        "file_count": 166
+      },
+      {
+        "directory": "aphrodite/quantization",
+        "file_count": 43
+      },
+      {
+        "directory": "aphrodite/quantization/utils",
+        "file_count": 22
+      },
+      {
+        "directory": "aphrodite/transformers_utils/configs",
+        "file_count": 32
+      },
+      {
+        "directory": "echo/dash",
+        "file_count": 113
+      },
+      {
+        "directory": "echo/dream",
+        "file_count": 24
+      },
+      {
+        "directory": "echo/kern",
+        "file_count": 64
+      },
+      {
+        "directory": "scripts/validation",
+        "file_count": 25
+      },
+      {
+        "directory": "tests",
+        "file_count": 26
+      },
+      {
+        "directory": "tests/entrypoints/openai",
+        "file_count": 46
+      },
+      {
+        "directory": "tests/kernels",
+        "file_count": 29
+      },
+      {
+        "directory": "tests/kernels/quantization",
+        "file_count": 21
+      },
+      {
+        "directory": "tests/lora",
+        "file_count": 31
+      },
+      {
+        "directory": "tests/models/language/pooling",
+        "file_count": 21
+      },
+      {
+        "directory": "tests/unit",
+        "file_count": 35
+      }
+    ],
+    "too_many_root_files": [
+      {
+        "count": 78,
+        "files": [
+          "analysis_script.py",
+          "analyze_identity_fragments.py",
+          "benchmark_dtesn_serialization.py",
+          "benchmark_evolution.py",
+          "debug_motor_execution.py",
+          "debug_target_propagation.py",
+          "debug_trajectory_timing.py",
+          "deep_tree_echo_fusion.py",
+          "demo_aar_system.py",
+          "demo_advanced_middleware_stack.py",
+          "demo_arena_simulation_framework.py",
+          "demo_async_server_processing.py",
+          "demo_backend_performance_monitoring.py",
+          "demo_backend_resource_optimization.py",
+          "demo_backend_service_integration.py",
+          "demo_batching_system.py",
+          "demo_body_state_awareness.py",
+          "demo_content_negotiation.py",
+          "demo_continuous_learning.py",
+          "demo_continuous_learning_simple.py"
+        ]
+      }
+    ],
+    "heavy_coupling": [
+      {
+        "import": "os",
+        "used_in": 350
+      },
+      {
+        "import": "re",
+        "used_in": 51
+      },
+      {
+        "import": "json",
+        "used_in": 360
+      },
+      {
+        "import": "pathlib",
+        "used_in": 238
+      },
+      {
+        "import": "collections",
+        "used_in": 131
+      },
+      {
+        "import": "subprocess",
+        "used_in": 52
+      },
+      {
+        "import": "time",
+        "used_in": 429
+      },
+      {
+        "import": "typing",
+        "used_in": 1307
+      },
+      {
+        "import": "sys",
+        "used_in": 260
+      },
+      {
+        "import": "asyncio",
+        "used_in": 270
+      },
+      {
+        "import": "logging",
+        "used_in": 356
+      },
+      {
+        "import": "dataclasses",
+        "used_in": 395
+      },
+      {
+        "import": "traceback",
+        "used_in": 75
+      },
+      {
+        "import": "datetime",
+        "used_in": 165
+      },
+      {
+        "import": "fastapi",
+        "used_in": 78
+      },
+      {
+        "import": "loguru",
+        "used_in": 248
+      },
+      {
+        "import": "numpy",
+        "used_in": 241
+      },
+      {
+        "import": "random",
+        "used_in": 111
+      },
+      {
+        "import": "torch",
+        "used_in": 863
+      },
+      {
+        "import": "tempfile",
+        "used_in": 59
+      },
+      {
+        "import": "uuid",
+        "used_in": 71
+      },
+      {
+        "import": "threading",
+        "used_in": 83
+      },
+      {
+        "import": "enum",
+        "used_in": 151
+      },
+      {
+        "import": "aphrodite",
+        "used_in": 245
+      },
+      {
+        "import": "argparse",
+        "used_in": 73
+      },
+      {
+        "import": "contextlib",
+        "used_in": 83
+      },
+      {
+        "import": "utils",
+        "used_in": 336
+      },
+      {
+        "import": "itertools",
+        "used_in": 61
+      },
+      {
+        "import": "abc",
+        "used_in": 83
+      },
+      {
+        "import": "pytest",
+        "used_in": 606
+      },
+      {
+        "import": "unittest.mock",
+        "used_in": 124
+      },
+      {
+        "import": "aphrodite.common.sampling_params",
+        "used_in": 89
+      },
+      {
+        "import": "aphrodite.engine.args_tools",
+        "used_in": 56
+      },
+      {
+        "import": "aphrodite.common.envs",
+        "used_in": 117
+      },
+      {
+        "import": "aphrodite.platforms",
+        "used_in": 252
+      },
+      {
+        "import": "aphrodite.common.logger",
+        "used_in": 69
+      },
+      {
+        "import": "regex",
+        "used_in": 51
+      },
+      {
+        "import": "aphrodite.common.config",
+        "used_in": 420
+      },
+      {
+        "import": "aphrodite.attention.backends.abstract",
+        "used_in": 53
+      },
+      {
+        "import": "functools",
+        "used_in": 96
+      },
+      {
+        "import": "collections.abc",
+        "used_in": 294
+      },
+      {
+        "import": "aphrodite.utils",
+        "used_in": 229
+      },
+      {
+        "import": "torch.nn",
+        "used_in": 127
+      },
+      {
+        "import": "torch.nn.functional",
+        "used_in": 76
+      },
+      {
+        "import": "aphrodite.attention",
+        "used_in": 85
+      },
+      {
+        "import": "aphrodite.modeling.layers.linear",
+        "used_in": 164
+      },
+      {
+        "import": "aphrodite.quantization.base_config",
+        "used_in": 67
+      },
+      {
+        "import": "aphrodite.multimodal",
+        "used_in": 112
+      },
+      {
+        "import": "math",
+        "used_in": 108
+      },
+      {
+        "import": "transformers",
+        "used_in": 279
+      },
+      {
+        "import": "aphrodite.lora.request",
+        "used_in": 78
+      },
+      {
+        "import": "aphrodite.transformers_utils.tokenizer",
+        "used_in": 85
+      },
+      {
+        "import": "aphrodite.common.sequence",
+        "used_in": 240
+      },
+      {
+        "import": "copy",
+        "used_in": 54
+      },
+      {
+        "import": "aphrodite.quantization",
+        "used_in": 148
+      },
+      {
+        "import": "aphrodite.modeling.model_loader.weight_utils",
+        "used_in": 115
+      },
+      {
+        "import": "aphrodite.multimodal.inputs",
+        "used_in": 75
+      },
+      {
+        "import": "aphrodite.distributed",
+        "used_in": 162
+      },
+      {
+        "import": "aphrodite.endpoints.openai.protocol",
+        "used_in": 73
+      },
+      {
+        "import": "aphrodite.multimodal.processing",
+        "used_in": 60
+      },
+      {
+        "import": "aphrodite.modeling.layers.vocab_parallel_embedding",
+        "used_in": 112
+      },
+      {
+        "import": "aphrodite.modeling.layers.logits_processor",
+        "used_in": 97
+      },
+      {
+        "import": "aphrodite.modeling.layers.fused_moe",
+        "used_in": 52
+      },
+      {
+        "import": "aphrodite.modeling.sampling_metadata",
+        "used_in": 126
+      },
+      {
+        "import": "aphrodite.modeling.layers.layernorm",
+        "used_in": 76
+      },
+      {
+        "import": "interfaces",
+        "used_in": 123
+      },
+      {
+        "import": "aphrodite.modeling.layers.activation",
+        "used_in": 92
+      },
+      {
+        "import": "aphrodite.compilation.decorators",
+        "used_in": 70
+      },
+      {
+        "import": "aphrodite.modeling.layers.rotary_embedding",
+        "used_in": 70
+      },
+      {
+        "import": "aphrodite.multimodal.parse",
+        "used_in": 51
+      },
+      {
+        "import": "aphrodite.common.utils",
+        "used_in": 90
+      },
+      {
+        "import": "conftest",
+        "used_in": 82
+      }
+    ]
+  },
+  "metrics": {
+    "total_files_analyzed": 2460,
+    "large_files": 1060,
+    "poorly_documented_files": 1557,
+    "files_with_too_many_imports": 42,
+    "files_with_many_todos": 16
+  },
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "category": "Documentation",
+      "issue": "1557 files have poor documentation",
+      "action": "Add comprehensive docstrings to functions and classes",
+      "impact": "Improves code maintainability and developer onboarding"
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "Technical Debt",
+      "issue": "16 files have many TODO comments",
+      "action": "Create issues for TODOs and implement fixes",
+      "impact": "Reduces technical debt and improves code quality"
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "Architecture",
+      "issue": "22 directories have too many files",
+      "action": "Refactor large directories into smaller, cohesive modules",
+      "impact": "Improves code organization and reduces cognitive load"
+    },
+    {
+      "priority": "HIGH",
+      "category": "Architecture",
+      "issue": "Too many root-level Python files",
+      "action": "Organize root files into appropriate subdirectories",
+      "impact": "Improves repository structure and navigation"
+    },
+    {
+      "priority": "LOW",
+      "category": "Code Quality",
+      "issue": "42 files have excessive imports",
+      "action": "Refactor to reduce dependencies and improve modularity",
+      "impact": "Reduces coupling and improves testability"
+    }
+  ]
+}
