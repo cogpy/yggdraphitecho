@@ -105,13 +105,13 @@ except ImportError:
 
 # Import A/B testing middleware
 try:
-from aphrodite.endpoints.middleware.ab_testing_middleware import (
-    ABTestingMiddleware, get_ab_testing_manager
-)
-    logger.info("DTESN OpenAI routes available")
+    from aphrodite.endpoints.middleware.ab_testing_middleware import (
+        ABTestingMiddleware, get_ab_testing_manager
+    )
+    logger.info("A/B testing middleware available")
 except ImportError as e:
-    logger.debug(f"DTESN routes not available: {e}")
-    DTESN_ROUTES_AVAILABLE = False
+    logger.debug(f"A/B testing middleware not available: {e}")
+
 from aphrodite.endpoints.openai.serving_embedding import OpenAIServingEmbedding
 from aphrodite.endpoints.openai.serving_engine import OpenAIServing
 from aphrodite.endpoints.openai.serving_messages import OpenAIServingMessages

@@ -219,7 +219,6 @@ class ModelVariantManager:
             enforce_eager=self.base_engine_args.enforce_eager,
             max_context_len_to_capture=self.base_engine_args.max_context_len_to_capture,
             max_seq_len_to_capture=self.base_engine_args.max_seq_len_to_capture,
-            disable_custom_all_reduce=self.base_engine_args.disable_custom_all_reduce,
             tokenizer_pool_size=self.base_engine_args.tokenizer_pool_size,
             tokenizer_pool_type=self.base_engine_args.tokenizer_pool_type,
             tokenizer_pool_extra_config=self.base_engine_args.tokenizer_pool_extra_config,
