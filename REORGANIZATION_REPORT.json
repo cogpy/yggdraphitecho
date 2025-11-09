@@ -1,0 +1,672 @@
+{
+  "directories_created": [
+    "tests/unit",
+    "tests/performance",
+    "scripts/validation",
+    "scripts/utilities",
+    "docs/architecture",
+    "docs/guides",
+    "docs/api",
+    "docs/reports",
+    "docs/summaries"
+  ],
+  "test_files_moved": [
+    {
+      "from": "test_aar_orchestration.py",
+      "to": "tests/unit/test_aar_orchestration.py"
+    },
+    {
+      "from": "test_advanced_template_engine.py",
+      "to": "tests/integration/test_advanced_template_engine.py"
+    },
+    {
+      "from": "test_agent_evolution.py",
+      "to": "tests/unit/test_agent_evolution.py"
+    },
+    {
+      "from": "test_agent_manager_performance.py",
+      "to": "tests/performance/test_agent_manager_performance.py"
+    },
+    {
+      "from": "test_aphrodite_integration.py",
+      "to": "tests/integration/test_aphrodite_integration.py"
+    },
+    {
+      "from": "test_async_components_standalone.py",
+      "to": "tests/unit/test_async_components_standalone.py"
+    },
+    {
+      "from": "test_backend_resource_optimization.py",
+      "to": "tests/unit/test_backend_resource_optimization.py"
+    },
+    {
+      "from": "test_batch_isolated.py",
+      "to": "tests/unit/test_batch_isolated.py"
+    },
+    {
+      "from": "test_batch_simple.py",
+      "to": "tests/unit/test_batch_simple.py"
+    },
+    {
+      "from": "test_build_system.py",
+      "to": "tests/unit/test_build_system.py"
+    },
+    {
+      "from": "test_build_system_fix.py",
+      "to": "tests/unit/test_build_system_fix.py"
+    },
+    {
+      "from": "test_cache_standalone.py",
+      "to": "tests/unit/test_cache_standalone.py"
+    },
+    {
+      "from": "test_config_core_functionality.py",
+      "to": "tests/unit/test_config_core_functionality.py"
+    },
+    {
+      "from": "test_content_negotiation.py",
+      "to": "tests/unit/test_content_negotiation.py"
+    },
+    {
+      "from": "test_continuous_learning.py",
+      "to": "tests/unit/test_continuous_learning.py"
+    },
+    {
+      "from": "test_curriculum_learning.py",
+      "to": "tests/unit/test_curriculum_learning.py"
+    },
+    {
+      "from": "test_deep_tree_echo_fusion.py",
+      "to": "tests/unit/test_deep_tree_echo_fusion.py"
+    },
+    {
+      "from": "test_deep_tree_integration.py",
+      "to": "tests/integration/test_deep_tree_integration.py"
+    },
+    {
+      "from": "test_devcontainer_self_healing.py",
+      "to": "tests/unit/test_devcontainer_self_healing.py"
+    },
+    {
+      "from": "test_disk_space_investigation.py",
+      "to": "tests/unit/test_disk_space_investigation.py"
+    },
+    {
+      "from": "test_dtesn_integration.py",
+      "to": "tests/integration/test_dtesn_integration.py"
+    },
+    {
+      "from": "test_dtesn_integration_endpoints.py",
+      "to": "tests/integration/test_dtesn_integration_endpoints.py"
+    },
+    {
+      "from": "test_dtesn_integration_validation.py",
+      "to": "tests/integration/test_dtesn_integration_validation.py"
+    },
+    {
+      "from": "test_dtesn_serialization_integration.py",
+      "to": "tests/integration/test_dtesn_serialization_integration.py"
+    },
+    {
+      "from": "test_echo_self.py",
+      "to": "tests/unit/test_echo_self.py"
+    },
+    {
+      "from": "test_engine_integration.py",
+      "to": "tests/integration/test_engine_integration.py"
+    },
+    {
+      "from": "test_enhanced_agent_manager.py",
+      "to": "tests/unit/test_enhanced_agent_manager.py"
+    },
+    {
+      "from": "test_enhanced_async_processing.py",
+      "to": "tests/unit/test_enhanced_async_processing.py"
+    },
+    {
+      "from": "test_environment_coupling.py",
+      "to": "tests/unit/test_environment_coupling.py"
+    },
+    {
+      "from": "test_error_handling_validation.py",
+      "to": "tests/unit/test_error_handling_validation.py"
+    },
+    {
+      "from": "test_integration.py",
+      "to": "tests/integration/test_integration.py"
+    },
+    {
+      "from": "test_integration_2do.py",
+      "to": "tests/integration/test_integration_2do.py"
+    },
+    {
+      "from": "test_interaction_tracking.py",
+      "to": "tests/unit/test_interaction_tracking.py"
+    },
+    {
+      "from": "test_meta_learning.py",
+      "to": "tests/unit/test_meta_learning.py"
+    },
+    {
+      "from": "test_monitoring_standalone.py",
+      "to": "tests/unit/test_monitoring_standalone.py"
+    },
+    {
+      "from": "test_multi_agent_training.py",
+      "to": "tests/unit/test_multi_agent_training.py"
+    },
+    {
+      "from": "test_multi_source_data_integration.py",
+      "to": "tests/integration/test_multi_source_data_integration.py"
+    },
+    {
+      "from": "test_optimization_standalone.py",
+      "to": "tests/unit/test_optimization_standalone.py"
+    },
+    {
+      "from": "test_phase_8_2_3_simple.py",
+      "to": "tests/unit/test_phase_8_2_3_simple.py"
+    },
+    {
+      "from": "test_production_alerting_simple.py",
+      "to": "tests/unit/test_production_alerting_simple.py"
+    },
+    {
+      "from": "test_resource_optimization_simple.py",
+      "to": "tests/unit/test_resource_optimization_simple.py"
+    },
+    {
+      "from": "test_scalability_framework.py",
+      "to": "tests/performance/test_scalability_framework.py"
+    },
+    {
+      "from": "test_security_standalone.py",
+      "to": "tests/unit/test_security_standalone.py"
+    },
+    {
+      "from": "test_serialization_simple.py",
+      "to": "tests/unit/test_serialization_simple.py"
+    },
+    {
+      "from": "test_server_side_continuous_learning.py",
+      "to": "tests/unit/test_server_side_continuous_learning.py"
+    },
+    {
+      "from": "test_server_side_templates.py",
+      "to": "tests/unit/test_server_side_templates.py"
+    },
+    {
+      "from": "test_structure.py",
+      "to": "tests/unit/test_structure.py"
+    },
+    {
+      "from": "test_validation_standalone.py",
+      "to": "tests/unit/test_validation_standalone.py"
+    }
+  ],
+  "validation_files_moved": [
+    {
+      "from": "validate_async_core.py",
+      "to": "scripts/validation/validate_async_core.py"
+    },
+    {
+      "from": "validate_async_processing.py",
+      "to": "scripts/validation/validate_async_processing.py"
+    },
+    {
+      "from": "validate_backend_integration.py",
+      "to": "scripts/validation/validate_backend_integration.py"
+    },
+    {
+      "from": "validate_cpu_build_system.py",
+      "to": "scripts/validation/validate_cpu_build_system.py"
+    },
+    {
+      "from": "validate_data_pipeline_implementation.py",
+      "to": "scripts/validation/validate_data_pipeline_implementation.py"
+    },
+    {
+      "from": "validate_deep_tree_echo_implementation.py",
+      "to": "scripts/validation/validate_deep_tree_echo_implementation.py"
+    },
+    {
+      "from": "validate_engine_integration.py",
+      "to": "scripts/validation/validate_engine_integration.py"
+    },
+    {
+      "from": "validate_error_handling_standalone.py",
+      "to": "scripts/validation/validate_error_handling_standalone.py"
+    },
+    {
+      "from": "validate_hardware_abstraction.py",
+      "to": "scripts/validation/validate_hardware_abstraction.py"
+    },
+    {
+      "from": "validate_hierarchical_motor_control.py",
+      "to": "scripts/validation/validate_hierarchical_motor_control.py"
+    },
+    {
+      "from": "validate_hierarchical_motor_control_final.py",
+      "to": "scripts/validation/validate_hierarchical_motor_control_final.py"
+    },
+    {
+      "from": "validate_memory_optimization.py",
+      "to": "scripts/validation/validate_memory_optimization.py"
+    },
+    {
+      "from": "validate_model_serving_integration.py",
+      "to": "scripts/validation/validate_model_serving_integration.py"
+    },
+    {
+      "from": "validate_motor_integration_simple.py",
+      "to": "scripts/validation/validate_motor_integration_simple.py"
+    },
+    {
+      "from": "validate_multi_agent_training.py",
+      "to": "scripts/validation/validate_multi_agent_training.py"
+    },
+    {
+      "from": "validate_multi_source_integration.py",
+      "to": "scripts/validation/validate_multi_source_integration.py"
+    },
+    {
+      "from": "validate_phase_8_2_3_implementation.py",
+      "to": "scripts/validation/validate_phase_8_2_3_implementation.py"
+    },
+    {
+      "from": "validate_route_optimization.py",
+      "to": "scripts/validation/validate_route_optimization.py"
+    },
+    {
+      "from": "validate_serialization.py",
+      "to": "scripts/validation/validate_serialization.py"
+    },
+    {
+      "from": "validate_server_side_validation.py",
+      "to": "scripts/validation/validate_server_side_validation.py"
+    },
+    {
+      "from": "validate_social_cognition.py",
+      "to": "scripts/validation/validate_social_cognition.py"
+    },
+    {
+      "from": "validate_structure.py",
+      "to": "scripts/validation/validate_structure.py"
+    },
+    {
+      "from": "validate_template_system.py",
+      "to": "scripts/validation/validate_template_system.py"
+    },
+    {
+      "from": "validate_virtual_body.py",
+      "to": "scripts/validation/validate_virtual_body.py"
+    },
+    {
+      "from": "validate_workflows.py",
+      "to": "scripts/validation/validate_workflows.py"
+    }
+  ],
+  "docs_moved": [
+    {
+      "from": "AAR_ORCHESTRATION_DOCS.md",
+      "to": "docs/AAR_ORCHESTRATION_DOCS.md"
+    },
+    {
+      "from": "AGENT_MANAGER_DOCUMENTATION.md",
+      "to": "docs/AGENT_MANAGER_DOCUMENTATION.md"
+    },
+    {
+      "from": "ANALYSIS_COMPLETION_SUMMARY.md",
+      "to": "docs/summaries/ANALYSIS_COMPLETION_SUMMARY.md"
+    },
+    {
+      "from": "ANALYSIS_INDEX.md",
+      "to": "docs/summaries/ANALYSIS_INDEX.md"
+    },
+    {
+      "from": "ANALYSIS_QUICK_REFERENCE.md",
+      "to": "docs/api/ANALYSIS_QUICK_REFERENCE.md"
+    },
+    {
+      "from": "ARCHITECTURE.md",
+      "to": "docs/architecture/ARCHITECTURE.md"
+    },
+    {
+      "from": "ASYNC_PROCESSING_ENHANCEMENTS.md",
+      "to": "docs/ASYNC_PROCESSING_ENHANCEMENTS.md"
+    },
+    {
+      "from": "BACKEND_INTEGRATION_TEST_SUMMARY.md",
+      "to": "docs/reports/BACKEND_INTEGRATION_TEST_SUMMARY.md"
+    },
+    {
+      "from": "BACKEND_SERVICE_INTEGRATION.md",
+      "to": "docs/BACKEND_SERVICE_INTEGRATION.md"
+    },
+    {
+      "from": "BODY_STATE_AWARENESS_IMPLEMENTATION.md",
+      "to": "docs/BODY_STATE_AWARENESS_IMPLEMENTATION.md"
+    },
+    {
+      "from": "BUILD_SYSTEM_FIX_REPORT.md",
+      "to": "docs/architecture/BUILD_SYSTEM_FIX_REPORT.md"
+    },
+    {
+      "from": "COGNITIVE_ARCHITECTURE_VISUAL_ANALYSIS.md",
+      "to": "docs/architecture/COGNITIVE_ARCHITECTURE_VISUAL_ANALYSIS.md"
+    },
+    {
+      "from": "CONTENT_NEGOTIATION_IMPLEMENTATION_SUMMARY.md",
+      "to": "docs/summaries/CONTENT_NEGOTIATION_IMPLEMENTATION_SUMMARY.md"
+    },
+    {
+      "from": "CONTINUOUS_LEARNING_DOCS.md",
+      "to": "docs/CONTINUOUS_LEARNING_DOCS.md"
+    },
+    {
+      "from": "CPU_BUILD_FIX_SUMMARY.md",
+      "to": "docs/reports/CPU_BUILD_FIX_SUMMARY.md"
+    },
+    {
+      "from": "CURRENT_STATUS_ANALYSIS.md",
+      "to": "docs/summaries/CURRENT_STATUS_ANALYSIS.md"
+    },
+    {
+      "from": "CURRICULUM_LEARNING_IMPLEMENTATION_SUMMARY.md",
+      "to": "docs/summaries/CURRICULUM_LEARNING_IMPLEMENTATION_SUMMARY.md"
+    },
+    {
+      "from": "DATABASE_SYNC_INSTRUCTIONS.md",
+      "to": "docs/DATABASE_SYNC_INSTRUCTIONS.md"
+    },
+    {
+      "from": "DEEP_TREE_ECHO_ARCHITECTURE.md",
+      "to": "docs/architecture/DEEP_TREE_ECHO_ARCHITECTURE.md"
+    },
+    {
+      "from": "DEEP_TREE_ECHO_COGNITIVE_ARCHITECTURE_EVALUATION.md",
+      "to": "docs/architecture/DEEP_TREE_ECHO_COGNITIVE_ARCHITECTURE_EVALUATION.md"
+    },
+    {
+      "from": "DEEP_TREE_ECHO_FUSION_COMPLETE.md",
+      "to": "docs/DEEP_TREE_ECHO_FUSION_COMPLETE.md"
+    },
+    {
+      "from": "DEEP_TREE_ECHO_ROADMAP.md",
+      "to": "docs/DEEP_TREE_ECHO_ROADMAP.md"
+    },
+    {
+      "from": "DEEP_TREE_ECHO_ROADMAP_V1_DONE.md",
+      "to": "docs/DEEP_TREE_ECHO_ROADMAP_V1_DONE.md"
+    },
+    {
+      "from": "DEPLOYMENT.md",
+      "to": "docs/DEPLOYMENT.md"
+    },
+    {
+      "from": "DEPLOYMENT_SUMMARY.md",
+      "to": "docs/summaries/DEPLOYMENT_SUMMARY.md"
+    },
+    {
+      "from": "DEVCONTAINER_SELF_HEALING_README.md",
+      "to": "docs/DEVCONTAINER_SELF_HEALING_README.md"
+    },
+    {
+      "from": "DTESN_CACHE_IMPLEMENTATION_SUMMARY.md",
+      "to": "docs/summaries/DTESN_CACHE_IMPLEMENTATION_SUMMARY.md"
+    },
+    {
+      "from": "DYNAMIC_CONFIG_INTEGRATION_GUIDE.md",
+      "to": "docs/guides/DYNAMIC_CONFIG_INTEGRATION_GUIDE.md"
+    },
+    {
+      "from": "ECHOCOG_HYPERGRAPH_INTEGRATION.md",
+      "to": "docs/ECHOCOG_HYPERGRAPH_INTEGRATION.md"
+    },
+    {
+      "from": "ECHO_CORE_INTEGRATION_SUMMARY.md",
+      "to": "docs/summaries/ECHO_CORE_INTEGRATION_SUMMARY.md"
+    },
+    {
+      "from": "ECHO_CORE_README.md",
+      "to": "docs/ECHO_CORE_README.md"
+    },
+    {
+      "from": "ECHO_MIGRATION_STATUS.md",
+      "to": "docs/summaries/ECHO_MIGRATION_STATUS.md"
+    },
+    {
+      "from": "ECHO_SYSTEMS_ARCHITECTURE.md",
+      "to": "docs/architecture/ECHO_SYSTEMS_ARCHITECTURE.md"
+    },
+    {
+      "from": "ECHO_TECHNICAL_REFERENCES.md",
+      "to": "docs/api/ECHO_TECHNICAL_REFERENCES.md"
+    },
+    {
+      "from": "EMBEDDED_HARDWARE_ABSTRACTIONS.md",
+      "to": "docs/EMBEDDED_HARDWARE_ABSTRACTIONS.md"
+    },
+    {
+      "from": "ENGINE_CORE_INTEGRATION_DOCS.md",
+      "to": "docs/ENGINE_CORE_INTEGRATION_DOCS.md"
+    },
+    {
+      "from": "ENTERPRISE_SECURITY_GUIDE.md",
+      "to": "docs/guides/ENTERPRISE_SECURITY_GUIDE.md"
+    },
+    {
+      "from": "ENVIRONMENT_COUPLING_INTEGRATION_GUIDE.md",
+      "to": "docs/guides/ENVIRONMENT_COUPLING_INTEGRATION_GUIDE.md"
+    },
+    {
+      "from": "GITHUB_ACTIONS_GUIDE.md",
+      "to": "docs/guides/GITHUB_ACTIONS_GUIDE.md"
+    },
+    {
+      "from": "GRAND_CELEBRATION.md",
+      "to": "docs/GRAND_CELEBRATION.md"
+    },
+    {
+      "from": "GRAND_UNVEILING_CELEBRATION.md",
+      "to": "docs/GRAND_UNVEILING_CELEBRATION.md"
+    },
+    {
+      "from": "HIERARCHICAL_MOTOR_CONTROL_COMPLETE.md",
+      "to": "docs/HIERARCHICAL_MOTOR_CONTROL_COMPLETE.md"
+    },
+    {
+      "from": "HYPERGRAPH_UPDATE_SUMMARY.md",
+      "to": "docs/summaries/HYPERGRAPH_UPDATE_SUMMARY.md"
+    },
+    {
+      "from": "IMPLEMENTATION_SUMMARY.md",
+      "to": "docs/summaries/IMPLEMENTATION_SUMMARY.md"
+    },
+    {
+      "from": "Integration Strategy - Deep Tree Echo Aphrodite Engine.md",
+      "to": "docs/Integration Strategy - Deep Tree Echo Aphrodite Engine.md"
+    },
+    {
+      "from": "META_LEARNING_README.md",
+      "to": "docs/META_LEARNING_README.md"
+    },
+    {
+      "from": "MIDDLEWARE_STACK_IMPLEMENTATION.md",
+      "to": "docs/MIDDLEWARE_STACK_IMPLEMENTATION.md"
+    },
+    {
+      "from": "MISSION_ACCOMPLISHED_SUMMARY.md",
+      "to": "docs/summaries/MISSION_ACCOMPLISHED_SUMMARY.md"
+    },
+    {
+      "from": "MISSION_COMPLETE.md",
+      "to": "docs/MISSION_COMPLETE.md"
+    },
+    {
+      "from": "MONITORING_SYSTEM_DOCUMENTATION.md",
+      "to": "docs/architecture/MONITORING_SYSTEM_DOCUMENTATION.md"
+    },
+    {
+      "from": "MULTIMODAL_SENSORS.md",
+      "to": "docs/MULTIMODAL_SENSORS.md"
+    },
+    {
+      "from": "MULTI_AGENT_TRAINING_COMPLETION_REPORT.md",
+      "to": "docs/reports/MULTI_AGENT_TRAINING_COMPLETION_REPORT.md"
+    },
+    {
+      "from": "MULTI_SOURCE_DATA_INTEGRATION_DOCS.md",
+      "to": "docs/MULTI_SOURCE_DATA_INTEGRATION_DOCS.md"
+    },
+    {
+      "from": "OPERATIONALIZATION_STATUS.md",
+      "to": "docs/summaries/OPERATIONALIZATION_STATUS.md"
+    },
+    {
+      "from": "OPTIMIZATION_SUMMARY.md",
+      "to": "docs/summaries/OPTIMIZATION_SUMMARY.md"
+    },
+    {
+      "from": "PERSONAL_STUDIO_MIGRATION.md",
+      "to": "docs/PERSONAL_STUDIO_MIGRATION.md"
+    },
+    {
+      "from": "PHASE_3_3_3_SELF_MONITORING_DOCUMENTATION.md",
+      "to": "docs/PHASE_3_3_3_SELF_MONITORING_DOCUMENTATION.md"
+    },
+    {
+      "from": "PHASE_5_2_OPTIMIZATION_COMPLETE.md",
+      "to": "docs/PHASE_5_2_OPTIMIZATION_COMPLETE.md"
+    },
+    {
+      "from": "PHASE_7_1_3_IMPLEMENTATION_SUMMARY.md",
+      "to": "docs/summaries/PHASE_7_1_3_IMPLEMENTATION_SUMMARY.md"
+    },
+    {
+      "from": "PHASE_7_2_1_IMPLEMENTATION_SUMMARY.md",
+      "to": "docs/summaries/PHASE_7_2_1_IMPLEMENTATION_SUMMARY.md"
+    },
+    {
+      "from": "PHASE_8_2_3_IMPLEMENTATION_SUMMARY.md",
+      "to": "docs/summaries/PHASE_8_2_3_IMPLEMENTATION_SUMMARY.md"
+    },
+    {
+      "from": "PRODUCTION_ALERTING_DOCUMENTATION.md",
+      "to": "docs/PRODUCTION_ALERTING_DOCUMENTATION.md"
+    },
+    {
+      "from": "PYTORCH_HEADER_FIX_SUMMARY.md",
+      "to": "docs/reports/PYTORCH_HEADER_FIX_SUMMARY.md"
+    },
+    {
+      "from": "QUICK_FIXES_SUMMARY.md",
+      "to": "docs/reports/QUICK_FIXES_SUMMARY.md"
+    },
+    {
+      "from": "REPOSITORY_ANALYSIS.md",
+      "to": "docs/summaries/REPOSITORY_ANALYSIS.md"
+    },
+    {
+      "from": "REPOSITORY_IMPROVEMENT_REPORT.md",
+      "to": "docs/reports/REPOSITORY_IMPROVEMENT_REPORT.md"
+    },
+    {
+      "from": "ROUTE_OPTIMIZATION_GUIDE.md",
+      "to": "docs/guides/ROUTE_OPTIMIZATION_GUIDE.md"
+    },
+    {
+      "from": "SCALABILITY_FRAMEWORK_SUMMARY.md",
+      "to": "docs/summaries/SCALABILITY_FRAMEWORK_SUMMARY.md"
+    },
+    {
+      "from": "SECRET_FEATURE_QUANTUM_HYPERGRAPH.md",
+      "to": "docs/SECRET_FEATURE_QUANTUM_HYPERGRAPH.md"
+    },
+    {
+      "from": "SECRET_FEATURE_SENAS.md",
+      "to": "docs/SECRET_FEATURE_SENAS.md"
+    },
+    {
+      "from": "SELF-ASSESSMENT.md",
+      "to": "docs/SELF-ASSESSMENT.md"
+    },
+    {
+      "from": "SERIALIZATION_OPTIMIZATION_REPORT.md",
+      "to": "docs/reports/SERIALIZATION_OPTIMIZATION_REPORT.md"
+    },
+    {
+      "from": "SERVER_SIDE_CONTINUOUS_LEARNING_SUMMARY.md",
+      "to": "docs/summaries/SERVER_SIDE_CONTINUOUS_LEARNING_SUMMARY.md"
+    },
+    {
+      "from": "SERVER_SIDE_VALIDATION_DOCS.md",
+      "to": "docs/reports/SERVER_SIDE_VALIDATION_DOCS.md"
+    },
+    {
+      "from": "SOCIAL_COGNITION_EXTENSIONS_DOCS.md",
+      "to": "docs/SOCIAL_COGNITION_EXTENSIONS_DOCS.md"
+    },
+    {
+      "from": "STREAMING_RESPONSE_GUIDE.md",
+      "to": "docs/guides/STREAMING_RESPONSE_GUIDE.md"
+    },
+    {
+      "from": "TASK_2_2_1_ENVIRONMENT_COUPLING_SUMMARY.md",
+      "to": "docs/summaries/TASK_2_2_1_ENVIRONMENT_COUPLING_SUMMARY.md"
+    },
+    {
+      "from": "TASK_6_2_3_IMPLEMENTATION.md",
+      "to": "docs/TASK_6_2_3_IMPLEMENTATION.md"
+    },
+    {
+      "from": "TASK_7_2_3_IMPLEMENTATION_SUMMARY.md",
+      "to": "docs/summaries/TASK_7_2_3_IMPLEMENTATION_SUMMARY.md"
+    },
+    {
+      "from": "TASK_8_1_1_MODEL_SERVING_INTEGRATION.md",
+      "to": "docs/TASK_8_1_1_MODEL_SERVING_INTEGRATION.md"
+    },
+    {
+      "from": "TASK_8_1_1_README.md",
+      "to": "docs/TASK_8_1_1_README.md"
+    },
+    {
+      "from": "TASK_8_1_1_SUMMARY.md",
+      "to": "docs/summaries/TASK_8_1_1_SUMMARY.md"
+    },
+    {
+      "from": "TECHNICAL_DOCUMENTATION_INDEX.md",
+      "to": "docs/TECHNICAL_DOCUMENTATION_INDEX.md"
+    },
+    {
+      "from": "TESTING_AND_DEPLOYMENT_GUIDE.md",
+      "to": "docs/guides/TESTING_AND_DEPLOYMENT_GUIDE.md"
+    },
+    {
+      "from": "WISDOM_INTEGRATION_ROADMAP.md",
+      "to": "docs/WISDOM_INTEGRATION_ROADMAP.md"
+    },
+    {
+      "from": "WORKFLOW_FIXES_SUMMARY.md",
+      "to": "docs/guides/WORKFLOW_FIXES_SUMMARY.md"
+    },
+    {
+      "from": "qihe_simple_explanation.md",
+      "to": "docs/qihe_simple_explanation.md"
+    },
+    {
+      "from": "yggdrasil_atomspace_architecture.md",
+      "to": "docs/architecture/yggdrasil_atomspace_architecture.md"
+    },
+    {
+      "from": "SUPER_SLEUTH_ANALYSIS.md",
+      "to": "docs/summaries/SUPER_SLEUTH_ANALYSIS.md"
+    }
+  ],
+  "index_files_created": [
+    "tests/README.md",
+    "scripts/README.md",
+    "docs/README.md"
+  ]
+}
