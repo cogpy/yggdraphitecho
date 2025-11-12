@@ -3,7 +3,7 @@ cachetools
 psutil
 sentencepiece  # Required for LLaMA tokenizer.
 numpy
-requests >= 2.26.0
+requests >= 2.32.0
 tqdm
 blake3
 py-cpuinfo
@@ -12,12 +12,12 @@ huggingface-hub[hf_xet] >= 0.33.0  # Required for Xet downloads.
 tokenizers >= 0.21.1  # Required for fast incremental detokenization.
 protobuf # Required by LlamaTokenizer.
 fastapi[standard] >= 0.115.0 # Required by FastAPI's form models in the OpenAI API server's audio transcriptions endpoint.
-jinja2 >= 3.0.0  # Required for server-side template rendering
-aiohttp
+jinja2 >= 3.1.6  # Required for server-side template rendering
+aiohttp >= 3.10.11  # CVE-2024-52304 security fixes
 openai >= 1.98.0  # For Responses API with reasoning content
 pydantic >= 2.10
 prometheus_client >= 0.18.0
-pillow  # Required for image processing
+pillow >= 10.3.0  # Required for image processing, security updates
 prometheus-fastapi-instrumentator >= 7.0.0
 tiktoken >= 0.6.0  # Required for DBRX tokenizer
 lm-format-enforcer >= 0.10.11, < 0.11

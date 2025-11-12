@@ -213,3 +213,37 @@ images/
 aphrodite/_version.py
 shellcheck-stable/
 ep_kernels_workspace/
+
+# Security - Prevent accidental commit of secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.yaml
+secrets.yml
+secrets.json
+*secret*
+*password*
+*credentials*
+.aws/
+.azure/
+.gcp/
+
+# API Keys and Tokens
+*api_key*
+*api-key*
+*apikey*
+*token*
+*auth*
+
+# Database
+*.db-journal
+*.sqlite3
+*.sqlite
+
+# Logs that might contain sensitive data
+*.log
+logs/

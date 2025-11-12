@@ -1,0 +1,263 @@
+{
+  "summary": {
+    "total_issues": 25,
+    "critical": 5,
+    "high": 15,
+    "medium": 4,
+    "fixes_applied": 0
+  },
+  "dependency_issues": [
+    {
+      "file": "requirements/build.txt",
+      "package": "jinja2",
+      "current_spec": ">= 3.1.6",
+      "recommended": ">= 3.1.6",
+      "issue": "CVE-2024-56201: XSS vulnerability",
+      "severity": "HIGH"
+    },
+    {
+      "file": "requirements/common.txt",
+      "package": "requests",
+      "current_spec": ">= 2.26.0",
+      "recommended": ">= 2.32.0",
+      "issue": "CVE-2024-35195: Proxy-Authorization header leak",
+      "severity": "HIGH"
+    },
+    {
+      "file": "requirements/common.txt",
+      "package": "jinja2",
+      "current_spec": ">= 3.0.0",
+      "recommended": ">= 3.1.6",
+      "issue": "CVE-2024-56201: XSS vulnerability",
+      "severity": "HIGH"
+    },
+    {
+      "file": "requirements/common.txt",
+      "package": "transformers",
+      "current_spec": ">= 4.55.0",
+      "recommended": ">= 4.55.0",
+      "issue": "Security improvements and bug fixes",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "requirements/cpu-build.txt",
+      "package": "jinja2",
+      "current_spec": ">= 3.1.6",
+      "recommended": ">= 3.1.6",
+      "issue": "CVE-2024-56201: XSS vulnerability",
+      "severity": "HIGH"
+    },
+    {
+      "file": "requirements/rocm-build.txt",
+      "package": "jinja2",
+      "current_spec": ">= 3.1.6",
+      "recommended": ">= 3.1.6",
+      "issue": "CVE-2024-56201: XSS vulnerability",
+      "severity": "HIGH"
+    },
+    {
+      "file": "requirements/rocm-test.txt",
+      "package": "transformers",
+      "current_spec": "== 3.4.1",
+      "recommended": ">= 4.55.0",
+      "issue": "Security improvements and bug fixes",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "requirements/test.txt",
+      "package": "requests",
+      "current_spec": "== 2.32.3",
+      "recommended": ">= 2.32.0",
+      "issue": "CVE-2024-35195: Proxy-Authorization header leak",
+      "severity": "HIGH"
+    },
+    {
+      "file": "requirements/test.txt",
+      "package": "jinja2",
+      "current_spec": "== 3.1.6",
+      "recommended": ">= 3.1.6",
+      "issue": "CVE-2024-56201: XSS vulnerability",
+      "severity": "HIGH"
+    },
+    {
+      "file": "requirements/test.txt",
+      "package": "pillow",
+      "current_spec": "== 10.4.0",
+      "recommended": ">= 10.3.0",
+      "issue": "Multiple CVEs including buffer overflow",
+      "severity": "CRITICAL"
+    },
+    {
+      "file": "requirements/test.txt",
+      "package": "aiohttp",
+      "current_spec": "== 3.10.11",
+      "recommended": ">= 3.10.11",
+      "issue": "CVE-2024-52304: Security vulnerabilities",
+      "severity": "HIGH"
+    },
+    {
+      "file": "requirements/test.txt",
+      "package": "transformers",
+      "current_spec": "== 3.2.1",
+      "recommended": ">= 4.55.0",
+      "issue": "Security improvements and bug fixes",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "requirements/test.txt",
+      "package": "transformers",
+      "current_spec": "== 4.51.3",
+      "recommended": ">= 4.55.0",
+      "issue": "Security improvements and bug fixes",
+      "severity": "MEDIUM"
+    },
+    {
+      "file": "requirements/tpu.txt",
+      "package": "jinja2",
+      "current_spec": ">= 3.1.6",
+      "recommended": ">= 3.1.6",
+      "issue": "CVE-2024-56201: XSS vulnerability",
+      "severity": "HIGH"
+    },
+    {
+      "file": "requirements/xpu.txt",
+      "package": "jinja2",
+      "current_spec": ">= 3.1.6",
+      "recommended": ">= 3.1.6",
+      "issue": "CVE-2024-56201: XSS vulnerability",
+      "severity": "HIGH"
+    }
+  ],
+  "code_security_issues": [
+    {
+      "file": "setup.py",
+      "line": 485,
+      "issue": "subprocess with shell=True - command injection risk",
+      "severity": "HIGH",
+      "recommendation": "Use shell=False and pass command as list",
+      "code_snippet": "'lsmod | grep habanalabs | wc -l', shell=True)"
+    },
+    {
+      "file": "setup.py",
+      "line": 611,
+      "issue": "subprocess with shell=True - command injection risk",
+      "severity": "HIGH",
+      "recommendation": "Use shell=False and pass command as list",
+      "code_snippet": "shell=True,"
+    },
+    {
+      "file": "examples/fp8/quantizer/quantize.py",
+      "line": 157,
+      "issue": "Use of eval() - potential code injection",
+      "severity": "CRITICAL",
+      "recommendation": "Use ast.literal_eval() or safer alternatives",
+      "code_snippet": "model.eval()"
+    },
+    {
+      "file": "scripts/env.py",
+      "line": 88,
+      "issue": "subprocess with shell=True - command injection risk",
+      "severity": "HIGH",
+      "recommendation": "Use shell=False and pass command as list",
+      "code_snippet": "shell = True if type(command) is str else False"
+    },
+    {
+      "file": "scripts/fix_critical_issues.py",
+      "line": 97,
+      "issue": "Use of eval() - potential code injection",
+      "severity": "CRITICAL",
+      "recommendation": "Use ast.literal_eval() or safer alternatives",
+      "code_snippet": "'issue': 'Use of eval() - potential code injection',"
+    },
+    {
+      "file": "scripts/fix_critical_issues.py",
+      "line": 99,
+      "issue": "Use of eval() - potential code injection",
+      "severity": "CRITICAL",
+      "recommendation": "Use ast.literal_eval() or safer alternatives",
+      "code_snippet": "'recommendation': 'Use ast.literal_eval() or safer alternatives'"
+    },
+    {
+      "file": "scripts/fix_critical_issues.py",
+      "line": 103,
+      "issue": "Use of exec() - potential code injection",
+      "severity": "CRITICAL",
+      "recommendation": "Avoid exec() or use in sandboxed environment",
+      "code_snippet": "'issue': 'Use of exec() - potential code injection',"
+    },
+    {
+      "file": "scripts/fix_critical_issues.py",
+      "line": 105,
+      "issue": "Use of exec() - potential code injection",
+      "severity": "CRITICAL",
+      "recommendation": "Avoid exec() or use in sandboxed environment",
+      "code_snippet": "'recommendation': 'Avoid exec() or use in sandboxed environment'"
+    },
+    {
+      "file": "scripts/fix_critical_issues.py",
+      "line": 115,
+      "issue": "subprocess with shell=True - command injection risk",
+      "severity": "HIGH",
+      "recommendation": "Use shell=False and pass command as list",
+      "code_snippet": "'issue': 'subprocess with shell=True - command injection risk',"
+    },
+    {
+      "file": "scripts/fix_critical_issues.py",
+      "line": 207,
+      "issue": "subprocess with shell=True - command injection risk",
+      "severity": "HIGH",
+      "recommendation": "Use shell=False and pass command as list",
+      "code_snippet": "('subprocess.*shell.*True', 'subprocess with shell=True is risky'),"
+    }
+  ],
+  "configuration_issues": [],
+  "recommended_fixes": [
+    {
+      "priority": "CRITICAL",
+      "category": "Dependencies",
+      "title": "Update vulnerable dependencies",
+      "description": "Update all dependencies to secure versions",
+      "action": "Update requirements files with minimum secure versions",
+      "files_affected": [
+        "requirements/common.txt",
+        "requirements/*.txt"
+      ]
+    },
+    {
+      "priority": "HIGH",
+      "category": "CI/CD",
+      "title": "Add automated security scanning",
+      "description": "Add dependency scanning and SAST to CI/CD pipeline",
+      "action": "Create GitHub Actions workflow for security scanning",
+      "files_affected": [
+        ".github/workflows/security.yml"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "Documentation",
+      "title": "Add SECURITY.md",
+      "description": "Document security policy and vulnerability reporting",
+      "action": "Create SECURITY.md with vulnerability disclosure process",
+      "files_affected": [
+        "SECURITY.md"
+      ]
+    },
+    {
+      "priority": "HIGH",
+      "category": "Configuration",
+      "title": "Ensure .gitignore covers sensitive files",
+      "description": "Prevent accidental commit of secrets",
+      "action": "Update .gitignore to include common secret patterns",
+      "files_affected": [
+        ".gitignore"
+      ]
+    }
+  ],
+  "fixes_applied": [
+    "Updated requirements/common.txt with secure versions",
+    "Created SECURITY.md",
+    "Updated .gitignore with security patterns",
+    "Created security scanning workflow"
+  ]
+}
