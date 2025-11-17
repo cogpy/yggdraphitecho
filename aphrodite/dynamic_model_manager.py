@@ -339,9 +339,44 @@ class DynamicModelManager:
     
     async def _load_model_parameters(self, parameters: Dict[str, Any]) -> None:
         """Load model parameters."""
-        # This would integrate with the actual Aphrodite model to load parameters
-        # Implementation would depend on specific model architecture
-        logger.info(f"Loading model parameters from checkpoint at {parameters.get('timestamp')}")
+        # Integrate with the actual Aphrodite model to load parameters
+        try:
+            logger.info(f"Loading model parameters from checkpoint at {parameters.get('timestamp')}")
+            
+            # Access the model through the engine client
+            if hasattr(self.engine_client, 'engine') and self.engine_client.engine is not None:
+                engine = self.engine_client.engine
+                
+                # Navigate to the model
+                if hasattr(engine, 'model_executor') and engine.model_executor is not None:
+                    model_executor = engine.model_executor
+                    
+                    if hasattr(model_executor, 'driver_worker') and model_executor.driver_worker is not None:
+                        driver_worker = model_executor.driver_worker
+                        
+                        if hasattr(driver_worker, 'model_runner') and driver_worker.model_runner is not None:
+                            model_runner = driver_worker.model_runner
+                            
+                            if hasattr(model_runner, 'model') and model_runner.model is not None:
+                                model = model_runner.model
+                                
+                                # Extract model_state from parameters
+                                if 'model_state' in parameters and parameters['model_state']:
+                                    state_dict = parameters['model_state']
+                                    
+                                    # Load the state dict into the model
+                                    model.load_state_dict(state_dict, strict=False)
+                                    logger.info(f"Successfully loaded {len(state_dict)} parameters into model")
+                                    return
+                                else:
+                                    logger.warning("No model_state found in parameters")
+                                    return
+            
+            logger.warning("Model not accessible through engine_client, parameters not loaded")
+            
+        except Exception as e:
+            logger.error(f"Failed to load model parameters: {e}", exc_info=True)
+            raise
     
     async def _apply_parameter_update(self, request: IncrementalUpdateRequest) -> None:
         """Apply the actual parameter update to the model."""
