@@ -291,13 +291,51 @@ class DynamicModelManager:
     
     async def _get_model_parameters(self) -> Dict[str, Any]:
         """Get current model parameters."""
-        # This would integrate with the actual Aphrodite model to extract parameters
-        # For now, return a placeholder structure
-        return {
-            "timestamp": time.time(),
-            "parameter_count": 0,  # Would be actual parameter count
-            "model_state": {},  # Would contain actual model state dict
-        }
+        # Integrate with the actual Aphrodite model to extract parameters
+        try:
+            # Access the model through the engine client if available
+            if hasattr(self.engine_client, 'engine') and self.engine_client.engine is not None:
+                engine = self.engine_client.engine
+                
+                # Try to get the model from the engine
+                if hasattr(engine, 'model_executor') and engine.model_executor is not None:
+                    model_executor = engine.model_executor
+                    
+                    # Get the driver worker which has the model
+                    if hasattr(model_executor, 'driver_worker') and model_executor.driver_worker is not None:
+                        driver_worker = model_executor.driver_worker
+                        
+                        # Get the model from the worker
+                        if hasattr(driver_worker, 'model_runner') and driver_worker.model_runner is not None:
+                            model_runner = driver_worker.model_runner
+                            
+                            if hasattr(model_runner, 'model') and model_runner.model is not None:
+                                model = model_runner.model
+                                
+                                # Get state dict from the model
+                                state_dict = model.state_dict()
+                                
+                                return {
+                                    "timestamp": time.time(),
+                                    "parameter_count": sum(p.numel() for p in state_dict.values()),
+                                    "model_state": state_dict,
+                                    **state_dict  # Include actual parameters as top-level keys for easy access
+                                }
+            
+            logger.warning("Model not accessible through engine_client, returning empty parameters")
+            return {
+                "timestamp": time.time(),
+                "parameter_count": 0,
+                "model_state": {},
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to get model parameters: {e}", exc_info=True)
+            return {
+                "timestamp": time.time(),
+                "parameter_count": 0,
+                "model_state": {},
+            }
     
     async def _load_model_parameters(self, parameters: Dict[str, Any]) -> None:
         """Load model parameters."""
@@ -309,26 +347,121 @@ class DynamicModelManager:
         """Apply the actual parameter update to the model."""
         logger.info(f"Applying {request.update_type} update to {request.parameter_name}")
         
-        # This would integrate with the actual model to apply updates
-        # The implementation would depend on the specific model architecture
-        
-        # For additive updates: param += learning_rate * update_data
-        # For multiplicative updates: param *= (1 + learning_rate * update_data)
-        # For replace updates: param = update_data
-        
-        pass
+        try:
+            # Integrate with the actual model to apply updates
+            if hasattr(self.engine_client, 'engine') and self.engine_client.engine is not None:
+                engine = self.engine_client.engine
+                
+                # Navigate to the model
+                if hasattr(engine, 'model_executor') and engine.model_executor is not None:
+                    model_executor = engine.model_executor
+                    
+                    if hasattr(model_executor, 'driver_worker') and model_executor.driver_worker is not None:
+                        driver_worker = model_executor.driver_worker
+                        
+                        if hasattr(driver_worker, 'model_runner') and driver_worker.model_runner is not None:
+                            model_runner = driver_worker.model_runner
+                            
+                            if hasattr(model_runner, 'model') and model_runner.model is not None:
+                                model = model_runner.model
+                                
+                                # Get the parameter from the model's state dict
+                                state_dict = model.state_dict()
+                                
+                                if request.parameter_name in state_dict:
+                                    param = state_dict[request.parameter_name]
+                                    
+                                    # Apply update based on type
+                                    if request.update_type == "additive":
+                                        # param += learning_rate * update_data
+                                        with torch.no_grad():
+                                            param.add_(request.update_data, alpha=request.learning_rate)
+                                        logger.info(f"Applied additive update to {request.parameter_name}")
+                                        
+                                    elif request.update_type == "multiplicative":
+                                        # param *= (1 + learning_rate * update_data)
+                                        with torch.no_grad():
+                                            param.mul_(1 + request.learning_rate * request.update_data)
+                                        logger.info(f"Applied multiplicative update to {request.parameter_name}")
+                                        
+                                    elif request.update_type == "replace":
+                                        # param = update_data
+                                        with torch.no_grad():
+                                            param.copy_(request.update_data)
+                                        logger.info(f"Applied replace update to {request.parameter_name}")
+                                        
+                                    else:
+                                        logger.warning(f"Unknown update type: {request.update_type}")
+                                        return
+                                    
+                                    # Update was successful
+                                    logger.info(f"Successfully applied {request.update_type} update to {request.parameter_name}")
+                                    return
+                                else:
+                                    logger.warning(f"Parameter {request.parameter_name} not found in model state dict")
+                                    return
+            
+            logger.warning("Model not accessible through engine_client, update not applied")
+            
+        except Exception as e:
+            logger.error(f"Failed to apply parameter update: {e}", exc_info=True)
+            raise
     
     async def _get_performance_metrics(self) -> Dict[str, float]:
         """Get current model performance metrics."""
-        # This would integrate with actual performance monitoring
-        # For now, return placeholder metrics
-        return {
-            "accuracy": 0.85,  # Would be actual accuracy
-            "latency_ms": 100.0,  # Would be actual latency
-            "throughput": 50.0,  # Would be actual throughput
-            "memory_usage_mb": 1024.0,  # Would be actual memory usage
-            "timestamp": time.time()
-        }
+        # Integrate with actual performance monitoring
+        try:
+            metrics = {
+                "timestamp": time.time()
+            }
+            
+            # Get memory usage if CUDA is available
+            if torch.cuda.is_available():
+                metrics["memory_usage_mb"] = torch.cuda.memory_allocated() / (1024 * 1024)
+                metrics["memory_reserved_mb"] = torch.cuda.memory_reserved() / (1024 * 1024)
+                metrics["gpu_count"] = torch.cuda.device_count()
+            else:
+                metrics["memory_usage_mb"] = 0.0
+            
+            # Try to get metrics from the engine if available
+            if hasattr(self.engine_client, 'engine') and self.engine_client.engine is not None:
+                engine = self.engine_client.engine
+                
+                # Try to get engine stats
+                if hasattr(engine, 'get_stats'):
+                    try:
+                        engine_stats = await engine.get_stats()
+                        if engine_stats:
+                            metrics.update(engine_stats)
+                    except Exception as e:
+                        logger.debug(f"Could not get engine stats: {e}")
+                
+                # Try to get scheduler stats
+                if hasattr(engine, 'scheduler') and engine.scheduler is not None:
+                    scheduler = engine.scheduler
+                    if hasattr(scheduler, 'get_num_unfinished_requests'):
+                        try:
+                            metrics["pending_requests"] = scheduler.get_num_unfinished_requests()
+                        except Exception as e:
+                            logger.debug(f"Could not get scheduler stats: {e}")
+            
+            # Add default values for metrics not available from engine
+            metrics.setdefault("accuracy", 0.0)  # Would need separate evaluation
+            metrics.setdefault("latency_ms", 0.0)  # Would need request tracking
+            metrics.setdefault("throughput", 0.0)  # Would need request tracking
+            
+            return metrics
+            
+        except Exception as e:
+            logger.error(f"Failed to get performance metrics: {e}", exc_info=True)
+            # Return minimal metrics on error
+            return {
+                "accuracy": 0.0,
+                "latency_ms": 0.0,
+                "throughput": 0.0,
+                "memory_usage_mb": 0.0,
+                "timestamp": time.time()
+            }
     
     def _should_rollback(self, pre_metrics: Dict[str, float], post_metrics: Dict[str, float]) -> bool:
         """Determine if automatic rollback is needed based on performance metrics."""
