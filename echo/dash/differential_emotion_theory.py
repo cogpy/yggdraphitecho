@@ -17,7 +17,7 @@ from typing import Dict, List, Tuple
 from dataclasses import dataclass, field
 from enum import IntEnum
 from collections import deque
-from emotional_dynamics import EmotionalDynamics, CoreEmotion
+from .emotional_dynamics import EmotionalDynamics, CoreEmotion
 
 # Julia integration
 try:

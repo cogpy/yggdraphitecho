@@ -4,9 +4,9 @@ from typing import List, Dict, Optional, Any, Tuple
 import numpy as np
 from collections import deque
 from pathlib import Path
-from ml_system import MLSystem
-from emotional_dynamics import EmotionalDynamics, EmotionalState
-from differential_emotion_theory import DifferentialEmotionSystem, DETState, DETEmotion
+from echo.dash.ml_system import MLSystem
+from echo.dash.emotional_dynamics import EmotionalDynamics, EmotionalState
+from echo.dash.differential_emotion_theory import DifferentialEmotionSystem, DETState, DETEmotion
 
 @dataclass
 class SpatialContext:
