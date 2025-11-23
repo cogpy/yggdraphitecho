@@ -1,0 +1,36 @@
+diff --git a/.github/workflows/build-engine.yml b/.github/workflows/build-engine.yml
+index e518ae86..5c1f6258 100644
+--- a/.github/workflows/build-engine.yml
++++ b/.github/workflows/build-engine.yml
+@@ -240,7 +240,7 @@ jobs:
+     runs-on: ${{ matrix.os }}
+     needs: code-quality
+     if: needs.code-quality.outputs.should-build == 'true'
+-    timeout-minutes: 24000  # 400 hours - realistic for 347-step CUDA builds
++    timeout-minutes: 360  # 6 hours - realistic for complex CUDA builds
+     continue-on-error: ${{ matrix.experimental }}
+     
+     strategy:
+@@ -419,9 +419,20 @@ jobs:
+             pip install -r requirements/build.txt --timeout 18000
+           fi
+           
+-          # Install target-specific requirements
++          # Install target-specific requirements with explicit PyTorch index URL
+           if [ -f "requirements/${{ matrix.target_device }}.txt" ]; then
+-            pip install -r requirements/${{ matrix.target_device }}.txt --timeout 18000
++            # For CPU and CUDA builds, ensure PyTorch index is used
++            if [ "${{ matrix.target_device }}" == "cpu" ]; then
++              pip install -r requirements/${{ matrix.target_device }}.txt \
++                --extra-index-url https://download.pytorch.org/whl/cpu \
++                --timeout 18000
++            elif [ "${{ matrix.target_device }}" == "cuda" ]; then
++              pip install -r requirements/${{ matrix.target_device }}.txt \
++                --extra-index-url https://download.pytorch.org/whl/cu124 \
++                --timeout 18000
++            else
++              pip install -r requirements/${{ matrix.target_device }}.txt --timeout 18000
++            fi
+           elif [ -f "requirements/common.txt" ]; then
+             pip install -r requirements/common.txt --timeout 18000
+           fi
