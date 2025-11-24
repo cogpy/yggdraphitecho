@@ -2561,19 +2561,25 @@ class SchedulerConfig:
     is_multimodal_model: bool = False
     """True if the model is multimodal."""
 
-    # TODO: Make this configurable.
+    # TODO: Make this configurable via EngineArgs/ModelConfig.
+    # Proposed: Add --max-encoder-input-tokens CLI argument.
+    # This would allow users to tune multimodal encoder performance.
     max_num_encoder_input_tokens: int = field(init=False)
     """Multimodal encoder compute budget, only used in V1.
 
     NOTE: This is not currently configurable. It will be overridden by
-    max_num_batched_tokens in case max multimodal embedding size is larger."""
+    max_num_batched_tokens in case max multimodal embedding size is larger.
+    Future: Allow users to set this via configuration for better control."""
 
-    # TODO: Make this configurable.
+    # TODO: Make this configurable via EngineArgs/ModelConfig.
+    # Proposed: Add --encoder-cache-size CLI argument.
+    # This would allow users to tune encoder cache for memory/performance tradeoff.
     encoder_cache_size: int = field(init=False)
     """Multimodal encoder cache size, only used in V1.
 
     NOTE: This is not currently configurable. It will be overridden by
-    max_num_batched_tokens in case max multimodal embedding size is larger."""
+    max_num_batched_tokens in case max multimodal embedding size is larger.
+    Future: Allow users to set this via configuration for memory optimization."""
 
     preemption_mode: Optional[PreemptionMode] = None
     """Whether to perform preemption by swapping or
@@ -3862,8 +3868,10 @@ def _get_and_verify_max_len(
         rope_type = rope_scaling["rope_type"]
         if rope_type not in {"su", "longrope", "llama3"}:
             if disable_sliding_window:
-                # TODO: Find a model that supports rope_scaling
-                # with sliding window to see if this case should be allowed.
+                # TODO: Investigate compatibility of rope_scaling with sliding window.
+                # Currently unknown if any models use both features together.
+                # If you encounter this error, please report the model name.
+                # This will help determine if the combination should be supported.
                 raise NotImplementedError(
                     "Disabling sliding window is not supported for models "
                     "with rope_scaling. Please raise an issue so we can "
@@ -3910,10 +3918,12 @@ def _get_and_verify_max_len(
             derived_max_model_len = max_model_len
         elif model_max_length is not None and max_model_len <= model_max_length:
             if disable_sliding_window:
-                # TODO: Find a model that has model_max_length
-                # with sliding window to see if this case should be allowed.
+                # TODO: Investigate compatibility of model_max_length with sliding window.
+                # Currently unknown if any models use both features together.
+                # If you encounter this error, please report the model name.
+                # This will help determine if the combination should be supported.
                 raise NotImplementedError(
-                    "Disabling sliding window is not supported for models "
+                    "Disabling sliding window is not supported for models with "
                     "model_max_length in the config. Please raise an issue "
                     "so we can investigate.")
         else:

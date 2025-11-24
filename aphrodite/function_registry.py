@@ -221,16 +221,83 @@ class FunctionRegistry:
     def _builtin_web_search(
         self, query: str, max_results: int = 5
     ) -> Dict[str, Any]:
-        """Built-in web search function (placeholder)."""
-        # This would integrate with actual search APIs
-        return {
-            "query": query,
-            "results": [
-                {"title": f"Result {i}", "url": f"https://example.com/{i}"}
-                for i in range(min(max_results, 3))
-            ],
-            "total": max_results
-        }
+        """Built-in web search function using DuckDuckGo."""
+        try:
+            # Use DuckDuckGo for privacy-friendly web search
+            # This doesn't require API keys and respects user privacy
+            import requests
+            from urllib.parse import quote_plus
+            
+            # DuckDuckGo Instant Answer API (no auth required)
+            encoded_query = quote_plus(query)
+            url = f"https://api.duckduckgo.com/?q={encoded_query}&format=json&no_html=1&skip_disambig=1"
+            
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            data = response.json()
+            
+            results = []
+            
+            # Extract results from DuckDuckGo response
+            # Try RelatedTopics first
+            if data.get('RelatedTopics'):
+                for item in data['RelatedTopics'][:max_results]:
+                    if isinstance(item, dict) and 'Text' in item:
+                        results.append({
+                            "title": item.get('Text', '')[:100],
+                            "url": item.get('FirstURL', ''),
+                            "snippet": item.get('Text', '')
+                        })
+            
+            # If no results, try Abstract
+            if not results and data.get('Abstract'):
+                results.append({
+                    "title": data.get('Heading', query),
+                    "url": data.get('AbstractURL', ''),
+                    "snippet": data.get('Abstract', '')
+                })
+            
+            # If still no results, provide helpful message
+            if not results:
+                logger.warning(f"No search results found for query: {query}")
+                return {
+                    "query": query,
+                    "results": [],
+                    "total": 0,
+                    "message": "No results found. Try a different search query."
+                }
+            
+            return {
+                "query": query,
+                "results": results,
+                "total": len(results),
+                "source": "DuckDuckGo"
+            }
+            
+        except requests.exceptions.Timeout:
+            logger.error(f"Web search timeout for query: {query}")
+            return {
+                "query": query,
+                "results": [],
+                "total": 0,
+                "error": "Search request timed out. Please try again."
+            }
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Web search request failed: {e}")
+            return {
+                "query": query,
+                "results": [],
+                "total": 0,
+                "error": f"Search request failed: {str(e)}"
+            }
+        except Exception as e:
+            logger.error(f"Web search error: {e}", exc_info=True)
+            return {
+                "query": query,
+                "results": [],
+                "total": 0,
+                "error": f"Search error: {str(e)}"
+            }
 
     def _builtin_file_read(self, path: str) -> Dict[str, Any]:
         """Built-in file read function."""

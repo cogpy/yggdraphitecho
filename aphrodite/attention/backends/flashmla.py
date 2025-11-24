@@ -52,7 +52,8 @@ class FlashMLAMetadata(MLACommonMetadata):
     @property
     def decode_metadata(self):
         decode_metadata = super().decode_metadata
-        # TODO: cache assignment?
+        # TODO: Consider caching this assignment for performance optimization
+        # Currently assigns on every access - could cache if decode_metadata is immutable
         if decode_metadata is not None:
             decode_metadata.decode_tile_scheduler_metadata=\
                 self.decode_tile_scheduler_metadata

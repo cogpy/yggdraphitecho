@@ -102,7 +102,8 @@ def is_attn_backend_supported(
 
     assert isinstance(attn_backend, type)
 
-    # TODO: Update the interface once V0 is removed
+    # Support both V0 and V1 backend interfaces for head size validation
+    # V1 backends use get_supported_head_sizes(), V0 uses validate_head_size()
     if get_supported_head_sizes := getattr(attn_backend,
                                            "get_supported_head_sizes", None):
         is_head_size_supported = head_size in get_supported_head_sizes()
@@ -197,10 +198,53 @@ def _cached_get_attn_backend(
     attention_cls = current_platform.get_attn_backend_cls(
         selected_backend, head_size, dtype, kv_cache_dtype, block_size, use_v1,
         use_mla)
+    
     if not attention_cls:
-        raise ValueError(
-            f"Invalid attention backend for {current_platform.device_name}")
-    return resolve_obj_by_qualname(attention_cls)
+        # Provide more helpful error message with available backends
+        available_backends = list(_Backend.__members__.keys())
+        error_msg = (
+            f"No suitable attention backend found for {current_platform.device_name}. "
+            f"Requested backend: {selected_backend}, "
+            f"head_size: {head_size}, dtype: {dtype}, "
+            f"kv_cache_dtype: {kv_cache_dtype}, block_size: {block_size}. "
+            f"Available backends: {available_backends}. "
+            f"Try setting APHRODITE_ATTENTION_BACKEND environment variable to one of: {available_backends}"
+        )
+        raise ValueError(error_msg)
+    
+    # Resolve and validate the backend class
+    try:
+        backend_cls = resolve_obj_by_qualname(attention_cls)
+    except Exception as e:
+        raise ImportError(
+            f"Failed to import attention backend '{attention_cls}': {e}. "
+            f"This may indicate a missing dependency or incompatible version."
+        ) from e
+    
+    # Validate backend supports the requested configuration
+    is_supported = is_attn_backend_supported(
+        attention_cls, head_size, dtype, allow_import_error=False
+    )
+    
+    if not is_supported.can_import:
+        raise ImportError(
+            f"Attention backend '{attention_cls}' failed to import. "
+            f"Please check dependencies and installation."
+        )
+    
+    if not is_supported.head_size:
+        logger.warning(
+            f"Attention backend '{attention_cls}' does not officially support "
+            f"head_size={head_size}. Proceeding anyway, but you may encounter issues."
+        )
+    
+    if not is_supported.dtype:
+        logger.warning(
+            f"Attention backend '{attention_cls}' does not officially support "
+            f"dtype={dtype}. Proceeding anyway, but you may encounter issues."
+        )
+    
+    return backend_cls
 
 
 @contextmanager

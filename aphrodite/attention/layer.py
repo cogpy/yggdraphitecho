@@ -148,8 +148,10 @@ class Attention(nn.Module):
         if quant_method is not None and not isinstance(
                 quant_method, UnquantizedLinearMethod):
             assert isinstance(quant_method, BaseKVCacheMethod)
-            # TODO (mgoin): kv cache dtype should be specified in the FP8
-            # checkpoint config and become the "auto" behavior
+            # TODO (mgoin): Future improvement - kv cache dtype should be specified
+            # in the FP8 checkpoint config and become the "auto" behavior.
+            # Currently, users must explicitly specify kv_cache_dtype.
+            # This would allow automatic selection based on checkpoint metadata.
             if self.kv_cache_dtype == "fp8_e5m2":
                 raise ValueError("fp8_e5m2 kv-cache is not supported with "
                                  "fp8 checkpoints.")
@@ -358,7 +360,10 @@ class MultiHeadAttention(nn.Module):
         value: torch.Tensor,
     ) -> torch.Tensor:
         """Input shape: batch_size x seq_len x hidden_size"""
-        # TODO(Isotr0py): Use existing backend implementations and support FA3
+        # TODO(Isotr0py): Refactor to use existing backend implementations (FlashAttention, etc.)
+        # and add FlashAttention-3 support for improved performance.
+        # Current implementation manually handles XFORMERS, TORCH_SDPA, and PALLAS backends.
+        # Future: Delegate to backend-specific implementations for better maintainability.
         bsz, q_len, _ = query.size()
         kv_len = key.size(1)
 

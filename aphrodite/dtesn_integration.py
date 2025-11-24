@@ -559,8 +559,21 @@ class DTESNDynamicIntegration:
             else:
                 feedback = 0.0
             
-            # Get current parameter values (mock for now)
-            current_params = torch.randn_like(update_data)  # Would get from actual model
+            # Get current parameter values from dynamic model manager
+            try:
+                model_params = await self.dynamic_manager.get_model_parameters()
+                if parameter_name in model_params:
+                    current_params = model_params[parameter_name]
+                    logger.debug(f"Retrieved actual parameter {parameter_name} from model")
+                else:
+                    # Parameter not found, initialize with zeros
+                    current_params = torch.zeros_like(update_data)
+                    logger.warning(f"Parameter {parameter_name} not found in model, initializing with zeros")
+            except Exception as e:
+                logger.error(f"Failed to retrieve parameter {parameter_name}: {e}")
+                # Fallback to zeros if retrieval fails
+                current_params = torch.zeros_like(update_data)
+                logger.warning(f"Using zero initialization for {parameter_name} due to error")
             
             # Apply adaptive update
             updated_params, learning_metrics = await self.adaptive_parameter_update(
