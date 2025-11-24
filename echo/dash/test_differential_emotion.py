@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from deep_tree_echo import DeepTreeEcho
-from differential_emotion_theory import DETEmotion
+from .differential_emotion_theory import DETEmotion
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, 

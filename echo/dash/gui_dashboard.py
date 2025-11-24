@@ -14,7 +14,7 @@ from ttkbootstrap import Style
 from tooltip import Tooltip
 import networkx as nx
 from deep_tree_echo import DeepTreeEcho, TreeNode
-from ml_system import MLSystem
+from .ml_system import MLSystem
 import numpy as np
 import matplotlib.colors as mcolors
 from memory_management import HypergraphMemory, MemoryType  # Import memory management

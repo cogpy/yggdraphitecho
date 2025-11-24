@@ -4,7 +4,7 @@ import pyautogui
 import logging
 import time
 import random
-from ml_system import MLSystem
+from .ml_system import MLSystem
 import json
 from pathlib import Path
 from typing import Optional, Dict
