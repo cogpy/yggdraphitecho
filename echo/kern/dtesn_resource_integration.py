@@ -30,16 +30,16 @@ from resource_constraint_manager import (
 
 # Import existing DTESN components for integration
 try:
-    from psystem_membranes import PSystemMembranes
+    from psystem_membranes import PSystemMembraneHierarchy
     from esn_reservoir import ESNReservoir  
     from bseries_tree_classifier import BSeriesTreeClassifier
-    from oeis_a000081_enumerator import OEISA000081Enumerator
+    from oeis_a000081_enumerator import OEIS_A000081_Enumerator
 except ImportError:
     # Graceful handling for development environment
-    PSystemMembranes = None
+    PSystemMembraneHierarchy = None
     ESNReservoir = None
     BSeriesTreeClassifier = None
-    OEISA000081Enumerator = None
+    OEIS_A000081_Enumerator = None
 
 logger = logging.getLogger(__name__)
 
@@ -131,8 +131,8 @@ class DTESNResourceIntegrator:
             logger.error(f"Agent {agent_id} not registered for P-System access")
             return None
         
-        if PSystemMembranes is None:
-            logger.warning("PSystemMembranes not available - using mock for development")
+        if PSystemMembraneHierarchy is None:
+            logger.warning("PSystemMembraneHierarchy not available - using mock for development")
             return MockConstrainedPSystemWrapper(agent_id, self._constraint_manager)
         
         return ConstrainedPSystemWrapper(agent_id, self._constraint_manager)
@@ -243,7 +243,7 @@ class ConstrainedPSystemWrapper:
     def __init__(self, agent_id: str, constraint_manager: ResourceConstraintManager):
         self.agent_id = agent_id
         self._constraint_manager = constraint_manager
-        self._psystem = PSystemMembranes() if PSystemMembranes else None
+        self._psystem = PSystemMembraneHierarchy() if PSystemMembraneHierarchy else None
         logger.debug(f"ConstrainedPSystemWrapper initialized for agent {agent_id}")
     
     def evolve_membrane(self, membrane_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -267,8 +267,8 @@ class ConstrainedPSystemWrapper:
     def validate_oeis_compliance(self, tree_structure: Dict[str, Any]) -> bool:
         """Validate OEIS A000081 compliance under resource constraints."""
         def _validate():
-            if OEISA000081Enumerator:
-                enumerator = OEISA000081Enumerator()
+            if OEIS_A000081_Enumerator:
+                enumerator = OEIS_A000081_Enumerator()
                 return enumerator.validate_tree_structure(tree_structure)
             else:
                 # Development mock - assume compliance

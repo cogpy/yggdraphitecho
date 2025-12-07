@@ -37,16 +37,16 @@ import json
 
 # Import existing DTESN components for integration
 try:
-    from psystem_membranes import PSystemMembranes
+    from psystem_membranes import PSystemMembraneHierarchy
     from esn_reservoir import ESNReservoir
     from bseries_tree_classifier import BSeriesTreeClassifier
-    from oeis_a000081_enumerator import OEISA000081Enumerator
+    from oeis_a000081_enumerator import OEIS_A000081_Enumerator
 except ImportError:
     # Handle missing dependencies gracefully in development
-    PSystemMembranes = None
+    PSystemMembraneHierarchy = None
     ESNReservoir = None
     BSeriesTreeClassifier = None
-    OEISA000081Enumerator = None
+    OEIS_A000081_Enumerator = None
 
 logger = logging.getLogger(__name__)
 

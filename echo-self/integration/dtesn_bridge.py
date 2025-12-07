@@ -52,8 +52,8 @@ class DTESNBridge:
         """Import DTESN components from echo.kern."""
         try:
             # Prefer absolute imports for installed package
-            from echo.kern.psystem_membranes import PSystemMembranes
-            self.PSystemMembranes = PSystemMembranes
+            from echo.kern.psystem_membranes import PSystemMembraneHierarchy
+            self.PSystemMembraneHierarchy = PSystemMembraneHierarchy
 
             from echo.kern.esn_reservoir import ESNReservoir
             self.ESNReservoir = ESNReservoir
@@ -102,11 +102,11 @@ class DTESNBridge:
     
     def _initialize_components(self):
         """Initialize DTESN components."""
-        if not hasattr(self, 'PSystemMembranes'):
+        if not hasattr(self, 'PSystemMembraneHierarchy'):
             raise ImportError("DTESN components not properly imported")
         
         # Initialize P-System membranes
-        self.membrane_system = self.PSystemMembranes()
+        self.membrane_system = self.PSystemMembraneHierarchy()
         
         # Initialize ESN reservoir with proper configuration
         import esn_reservoir

@@ -50,11 +50,11 @@ except ImportError as e:
     def create_embodied_memory_bridge(): pass
 
 try:
-    from .psystem_membranes import PSystemMembranes
+    from .psystem_membranes import PSystemMembraneHierarchy
     logger.debug("✓ P-System membranes imported successfully")
 except ImportError as e:
     logger.debug(f"Note: P-System membranes uses local imports: {e}")
-    class PSystemMembranes: pass
+    class PSystemMembraneHierarchy: pass
 
 try:
     from .esn_reservoir import ESNReservoir
@@ -214,7 +214,7 @@ __all__ = [
     'BodyState',
     'SpatialAnchor',
     'create_embodied_memory_bridge',
-    'PSystemMembranes',
+    'PSystemMembraneHierarchy',
     'ESNReservoir',
     'MultiAgentTrainingSystem',
     'TrainingConfiguration', 
